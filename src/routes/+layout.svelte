@@ -2,17 +2,19 @@
 	import './styles.css';
 </script>
 
-<!-- <div class="app"> -->
-<main>
+<main class="drawer min-h-full">
 	<slot />
+</main>
+<!-- <div class="app">
+<main>
 </main>
 
 <footer></footer>
 
-<!-- </div> -->
+</div>
 
 <style>
 	main {
 		height: 100dvh;
 	}
-</style>
+</style> -->

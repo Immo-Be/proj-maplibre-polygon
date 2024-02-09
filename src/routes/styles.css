@@ -18,6 +18,18 @@
 	box-sizing: border-box;
 }
 
+/* body,
+html {
+	height: 200px;
+} */
+
+html,
 body {
-	height: 100vh;
+	height: 100dvh;
+	padding: 0;
+	margin: 0;
+}
+#map {
+	height: 100%;
+	width: 100vw;
 }

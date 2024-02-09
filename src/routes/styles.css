@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+	--sidebar-width: clamp(300px, 50vw, 350px);
+	--sidebar-width-collapsed: 0;
+}
+
+.drawer-side > *:not(.drawer-overlay) {
+	--tw-translate-x: calc(-100% - 1rem);
+	transform: translateX(var(--tw-translate-x));
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+body {
+	height: 100vh;
+}

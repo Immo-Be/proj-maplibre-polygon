@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { addBoat } from '$lib/polygon';
-	import type { Boat } from './../types/types';
+	import type { Boat } from '../types/types';
 	import { v4 as uuidv4 } from 'uuid';
 
 	// const form = document.querySelector('form');

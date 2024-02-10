@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { currentPolygonIndex, isDragging, isRotating } from './../stores/map';
+	import { currentPolygonIndex, isDragging, isRotating } from '../stores/map';
 	import { onMount } from 'svelte';
 	import { map } from '../stores/map';
 	import { initializeMapLayers, setUpMapInstance } from '../lib/map';

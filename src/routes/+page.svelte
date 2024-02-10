@@ -1,6 +1,6 @@
 <script lang="ts">
-	import MapContainer from './MapContainer.svelte';
-	import Accordion from './Accordion.svelte';
+	import MapContainer from '../components/MapContainer.svelte';
+	import Accordion from '../components/Accordion.svelte';
 </script>
 
 <svelte:head>

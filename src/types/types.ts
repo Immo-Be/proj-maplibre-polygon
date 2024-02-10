@@ -1,8 +1,8 @@
-type Boat = {
-  color: string;
-  hasProtrusion?: "on";
-  height: string;
-  name: string;
-  power?: string;
-  width: string;
+export type Boat = {
+	color: string;
+	hasProtrusion?: 'on';
+	height: string;
+	name: string;
+	power?: string;
+	width: string;
 };

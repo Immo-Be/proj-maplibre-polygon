@@ -38,6 +38,7 @@
 	"type": "module",
 	"dependencies": {
 		"@turf/center-of-mass": "^6.5.0",
+		"@turf/turf": "^6.5.0",
 		"maplibre-gl": "^4.0.0",
 		"uuid": "^9.0.1"
 	}

@@ -2,9 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+.collapse-content {
+	padding: 0;
+}
+
 :root {
 	--sidebar-width: clamp(300px, 50vw, 350px);
-	--sidebar-width-collapsed: 0;
 }
 
 .drawer-side > *:not(.drawer-overlay) {

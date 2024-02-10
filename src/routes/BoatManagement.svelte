@@ -1,60 +1,16 @@
+<script>
+	import ListItem from './ListItem.svelte';
+	import { shipsFromFeatures } from '../stores/map';
+</script>
+
 <ul class="">
-	<li class="hover hover:bg-slate-200">Schiff 1</li>
-	<li class="hover hover:bg-slate-200">Schiff 2</li>
-	<li class="hover hover:bg-slate-200">Schiff 3</li>
-	<li class="hover hover:bg-slate-200">Schiff 3</li>
-	<li class="hover hover:bg-slate-200">Schiff 3</li>
-	<li class="hover hover:bg-slate-200">Schiff 3</li>
-	<li class="hover hover:bg-slate-200">Schiff 3</li>
-	<li class="hover hover:bg-slate-200">Schiff 3</li>
-	<li class="hover hover:bg-slate-200">Schiff 3</li>
-	<li class="hover hover:bg-slate-200">Schiff 3</li>
-	<li class="hover hover:bg-slate-200">Schiff 3</li>
-	<li class="hover hover:bg-slate-200">Schiff 3</li>
-	<li class="hover hover:bg-slate-200">Schiff 3</li>
-	<li class="hover hover:bg-slate-200">Schiff 3</li>
-	<li class="hover hover:bg-slate-200">Schiff 3</li>
-	<li class="hover hover:bg-slate-200">Schiff 3</li>
-	<li class="hover hover:bg-slate-200">Schiff 3</li>
-	<li class="hover hover:bg-slate-200">Schiff 3</li>
-	<li class="hover hover:bg-slate-200">Schiff 3</li>
-	<li class="hover hover:bg-slate-200">Schiff 3</li>
-	<li class="hover hover:bg-slate-200">Schiff 3</li>
-	<li class="hover hover:bg-slate-200">Schiff 3</li>
-	<li class="hover hover:bg-slate-200">Schiff 3</li>
-	<li class="hover hover:bg-slate-200">Schiff 3</li>
-	<li class="hover hover:bg-slate-200">Schiff 3</li>
-	<li class="hover hover:bg-slate-200">Schiff 3</li>
-	<li class="hover hover:bg-slate-200">Schiff 3</li>
-	<li class="hover hover:bg-slate-200">Schiff 3</li>
-	<li class="hover hover:bg-slate-200">Schiff 3</li>
-	<li class="hover hover:bg-slate-200">Schiff 3</li>
-	<li class="hover hover:bg-slate-200">Schiff 3</li>
-	<li class="hover hover:bg-slate-200">Schiff 3</li>
-	<li class="hover hover:bg-slate-200">Schiff 3</li>
-	<li class="hover hover:bg-slate-200">Schiff 3</li>
-	<li class="hover hover:bg-slate-200">Schiff 3</li>
-	<li class="hover hover:bg-slate-200">Schiff 3</li>
-	<li class="hover hover:bg-slate-200">Schiff 3</li>
-	<li class="hover hover:bg-slate-200">Schiff 3</li>
-	<li class="hover hover:bg-slate-200">Schiff 3</li>
-	<li class="hover hover:bg-slate-200">Schiff 3</li>
-	<li class="hover hover:bg-slate-200">Schiff 3</li>
-	<li class="hover hover:bg-slate-200">Schiff 3</li>
-	<li class="hover hover:bg-slate-200">Schiff 3</li>
-	<li class="hover hover:bg-slate-200">Schiff 3</li>
-	<li class="hover hover:bg-slate-200">Schiff 3</li>
-	<li class="hover hover:bg-slate-200">Schiff 3</li>
-	<li class="hover hover:bg-slate-200">Schiff 3</li>
-	<li class="hover hover:bg-slate-200">Schiff 3</li>
-	<li class="hover hover:bg-slate-200">Schiff 3</li>
-	<li class="hover hover:bg-slate-200">Schiff 3</li>
-	<li class="hover hover:bg-slate-200">Schiff 3</li>
-	<li class="hover hover:bg-slate-200">Schiff 3</li>
-	<li class="hover hover:bg-slate-200">Schiff 3</li>
-	<li class="hover hover:bg-slate-200">Schiff 3</li>
-	<li class="hover hover:bg-slate-200">Schiff 3</li>
-	<li class="hover hover:bg-slate-200">Schiff 3</li>
-	<li class="hover hover:bg-slate-200">Schiff 3</li>
-	<li class="hover hover:bg-slate-200">Schiff Last</li>
+	{#if $shipsFromFeatures.length === 0}
+		<p class="text-center">There are no boats yet.</p>
+	{/if}
+
+	{#each $shipsFromFeatures as ship (ship && ship.id)}
+		{#if ship}
+			<ListItem id={ship.id} name={ship.name} />
+		{/if}
+	{/each}
 </ul>

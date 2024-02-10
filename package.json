@@ -39,6 +39,7 @@
 	"dependencies": {
 		"@turf/center-of-mass": "^6.5.0",
 		"@turf/turf": "^6.5.0",
+		"@types/dom-view-transitions": "^1.0.4",
 		"maplibre-gl": "^4.0.0",
 		"uuid": "^9.0.1"
 	}

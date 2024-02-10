@@ -1,30 +1,23 @@
 <script lang="ts">
-	import type { Boat } from './../types/types';
-	import { CENTER } from './../constants';
-	import { onMount, tick } from 'svelte';
-	// import { getMapInstance } from '../utils/map';
-	import mapStyle from '../map-styles';
-	import { getMapSource, initializeMapLayers } from '../lib/map';
-	import { Layer } from '../constants';
-	import { point } from '@turf/turf';
-	import maplibregl from 'maplibre-gl';
-	import { enhance } from '$app/forms';
-	import { featureCollection } from '../stores/featureCollection';
-	import MapContainer from './MapContainer.svelte';
-	import { map } from '../stores/map';
 	import { addBoat } from '$lib/polygon';
+	import type { Boat } from './../types/types';
+	import { v4 as uuidv4 } from 'uuid';
+
 	// const form = document.querySelector('form');
 
 	const handleFormSubmit = (event: SubmitEvent) => {
 		event.preventDefault();
 		const formData = new FormData(event.target as HTMLFormElement);
 		const formProps = Object.fromEntries(formData) as Boat;
+
+		// Generate unique id
+		formProps.id = uuidv4();
 		addBoat(formProps);
 	};
 </script>
 
 <form
-	class="entry-form h-full text-base-content relative"
+	class="entry-form h-full text-base-content relative p-4"
 	method="post"
 	on:submit={handleFormSubmit}
 >

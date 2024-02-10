@@ -5,4 +5,5 @@ export type Boat = {
 	name: string;
 	power?: string;
 	width: string;
+	id: string;
 };

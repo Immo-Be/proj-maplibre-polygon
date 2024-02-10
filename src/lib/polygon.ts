@@ -1,5 +1,4 @@
 import { get } from 'svelte/store';
-import { v4 as uuidv4 } from 'uuid';
 import { polygon } from '@turf/helpers';
 import {
 	bearing,
@@ -25,7 +24,7 @@ import { currentPolygonIndex, isDragging, map } from '../stores/map';
 const PROTRUSION_FACTOR = 0.15;
 
 const createPolygon = (center: GeoJSON.Point, props: Boat): GeoJSON.Feature => {
-	const { width, height, hasProtrusion, name, color, power } = props;
+	const { width, height, hasProtrusion, name, color, power, id } = props;
 
 	const boatLength = Number(width);
 	const boatWidth = Number(height);
@@ -69,11 +68,13 @@ const createPolygon = (center: GeoJSON.Point, props: Boat): GeoJSON.Feature => {
 
 	// Create the polygon with a triangle on the right side
 	const createdPolygon = polygon(polygonPoints, {
-		//  Todo: Set in the id property of the
-		id: uuidv4(),
+		id,
 		color,
 		name,
-		power
+		power,
+		width,
+		height,
+		hasProtrusion
 	});
 
 	return createdPolygon;

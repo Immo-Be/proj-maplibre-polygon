@@ -15,6 +15,19 @@
 	transform: translateX(var(--tw-translate-x));
 }
 
+:root::view-transition-old(root),
+:root::view-transition-new(root) {
+	animation-duration: 0.2s;
+}
+
+.form-control {
+	gap: 0.2rem;
+}
+
+.label {
+	padding: 0;
+}
+
 *,
 *::before,
 *::after {

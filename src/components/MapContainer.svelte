@@ -14,26 +14,19 @@
 		onMouseUp
 	} from '$lib/polygon';
 
-	// const collection: GeoJSON.FeatureCollection = {
-	// 	type: 'FeatureCollection',
-	// 	features: []
-	// };
-	// import { Boat } from '../types/types';
 	onMount(async () => {
 		map.set(await setUpMapInstance());
 
 		if (!$map) {
-			console.warn('No map instance found', $map);
-			return;
+			throw new Error('No map instance found');
+		}
+
+		if (!featureCollection) {
+			throw new Error('No valid feature featureFeatureCollection', featureCollection);
 		}
 
 		$map.once('styledata', async () => {
 			await initializeMapLayers($featureCollection, $map);
-
-			if (!featureCollection) {
-				console.warn('No valid feature featureFeatureCollection', featureCollection);
-				return;
-			}
 		});
 
 		function onMouseRotateUp() {
@@ -142,9 +135,6 @@
 				return;
 			}
 
-			// $map.getCanvas().style.cursor = '';
-
-			// Reset the point layer's color
 			if (!$isRotating) {
 				$map.setPaintProperty(Layer.POINTS_LAYER, 'circle-opacity', 0);
 			}

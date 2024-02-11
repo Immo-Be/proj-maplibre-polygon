@@ -1,0 +1,39 @@
+import type { FormFieldProps } from './types/types';
+
+export const formFields: FormFieldProps[] = [
+	{
+		label: 'Name',
+		name: 'name',
+		type: 'text',
+		isConfigureMode: false,
+		placeholder: 'Name des Bootes'
+	},
+	{
+		label: 'Länge (m)',
+		name: 'width',
+		type: 'number',
+		isConfigureMode: false,
+		placeholder: 'Länge des Bootes in Metern'
+	},
+	{
+		label: 'Breite (m)',
+		name: 'height',
+		type: 'number',
+		isConfigureMode: false,
+		placeholder: 'Breite des Bootes in Metern'
+	},
+	{ label: 'Farbe', name: 'color', type: 'color', isConfigureMode: false, placeholder: '#1264AF' },
+	{
+		label: 'Mit Spitze?',
+		name: 'hasProtrusion',
+		type: 'checkbox',
+		isConfigureMode: false
+	},
+	{
+		label: 'Power',
+		name: 'power',
+		type: 'select',
+		isConfigureMode: true,
+		options: ['Kein Strom', '16A', '32A', '64A']
+	}
+];

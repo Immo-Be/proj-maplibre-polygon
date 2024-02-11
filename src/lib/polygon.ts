@@ -24,7 +24,7 @@ import { currentPolygonIndex, isDragging, map } from '../stores/map';
 const PROTRUSION_FACTOR = 0.15;
 
 const createPolygon = (center: GeoJSON.Point, props: Boat): GeoJSON.Feature => {
-	const { width, height, hasProtrusion, name, color, power, id } = props;
+	const { width, height, hasProtrusion } = props;
 
 	const boatLength = Number(width);
 	const boatWidth = Number(height);
@@ -68,13 +68,9 @@ const createPolygon = (center: GeoJSON.Point, props: Boat): GeoJSON.Feature => {
 
 	// Create the polygon with a triangle on the right side
 	const createdPolygon = polygon(polygonPoints, {
-		id,
-		color,
-		name,
-		power,
+		...props,
 		width,
-		height,
-		hasProtrusion
+		height
 	});
 
 	return createdPolygon;
@@ -327,7 +323,54 @@ export const generateRotationPointAndLine = (polygon: GeoJSON.Feature) => {
 	lineSource.setData(geoLine);
 };
 
-export const addBoat = (boatProps: Boat) => {
+export const setPolygonFeature = (boatProps: Boat, isFeatureUpdated: boolean) => {
+	const polygonSource = getMapSource(get(map), Layer.POLYGONS_SOURCE);
+
+	if (!polygonSource) {
+		console.warn('No valid polygon source', polygonSource);
+		return;
+	}
+
+	if (isFeatureUpdated) {
+		// Update the feature
+		const featureCollectionInstance = get(featureCollection);
+		const featureIndex = featureCollectionInstance.features.findIndex(
+			(feature) => feature.properties?.id === boatProps.id
+		);
+
+		if (featureIndex === -1) {
+			console.warn('No valid featureIndex. This should not be the case', featureIndex);
+			return;
+		}
+
+		const currentFeatureProperties = featureCollectionInstance.features[featureIndex].properties;
+
+		const isShapeChange =
+			boatProps.width !== currentFeatureProperties?.width ||
+			boatProps.height !== currentFeatureProperties?.height ||
+			Boolean(boatProps.hasProtrusion) !== Boolean(currentFeatureProperties.hasProtrusion);
+
+		featureCollection.update((featureCollection) => {
+			const center = getCenterOfPolygon(featureCollectionInstance.features[featureIndex]);
+			const updatedFeatures = [...featureCollectionInstance.features];
+
+			if (isShapeChange) {
+				const poly = createPolygon(center, boatProps);
+
+				updatedFeatures[featureIndex] = poly;
+
+				return { ...featureCollection, features: updatedFeatures };
+			} else {
+				updatedFeatures[featureIndex].properties = boatProps;
+				return { ...featureCollection, features: updatedFeatures };
+			}
+		});
+		polygonSource.setData(get(featureCollection));
+
+		return;
+	}
+
+	// Create a new polygon
 	const center = point([CENTER.lng + Math.random() * 0.001, CENTER.lat - Math.random() * 0.001]);
 
 	const poly = createPolygon(center, boatProps);
@@ -336,13 +379,6 @@ export const addBoat = (boatProps: Boat) => {
 		const updatedFeatures = [...featureCollection.features, poly];
 		return { ...featureCollection, features: updatedFeatures };
 	});
-
-	const polygonSource = getMapSource(get(map), Layer.POLYGONS_SOURCE);
-
-	if (!polygonSource) {
-		console.warn('No valid polygon source', polygonSource);
-		return;
-	}
 
 	polygonSource.setData(get(featureCollection));
 };

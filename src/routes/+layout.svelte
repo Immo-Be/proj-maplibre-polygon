@@ -1,6 +1,7 @@
 <script>
 	import './styles.css';
 	import { onNavigate } from '$app/navigation';
+	import MapContainer from '../components/MapContainer.svelte';
 
 	onNavigate((navigation) => {
 		console.log('transitioning');
@@ -16,7 +17,13 @@
 </script>
 
 <main class="drawer min-h-full">
-	<slot />
+	<input id="my-drawer" type="checkbox" class="drawer-toggle" />
+	<div class="drawer-content">
+		<MapContainer />
+	</div>
+	<aside class="drawer-side pointer-events-auto z-20 overflow-visible w-0 min-h-full">
+		<slot />
+	</aside>
 </main>
 
 <!-- <div class="app">
@@ -33,7 +40,7 @@
 	}
 </main> -->
 
-<style>
+<!-- <style>
 	@keyframes fade-in {
 		from {
 			opacity: 0;
@@ -69,4 +76,4 @@
 			210ms cubic-bezier(0, 0, 0.2, 1) 90ms both fade-in,
 			300ms cubic-bezier(0.4, 0, 0.2, 1) both slide-from-right;
 	}
-</style>
+</style> -->

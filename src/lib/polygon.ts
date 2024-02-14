@@ -156,7 +156,7 @@ export const onMousePolyGrab = (event: MapMouseEvent) => {
 		return collection;
 	});
 
-	polSource.setData(get(featureCollection));
+	// polSource.setData(get(featureCollection));
 };
 
 let prevBearing = 0;
@@ -168,9 +168,8 @@ function rotatePolygon(rotation: number) {
 		console.warn('No valid map instance', mapInstance);
 		return;
 	}
-	const polySource = getMapSource(mapInstance, Layer.POLYGONS_SOURCE);
 
-	if (currentPolygonIndex === null || !polySource) {
+	if (currentPolygonIndex === null) {
 		console.warn(
 			'No currentPolygonIndex - the polygon being rotated is not in the feature collection',
 			currentPolygonIndex
@@ -210,9 +209,13 @@ function rotatePolygon(rotation: number) {
 		pivot: point(rotationPoint.geometry.coordinates)
 	});
 
-	featureCollectionInstance.features[currentPolygonIndexValue] = rotatedPoly;
+	// featureCollectionInstance.features[currentPolygonIndexValue] = rotatedPoly;
+	featureCollection.update((collection) => {
+		collection.features[currentPolygonIndexValue] = rotatedPoly;
+		return collection;
+	});
 
-	polySource.setData(featureCollectionInstance);
+	// polySource.setData(featureCollectionInstance);
 }
 
 export const handleRotate = (event: MapMouseEvent) => {
@@ -324,13 +327,6 @@ export const generateRotationPointAndLine = (polygon: GeoJSON.Feature) => {
 };
 
 export const setPolygonFeature = (boatProps: Boat, isFeatureUpdated: boolean) => {
-	const polygonSource = getMapSource(get(map), Layer.POLYGONS_SOURCE);
-
-	if (!polygonSource) {
-		console.warn('No valid polygon source', polygonSource);
-		return;
-	}
-
 	if (isFeatureUpdated) {
 		// Update the feature
 		const featureCollectionInstance = get(featureCollection);
@@ -365,12 +361,12 @@ export const setPolygonFeature = (boatProps: Boat, isFeatureUpdated: boolean) =>
 				return { ...featureCollection, features: updatedFeatures };
 			}
 		});
-		polygonSource.setData(get(featureCollection));
 
 		return;
 	}
 
 	// Create a new polygon
+	// Todo: Better use randomPosition from turf
 	const center = point([CENTER.lng + Math.random() * 0.001, CENTER.lat - Math.random() * 0.001]);
 
 	const poly = createPolygon(center, boatProps);
@@ -379,8 +375,6 @@ export const setPolygonFeature = (boatProps: Boat, isFeatureUpdated: boolean) =>
 		const updatedFeatures = [...featureCollection.features, poly];
 		return { ...featureCollection, features: updatedFeatures };
 	});
-
-	polygonSource.setData(get(featureCollection));
 };
 
 export const onMouseUp = (event: MapMouseEvent) => {

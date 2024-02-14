@@ -2,7 +2,7 @@
 	import { currentPolygonIndex, isDragging, isRotating } from '../stores/map';
 	import { onMount } from 'svelte';
 	import { map } from '../stores/map';
-	import { initializeMapLayers, setUpMapInstance } from '../lib/map';
+	import { getMapSource, initializeMapLayers, setUpMapInstance } from '../lib/map';
 	import { Layer } from '../constants';
 	import { MapMouseEvent } from 'maplibre-gl';
 	import { featureCollection } from '../stores/featureCollection';
@@ -139,6 +139,21 @@
 				$map.setPaintProperty(Layer.POINTS_LAYER, 'circle-opacity', 0);
 			}
 		});
+	});
+
+	/**
+	 * Subscribes to the featureCollection and updates the polygon source data on the map.
+	 * @param {FeatureCollection} updatedFeatureCollection - The updated feature collection.
+	 */
+	featureCollection.subscribe((updatedFeatureCollection) => {
+		const polSource = getMapSource($map, Layer.POLYGONS_SOURCE);
+
+		if (!polSource) {
+			console.warn('No valid polygon source', polSource);
+			return;
+		}
+
+		return polSource.setData(updatedFeatureCollection);
 	});
 </script>
 

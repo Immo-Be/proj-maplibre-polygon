@@ -9,6 +9,7 @@
 	import BaseFormInputSelect from './BaseFormInputSelect.svelte';
 	import BaseFormInputColorPick from './BaseFormInputColorPick.svelte';
 	import BaseFormInputCheckbox from './BaseFormInputCheckbox.svelte';
+	import { goto } from '$app/navigation';
 	// import {featureCollection} from '../stores/featureCollection';
 
 	/* We wouldn't need this variable here because we could just check if there is a currentBoatId from the url
@@ -27,20 +28,31 @@
 		});
 
 	const handleFormSubmit = (event: SubmitEvent, isFeatureUpdated: boolean) => {
-		const formData = new FormData(event.target as HTMLFormElement);
-		const formProps = Object.fromEntries(formData) as Boat;
+		const isDeleteEvent = event.submitter?.getAttribute('data-submit') === 'delete';
+		if (isDeleteEvent) {
+			featureCollection.update((collection) => ({
+				...collection,
+				features: collection.features.filter(
+					(feature) => feature.properties?.id !== currentShip?.id
+				)
+			}));
+			goto('/');
+		} else {
+			const formData = new FormData(event.target as HTMLFormElement);
+			const formProps = Object.fromEntries(formData) as Boat;
 
-		/**
-		 * Updates the form props with the current ship data and additional form props.
-		 * If the feature is first added, generates a new UUID and adds it to the form props.
-		 */
-		const updatedFormProps = {
-			...currentShip,
-			...formProps,
-			...{ ...(!isFeatureUpdated && { id: uuidv4() }) }
-		};
+			/**
+			 * Updates the form props with the current ship data and additional form props.
+			 * If the feature is first added, generates a new UUID and adds it to the form props.
+			 */
+			const updatedFormProps = {
+				...currentShip,
+				...formProps,
+				...{ ...(!isFeatureUpdated && { id: uuidv4() }) }
+			};
 
-		setPolygonFeature(updatedFormProps, isFeatureUpdated);
+			setPolygonFeature(updatedFormProps, isFeatureUpdated);
+		}
 	};
 
 	const componentLookUp: Record<
@@ -69,7 +81,7 @@
 		{/each}
 
 		{#if isConfigureMode}
-			<button class="btn btn-error w-full hover" type="button">Löschen</button>
+			<button data-submit="delete" class="btn btn-error w-full hover">Löschen</button>
 		{/if}
 		<button class="btn btn-neutral w-full" type="submit"
 			>{isConfigureMode ? 'Speichern' : 'Hinzufügen'}</button

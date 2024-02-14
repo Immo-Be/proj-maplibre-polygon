@@ -1,0 +1,102 @@
+version: "3.8"
+# We define a service called frontend. 
+# This service will be built from the Dockerfile in the current directory.
+# Services refer to the containers that will be created from the images.
+services:
+  frontend:
+    # We use the Dockerfile in the current directory to build the image.
+    # We could also use an image from Docker Hub, but we want to build
+    # the image ourselves, so that we can use the Dockerfile to install
+    # the dependencies.
+    # The "." points to the Dockerfile in the current directory.
+    build: .
+    # If we wanted to add build-time arguments, we could do it like this:
+    # build:
+    #   context: .
+    #   args:
+    #     - NODE_ENV=production
+    #     - PORT=3000
+    # We could then use the arguments in the Dockerfile like this:
+    # ARG NODE_ENV
+    # ARG PORT
+    # ENV NODE_ENV=$NODE_ENV
+    # ENV PORT=$PORT
+    # We could also point to .env files, like this:
+    # env_file:
+    #   - ./.env
+    #   - ./.env.dev
+    #   - ./.env.prod
+    # We could then use the variables in the Dockerfile like this:
+    # ENV NODE_ENV=$NODE_ENV
+    # ENV PORT=$PORT
+    # We could also use the variables in the docker-compose.yml file like this:
+    # ports:
+    #   - '${PORT}:${PORT}'
+    # We could also use the variables in the Dockerfile like this:
+    # RUN echo "The port is ${PORT}"
+    volumes:
+      # We mount the current directory to /app in the container.
+      # This means that any changes to the files in the current directory
+      # will be reflected in the container.
+      # This is useful during development, because we can edit the files
+      # on the host, and the changes will be reflected in the container.
+      # This is called a bind mount.<
+      # Here, we do not have to specify the full path to the current directory,
+      # because docker-compose will automatically set the current directory
+      # as the context for the build. (unlike docker build, where we have to)
+      - ./:/app/
+      # We copy copy all files from the host to the container,
+      # but we don't want to copy node_modules, because we want to use the
+      # node_modules from the container, not the host.
+      # So we add a volume to the container, which will be used to store
+      # node_modules.
+      # We could avoid this by copying only the source code ( - /src:/app/src)
+      - /app/node_modules 
+    # We expose port 3000, so that we can access the frontend from the host.
+    ports:
+      - '3000:3000'
+    # We set stdin_open and tty to true, so that we can use the container
+    # as if it was a process running on the host. (e.g. we can use ctrl+c to stop it)
+    # With docker run, we would have to use the -it flag.
+    stdin_open: true
+    tty: true
+
+# There are three types of volumes:
+# 1. Bind mounts
+# 2. Named volumes
+# 3. Anonymous volumes
+
+# 1. Bind mounts
+# Bind mounts are the most common type of volume.
+# They are used to mount a directory from the host into the container.
+# We specify the path to the directory, so we know where it is (we could inspect these files)
+# They are specified with the volumes keyword.
+# They are useful during development, because we can edit the files
+# on the host, and the changes will be reflected in the container.
+# They are also useful for sharing files between the host and the container.
+# Here, we use a bind mount to mount the current directory to /app in the container.
+# The syntax for bind mounts is:
+# volumes:
+#   - <path>:<path>
+
+# 2. Named volumes
+# Named volumes are used to mount a directory from the host into the container.
+# They can be used to persist data even after the container is removed.
+# They are similar to bind mounts, but they are managed by Docker (We do not know the path to the directory).
+# They are specified with the volumes keyword.
+# They are useful for sharing files between containers and persisting data even after the container is removed.
+# The syntax for named volumes is:
+# volumes:
+#   - <name>:<path>
+
+# 3. Anonymous volumes
+# Anonymous volumes are used to mount a directory from the host into the container.
+# They are similar to named volumes, but they are not managed by Docker (We do not know the path to the directory).
+# They are specified with the volumes keyword.
+# They are useful for sharing files between containers.
+# The syntax for anonymous volumes is:
+# volumes:
+#   - <path>
+
+
+

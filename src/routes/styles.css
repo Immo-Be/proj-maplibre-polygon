@@ -15,6 +15,12 @@
 	transform: translateX(var(--tw-translate-x));
 }
 
+.drawer-toggle:checked ~ .drawer-side {
+	pointer-events: auto;
+	visibility: visible;
+	overflow-y: visible;
+}
+
 :root::view-transition-old(root),
 :root::view-transition-new(root) {
 	animation-duration: 0.2s;

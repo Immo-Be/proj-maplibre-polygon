@@ -3,7 +3,7 @@ version: "3.8"
 # This service will be built from the Dockerfile in the current directory.
 # Services refer to the containers that will be created from the images.
 services:
-  frontend:
+  app:
     # We use the Dockerfile in the current directory to build the image.
     # We could also use an image from Docker Hub, but we want to build
     # the image ourselves, so that we can use the Dockerfile to install
@@ -55,48 +55,43 @@ services:
     # We expose port 3000, so that we can access the frontend from the host.
     ports:
       - '3000:3000'
+    depends_on:
+      - pocketbase_db
+    # environment:
+    #   DATABASE_URL: postgres://baeldung:baeldung@db:5432/postgres
     # We set stdin_open and tty to true, so that we can use the container
     # as if it was a process running on the host. (e.g. we can use ctrl+c to stop it)
     # With docker run, we would have to use the -it flag.
     stdin_open: true
     tty: true
 
-# There are three types of volumes:
-# 1. Bind mounts
-# 2. Named volumes
-# 3. Anonymous volumes
+  pocketbase_db:
+    build:
+      context: .
+      dockerfile: Dockerfile.db
+      args:
+        TARGETOS: linux
+        TARGETARCH: amd64
+        VERSION: 0.2.8
+    ports:
+      - "8090:8090"
+    # command: ["serve", "--http=0.0.0.0:8090"]
+    volumes:
+      - ./pb_data:/pb/pb_data
 
-# 1. Bind mounts
-# Bind mounts are the most common type of volume.
-# They are used to mount a directory from the host into the container.
-# We specify the path to the directory, so we know where it is (we could inspect these files)
-# They are specified with the volumes keyword.
-# They are useful during development, because we can edit the files
-# on the host, and the changes will be reflected in the container.
-# They are also useful for sharing files between the host and the container.
-# Here, we use a bind mount to mount the current directory to /app in the container.
-# The syntax for bind mounts is:
-# volumes:
-#   - <path>:<path>
-
-# 2. Named volumes
-# Named volumes are used to mount a directory from the host into the container.
-# They can be used to persist data even after the container is removed.
-# They are similar to bind mounts, but they are managed by Docker (We do not know the path to the directory).
-# They are specified with the volumes keyword.
-# They are useful for sharing files between containers and persisting data even after the container is removed.
-# The syntax for named volumes is:
-# volumes:
-#   - <name>:<path>
-
-# 3. Anonymous volumes
-# Anonymous volumes are used to mount a directory from the host into the container.
-# They are similar to named volumes, but they are not managed by Docker (We do not know the path to the directory).
-# They are specified with the volumes keyword.
-# They are useful for sharing files between containers.
-# The syntax for anonymous volumes is:
-# volumes:
-#   - <path>
-
-
-
+  # db:
+  #       image: postgres:13
+  #       restart: always
+  #       environment:
+  #         POSTGRES_PASSWORD: password
+  # db:
+  #   image: postgres:16.2
+  #   container_name: postgressql_db
+  #   environment:
+  #     POSTGRES_USER: baeldung
+  #     POSTGRES_PASSWORD: baeldung
+  #   ports:
+  #     - "5432:5432"
+  #   # volumes:
+  #   #   - /data:/var/lib/postgresql/data
+  #   restart: always

@@ -1,6 +1,10 @@
 <script>
 	import { page } from '$app/stores';
 	import Sidebar from '../../components/Sidebar.svelte';
+	import PocketBase from 'pocketbase';
+
+	const pb = new PocketBase('https://example.com');
+	console.log('🚀 ~ pb:', pb);
 
 	const { params } = $page;
 	const { id } = params;

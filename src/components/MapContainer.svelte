@@ -6,6 +6,8 @@
 	import { Layer } from '../constants';
 	import { MapMouseEvent } from 'maplibre-gl';
 	import { featureCollection } from '../stores/featureCollection';
+	import PocketBase from 'pocketbase';
+
 	import {
 		adjustLine,
 		generateRotationPointAndLine,
@@ -15,6 +17,9 @@
 	} from '$lib/polygon';
 
 	onMount(async () => {
+		const pb = new PocketBase('https://example.com');
+		console.log('🚀 ~ pb:', pb);
+
 		map.set(await setUpMapInstance());
 
 		if (!$map) {

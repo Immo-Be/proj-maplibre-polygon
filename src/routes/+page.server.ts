@@ -1,8 +1,23 @@
-// import { Client } from 'pg';
+import PocketBase from 'pocketbase';
+import type { PageServerLoad } from './$types';
 
-// const client = new Client({
-// 	connectionString: 'postgres://postgres:postgres@localhost:5432/postgres'
-// });
-// console.log(client);
+const url = import.meta.env.VITE_PB_URL;
+console.log('🚀 ~ url:', url);
+const db = new PocketBase(url);
 
-// client.connect();
+export { error } from '@sveltejs/kit';
+
+export const load: PageServerLoad = async () => {
+	const fetchPolygons = async () => {
+		try {
+			return await db.collection('plans').getFullList();
+		} catch (error) {
+			console.log('Something went wrong while fetching polygons: ', error);
+			return Promise<[]>;
+		}
+	};
+
+	return {
+		polygons: await fetchPolygons()
+	};
+};

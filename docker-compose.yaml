@@ -76,6 +76,8 @@ services:
     ports:
       - "8090:8090"
     # command: ["serve", "--http=0.0.0.0:8090"]
+    stdin_open: true
+    tty: true
     volumes:
       - ./pb_data:/pb/pb_data
 

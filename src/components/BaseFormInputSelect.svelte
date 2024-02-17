@@ -1,13 +1,13 @@
 <script lang="ts">
 	import type { configuredFieldProps } from '../types/types';
 
-	const { options, value } = $$props as configuredFieldProps;
+	const { options, value, name } = $$props as configuredFieldProps;
 </script>
 
 <div class="label flex gap-4">
-	<span class="label-text-alt">Strom</span>
+	<span class="label-text-alt">{name.toLocaleUpperCase()}</span>
 
-	<select name="power" class="select select-bordered select-sm w-full max-w-xs">
+	<select {name} class="select select-bordered select-sm w-full max-w-xs">
 		{#if !options}
 			<option value="0">Keine Optionen verfügbar</option>
 		{:else}

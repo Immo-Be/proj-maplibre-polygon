@@ -1,4 +1,5 @@
 <script lang="ts">
+	import BaseFormInputSelect from './BaseFormInputSelect.svelte';
 	import type { Boat } from '../types/types';
 	import { page } from '$app/stores';
 	import ListItem from './ListItem.svelte';
@@ -24,6 +25,9 @@
 		</div>
 		<BaseForm {isConfigureMode} {currentShip} />
 	{:else}
+		<div class="p-4">
+			<BaseFormInputSelect options={['V1', 'V2', 'V3']} name="version" />
+		</div>
 		{#if $shipsFromFeatures.length === 0}
 			<p class="text-center">Füge neue Boote hinzu</p>
 		{/if}

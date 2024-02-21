@@ -2,6 +2,16 @@
 	import './styles.css';
 	import { onNavigate } from '$app/navigation';
 	import MapContainer from '../components/MapContainer.svelte';
+	import { versions } from '../stores/featureCollection';
+
+	export let data;
+
+	versions.update(() =>
+		data.versions.map((version) => ({
+			id: version.id,
+			name: version.plan
+		}))
+	);
 
 	onNavigate((navigation) => {
 		console.log('transitioning');

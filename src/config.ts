@@ -34,6 +34,11 @@ export const formFields: FormFieldProps[] = [
 		name: 'power',
 		type: 'select',
 		isConfigureMode: true,
-		options: ['Kein Strom', '16A', '32A', '64A']
+		options: [
+			{ name: 'Kein Strom', id: 'Kein Strom' },
+			{ name: '16A', id: '16A' },
+			{ name: '32A', id: '32A' },
+			{ name: '64A', id: '64A' }
+		]
 	}
 ];

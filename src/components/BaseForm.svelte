@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { featureCollection } from './../stores/featureCollection';
-	console.log('🚀 ~ featureCollection:', $featureCollection);
 	import { formFields } from './../config';
 	import { setPolygonFeature } from '$lib/polygon';
 	import type { Boat, FormFieldTypes } from '../types/types';

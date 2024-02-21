@@ -15,7 +15,8 @@ export interface FormFieldProps {
 	name: string;
 	type: FormFieldTypes;
 	isConfigureMode: boolean;
-	options?: string[];
+	options?: Array<{ name: string; id: string }>;
+	// options?: string[];
 	placeholder?: string;
 	inputId?: string;
 }

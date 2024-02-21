@@ -170,6 +170,10 @@
 	 * @param {FeatureCollection} updatedFeatureCollection - The updated feature collection.
 	 */
 	featureCollection.subscribe((updatedFeatureCollection) => {
+		console.log(
+			'🚀 ~ featureCollection.subscribe ~ updatedFeatureCollection:',
+			updatedFeatureCollection
+		);
 		const polSource = getMapSource($map, Layer.POLYGONS_SOURCE);
 
 		if (!polSource) {

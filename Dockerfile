@@ -2,7 +2,7 @@
 FROM node:lts
 
 # Set the working directory
-# We set the working directory to /app, so that we don't have to
+# We set the working directory to /app, s that we don't have to
 # specify the full path to the files in the container.
 WORKDIR /app
 

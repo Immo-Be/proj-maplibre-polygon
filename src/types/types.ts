@@ -8,6 +8,12 @@ export type Boat = {
 	id: string;
 };
 
+export type InputBoatForm = Boat & {
+	add?: string;
+	deleteBoat?: string;
+	edit?: string;
+};
+
 export type FormFieldTypes = 'color' | 'checkbox' | 'number' | 'text' | 'select';
 
 export interface FormFieldProps {
@@ -19,6 +25,7 @@ export interface FormFieldProps {
 	// options?: string[];
 	placeholder?: string;
 	inputId?: string;
+	value?: string | number;
 }
 
 export interface configuredFieldProps extends FormFieldProps {

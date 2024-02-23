@@ -1,22 +1,18 @@
-// import PocketBase from 'pocketbase';
-// import type { PageServerLoad } from './$types';
+// import { superValidate } from 'sveltekit-superforms';
+// import { zod } from 'sveltekit-superforms/adapters';
+// import { z } from 'zod';
 
-// const url = import.meta.env.VITE_PB_URL;
-// const db = new PocketBase(url);
+// const baseFormSchema = z.object({
+// 	name: z.string().default('Seefalke'),
+// 	width: z.number().default(3),
+// 	height: z.number().default(1),
+// 	color: z.string().default('#1264AF'),
+// 	hasProtrusion: z.boolean().default(true),
+// 	power: z.enum(['Kein Strom', '16A', '32A', '64A']).optional()
+// });
 
-// export { error } from '@sveltejs/kit';
+// export const load = async () => {
+// 	const form = await superValidate(zod(baseFormSchema));
 
-// export const load: PageServerLoad = async () => {
-// 	const fetchVersions = async () => {
-// 		try {
-// 			return await db.collection('plans').getFullList();
-// 		} catch (error) {
-// 			console.log('Something went wrong while fetching polygons: ', error);
-// 			return Promise<[]>;
-// 		}
-// 	};
-
-// 	return {
-// 		versions: await fetchVersions()
-// 	};
+// 	return { form };
 // };

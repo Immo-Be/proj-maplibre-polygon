@@ -6,21 +6,24 @@ export const formFields: FormFieldProps[] = [
 		name: 'name',
 		type: 'text',
 		isConfigureMode: false,
-		placeholder: 'Name des Bootes'
+		placeholder: 'Name des Bootes',
+		value: 'Seefalke'
 	},
 	{
 		label: 'Länge (m)',
 		name: 'width',
 		type: 'number',
 		isConfigureMode: false,
-		placeholder: 'Länge des Bootes in Metern'
+		placeholder: 'Länge des Bootes in Metern',
+		value: 3
 	},
 	{
 		label: 'Breite (m)',
 		name: 'height',
 		type: 'number',
 		isConfigureMode: false,
-		placeholder: 'Breite des Bootes in Metern'
+		placeholder: 'Breite des Bootes in Metern',
+		value: 1
 	},
 	{ label: 'Farbe', name: 'color', type: 'color', isConfigureMode: false, placeholder: '#1264AF' },
 	{

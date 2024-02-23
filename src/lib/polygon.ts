@@ -23,7 +23,7 @@ import { currentPolygonIndex, isDragging, map } from '../stores/map';
 // 0.15 means that the triangle in front makes up 15% of the total length of the ship
 const PROTRUSION_FACTOR = 0.15;
 
-const createPolygon = (center: GeoJSON.Point, props: Boat): GeoJSON.Feature => {
+export const createPolygon = (center: GeoJSON.Point, props: Boat): GeoJSON.Feature => {
 	const { width, height, hasProtrusion } = props;
 
 	const boatLength = Number(width);

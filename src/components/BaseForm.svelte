@@ -9,6 +9,10 @@
 	import BaseFormInputColorPick from './BaseFormInputColorPick.svelte';
 	import BaseFormInputCheckbox from './BaseFormInputCheckbox.svelte';
 	import { goto } from '$app/navigation';
+	import { enhance } from '$app/forms';
+
+	// Client API:
+
 	// import {featureCollection} from '../stores/featureCollection';
 
 	/* We wouldn't need this variable here because we could just check if there is a currentBoatId from the url
@@ -71,8 +75,9 @@
 
 <form
 	class="entry-form h-full text-base-content relative px-4"
-	method="post"
-	on:submit|preventDefault={(event) => handleFormSubmit(event, isConfigureMode)}
+	method="POST"
+	use:enhance
+	action="?/handleFormSubmit"
 >
 	<fieldset class="flex flex-col gap-4">
 		{#each filteredFormFields as { type, ...rest }}
@@ -80,11 +85,47 @@
 		{/each}
 
 		{#if isConfigureMode}
-			<button data-submit="delete" class="btn btn-error w-full hover">Löschen</button>
+			<label for="deleteBoat" class="btn btn-error">
+				<input
+					hidden
+					name="deleteBoat"
+					id="deleteBoat"
+					type="checkbox"
+					checked={false}
+					on:click={(event) => event.target?.form.requestSubmit()}
+				/>
+				Löschen
+			</label>
 		{/if}
-		<button class="btn btn-neutral w-full" type="submit"
+		{#if isConfigureMode}
+			<label for="speichern" class="btn">
+				<input
+					hidden
+					name="speichern"
+					id="speichern"
+					type="checkbox"
+					checked={false}
+					on:click={(event) => event.target?.form.requestSubmit()}
+				/>
+				Speichern
+			</label>
+		{:else}
+			<label for="add" class="btn">
+				<input
+					hidden
+					name="add"
+					id="add"
+					type="checkbox"
+					checked={false}
+					on:click={(event) => event.target?.form.requestSubmit()}
+				/>
+				Hinzufügen
+			</label>
+		{/if}
+
+		<!-- <button class="btn btn-neutral w-full" type="submit"
 			>{isConfigureMode ? 'Speichern' : 'Hinzufügen'}</button
-		>
+		> -->
 	</fieldset>
 </form>
 

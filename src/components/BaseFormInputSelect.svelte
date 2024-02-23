@@ -3,11 +3,12 @@
 
 	const { options, value, name } = $$props as configuredFieldProps;
 	console.log('🚀 ~ options:', options);
+	export let hidden = false;
 
 	export let onSelectChange: (event) => void = () => {};
 </script>
 
-<div class="label flex gap-4">
+<div class={`label flex gap-4 ${hidden ? 'hidden' : ''}`}>
 	<span class="label-text-alt">{name.toLocaleUpperCase()}</span>
 
 	<select

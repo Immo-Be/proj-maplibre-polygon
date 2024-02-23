@@ -186,4 +186,3 @@
 </script>
 
 <div class="map h-full" id="map"></div>
-<button on:click={addedRecord}>TEST </button>

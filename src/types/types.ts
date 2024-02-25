@@ -11,7 +11,7 @@ export type Boat = {
 export type InputBoatForm = Boat & {
 	add?: string;
 	deleteBoat?: string;
-	edit?: string;
+	editBoat?: string;
 };
 
 export type FormFieldTypes = 'color' | 'checkbox' | 'number' | 'text' | 'select';

@@ -16,8 +16,6 @@
 		onMouseUp
 	} from '$lib/polygon';
 
-	let addedRecord;
-
 	onMount(async () => {
 		// client.Reco}rds.getList('plans', { page: 2 })
 		// 	.then(function (list) {
@@ -159,6 +157,8 @@
 				return;
 			}
 
+			$map.getCanvas().style.cursor = '';
+
 			if (!$isRotating) {
 				$map.setPaintProperty(Layer.POINTS_LAYER, 'circle-opacity', 0);
 			}
@@ -170,10 +170,6 @@
 	 * @param {FeatureCollection} updatedFeatureCollection - The updated feature collection.
 	 */
 	featureCollection.subscribe((updatedFeatureCollection) => {
-		console.log(
-			'🚀 ~ featureCollection.subscribe ~ updatedFeatureCollection:',
-			updatedFeatureCollection
-		);
 		const polSource = getMapSource($map, Layer.POLYGONS_SOURCE);
 
 		if (!polSource) {

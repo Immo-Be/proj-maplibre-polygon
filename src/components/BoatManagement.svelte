@@ -10,9 +10,12 @@
 	import { goto } from '$app/navigation';
 
 	export let isConfigureMode = false;
-	console.log('🚀 ~ isConfigureMode:', isConfigureMode);
+	// console.log('🚀 ~ isConfigureMode:', isConfigureMode);
 
-	$: console.log('🚀 ~ $page: in boatmanaget', $page);
+	// $: console.log('🚀 ~ $page: in boatmanaget', $page);
+
+	$: selectedVersion = $page.data.selectedVersion;
+	// $: console.log('🚀 ~ version check:', selectedVersion);
 
 	// $: versionNames = $versions.map((version) => version.name);
 
@@ -34,7 +37,7 @@
 	{#if isConfigureMode && currentShip}
 		<div class="flex flex-col px-4 my-2">
 			<div class="flex gap-4">
-				<a href="/"><BackIcon /></a>
+				<a href={`/${selectedVersion}`}><BackIcon /></a>
 				<p class="">Im Konfigurationsmodus von:</p>
 			</div>
 			<h2 class="text-center text-2xl">
@@ -44,7 +47,12 @@
 		<BaseForm {isConfigureMode} {currentShip} />
 	{:else}
 		<div class="p-4">
-			<BaseFormInputSelect options={$versions} name="version" {onSelectChange} />
+			<BaseFormInputSelect
+				options={$versions}
+				name="version"
+				{onSelectChange}
+				value={selectedVersion}
+			/>
 		</div>
 		{#if $shipsFromFeatures.length === 0}
 			<p class="text-center">Füge neue Boote hinzu</p>

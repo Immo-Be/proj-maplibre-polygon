@@ -1,15 +1,11 @@
 <script lang="ts">
-	import { featureCollection } from './../stores/featureCollection';
 	import { formFields } from './../config';
-	import { setPolygonFeature } from '$lib/polygon';
 	import type { Boat, FormFieldTypes } from '../types/types';
-	import { v4 as uuidv4 } from 'uuid';
 	import BaseFormInput from './BaseFormInput.svelte';
 	import BaseFormInputSelect from './BaseFormInputSelect.svelte';
 	import BaseFormInputColorPick from './BaseFormInputColorPick.svelte';
 	import BaseFormInputCheckbox from './BaseFormInputCheckbox.svelte';
-	import { goto } from '$app/navigation';
-	import { enhance } from '$app/forms';
+	import { enhance, applyAction } from '$app/forms';
 
 	// Client API:
 
@@ -30,33 +26,33 @@
 			}
 		});
 
-	const handleFormSubmit = (event: SubmitEvent, isFeatureUpdated: boolean) => {
-		const isDeleteEvent = event.submitter?.getAttribute('data-submit') === 'delete';
-		if (isDeleteEvent) {
-			featureCollection.update((collection) => ({
-				...collection,
-				features: collection.features.filter(
-					(feature) => feature.properties?.id !== currentShip?.id
-				)
-			}));
-			goto('/');
-		} else {
-			const formData = new FormData(event.target as HTMLFormElement);
-			const formProps = Object.fromEntries(formData) as Boat;
+	// const handleFormSubmit = (event: SubmitEvent, isFeatureUpdated: boolean) => {
+	// 	const isDeleteEvent = event.submitter?.getAttribute('data-submit') === 'delete';
+	// 	if (isDeleteEvent) {
+	// 		featureCollection.update((collection) => ({
+	// 			...collection,
+	// 			features: collection.features.filter(
+	// 				(feature) => feature.properties?.id !== currentShip?.id
+	// 			)
+	// 		}));
+	// 		goto('/');
+	// 	} else {
+	// 		const formData = new FormData(event.target as HTMLFormElement);
+	// 		const formProps = Object.fromEntries(formData) as Boat;
 
-			/**
-			 * Updates the form props with the current ship data and additional form props.
-			 * If the feature is first added, generates a new UUID and adds it to the form props.
-			 */
-			const updatedFormProps = {
-				...currentShip,
-				...formProps,
-				...{ ...(!isFeatureUpdated && { id: uuidv4() }) }
-			};
+	// 		/**
+	// 		 * Updates the form props with the current ship data and additional form props.
+	// 		 * If the feature is first added, generates a new UUID and adds it to the form props.
+	// 		 */
+	// 		const updatedFormProps = {
+	// 			...currentShip,
+	// 			...formProps,
+	// 			...{ ...(!isFeatureUpdated && { id: uuidv4() }) }
+	// 		};
 
-			setPolygonFeature(updatedFormProps, isFeatureUpdated);
-		}
-	};
+	// 		setPolygonFeature(updatedFormProps, isFeatureUpdated);
+	// 	}
+	// };
 
 	const componentLookUp: Record<
 		FormFieldTypes,
@@ -71,12 +67,28 @@
 		color: BaseFormInputColorPick,
 		checkbox: BaseFormInputCheckbox
 	};
+
+	const requestSubmitEvent = (event: MouseEvent) => {
+		const target = event.target as HTMLInputElement;
+		target.form?.requestSubmit();
+		target.checked = false;
+	};
+
+	const handleFormSubmit = (submit) => {
+		console.log('🚀 ~ handleFormSubmit ~ submit', submit);
+
+		return async ({ result, ...actionResult }) => {
+			console.log('🚀 ~ return ~ actionResult:', actionResult);
+			console.log('🚀 ~ return ~ result:', result);
+			actionResult.update({ reset: false });
+		};
+	};
 </script>
 
 <form
 	class="entry-form h-full text-base-content relative px-4"
 	method="POST"
-	use:enhance
+	use:enhance={handleFormSubmit}
 	action="?/handleFormSubmit"
 >
 	<fieldset class="flex flex-col gap-4">
@@ -85,39 +97,39 @@
 		{/each}
 
 		{#if isConfigureMode}
-			<label for="deleteBoat" class="btn btn-error">
+			<label for="deleteBoat" class="btn btn-error" aria-label="submit">
 				<input
 					hidden
 					name="deleteBoat"
 					id="deleteBoat"
 					type="checkbox"
 					checked={false}
-					on:click={(event) => event.target?.form.requestSubmit()}
+					on:click={requestSubmitEvent}
 				/>
 				Löschen
 			</label>
 		{/if}
 		{#if isConfigureMode}
-			<label for="speichern" class="btn">
+			<label for="speichern" class="btn" aria-label="submit">
 				<input
 					hidden
-					name="speichern"
+					name="editBoat"
 					id="speichern"
 					type="checkbox"
 					checked={false}
-					on:click={(event) => event.target?.form.requestSubmit()}
+					on:click={requestSubmitEvent}
 				/>
 				Speichern
 			</label>
 		{:else}
-			<label for="add" class="btn">
+			<label for="add" class="btn" aria-label="submit">
 				<input
 					hidden
 					name="add"
 					id="add"
 					type="checkbox"
 					checked={false}
-					on:click={(event) => event.target?.form.requestSubmit()}
+					on:click={requestSubmitEvent}
 				/>
 				Hinzufügen
 			</label>

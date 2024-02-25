@@ -2,6 +2,7 @@
 	import type { configuredFieldProps } from '../types/types';
 
 	const { options, value, name } = $$props as configuredFieldProps;
+	console.log('🚀 ~ options value:', value);
 	console.log('🚀 ~ options:', options);
 	export let hidden = false;
 
@@ -20,7 +21,7 @@
 			<option value="0">Keine Optionen verfügbar</option>
 		{:else}
 			{#each options as option, i}
-				{@const selected = value ? value === option.name : i === 0}
+				{@const selected = value ? value === option.id : i === 0}
 				<option {selected} value={option} id={option.id}>{option.name}</option>
 			{/each}
 		{/if}

@@ -1,23 +1,20 @@
-import { createPolygonFromFormData } from '$lib/create-polygon-from-data';
-import type { Actions } from '@sveltejs/kit';
+import { redirect, type Actions } from '@sveltejs/kit';
 import PocketBase from 'pocketbase';
 import type { InputBoatForm } from '../../../types/types';
+import { updatePolygon } from '$lib/create-polygon-from-data';
 
 const url = import.meta.env.VITE_PB_URL;
 const db = new PocketBase(url);
 
 export const actions = {
 	handleFormSubmit: async (event) => {
-		// console.log('🚀 ~ handleFormSubmit: ~ params:', event.params);
-
-		// const { version } = event.params as unknown as { version: string };
-		// console.log("🚀 ~ handleFormSubmit: ~ version:", version)
+		const { version } = event.params as unknown as { version: string };
 		const formData = await event.request.formData();
 		const formProps = Object.fromEntries(formData) as InputBoatForm;
-		console.log('🚀 ~ handleFormSubmit: ~ formProps:', formProps);
 
-		const { deleteBoat, edit, ...boat } = formProps;
-		console.log('🚀 ~ handleFormSubmit: ~ id:', event.params);
+		const { deleteBoat, editBoat, ...boat } = formProps;
+		console.log('🚀 ~ handleFormSubmit: ~ editBoat:', editBoat);
+		console.log('🚀 ~ handleFormSubmit: ~ deleteBoat:', deleteBoat);
 
 		const { id } = event.params;
 
@@ -28,24 +25,25 @@ export const actions = {
 
 		if (deleteBoat) {
 			try {
-				await db.collection('polygons').delete('XwLxshUJmKengHI');
+				await db.collection('polygons').delete(id);
 			} catch (error) {
 				console.log('Something went wrong while deleting a polygon: ', error);
 			}
+			redirect(307, `/${version}`);
 		}
 
-		// const { deleteBoat, edit, ...boat } = formProps;
-		// console.log("🚀 ~ handleFormSubmit: ~ edit:", edit)
-		// console.log("🚀 ~ handleFormSubmit: ~ delete:", deleteBoat)
-		// console.log('🚀 ~ handleFormSubmit: ~ add:', add);
+		if (editBoat) {
+			try {
+				// We first need to fetch the polygon to update it
+				// and then update it
+				// I wonder if there is a better way to do this
+				const { feature } = await db.collection('polygons').getOne(id);
+				const updatedPoly = updatePolygon(boat, feature);
 
-		// const poly = createPolygonFromFormData(boat);
-		// console.log('🚀 ~ handleFormSubmit: ~ tobeadded:', { feature: poly, plan: version });
-
-		// try {
-		// 	await db.collection('polygons').create({ feature: poly, plan: version });
-		// } catch (error) {
-		// 	console.log('Something went wrong while creating a polygon: ', error);
-		// }
+				await db.collection('polygons').update(id, updatedPoly);
+			} catch (error) {
+				console.log('Something went wrong while updating a polygon: ', error);
+			}
+		}
 	}
 } satisfies Actions;

@@ -2,13 +2,15 @@ import { polygon } from '@turf/helpers';
 import { destination, point } from '@turf/turf';
 import { CENTER, DEFAULT_UNIT } from '../constants';
 import type { Boat } from '../types/types';
-import { v4 as uuidv4 } from 'uuid';
+import centerOfMass from '@turf/center-of-mass';
 
 const PROTRUSION_FACTOR = 0.15;
 
-export const createPolygonFromFormData = (props: Boat): GeoJSON.Feature => {
-	const center = point([CENTER.lng + Math.random() * 0.001, CENTER.lat - Math.random() * 0.001]);
-	const id = uuidv4();
+export const createPolygonFromFormData = (props: Boat, currentCenter?): GeoJSON.Feature => {
+	const center =
+		currentCenter ||
+		point([CENTER.lng + Math.random() * 0.001, CENTER.lat - Math.random() * 0.001]);
+
 	const { width, height, hasProtrusion } = props;
 
 	const boatLength = Number(width);
@@ -54,10 +56,44 @@ export const createPolygonFromFormData = (props: Boat): GeoJSON.Feature => {
 	// Create the polygon with a triangle on the right side
 	const createdPolygon = polygon(polygonPoints, {
 		...props,
-		id,
 		width,
 		height
 	});
 
 	return createdPolygon;
+};
+
+export const updatePolygon = (
+	updatedFeatureProperties: Boat,
+	currentFeatureProperties: GeoJSON.Feature
+) => {
+	// If the shape has not changed, we do not need to create a new polygon
+	const isShapeChange =
+		updatedFeatureProperties.width !== currentFeatureProperties?.properties?.width ||
+		updatedFeatureProperties.height !== currentFeatureProperties?.properties?.height ||
+		Boolean(updatedFeatureProperties.hasProtrusion) !==
+			Boolean(currentFeatureProperties.properties.hasProtrusion);
+	console.log('🚀 ~ isShapeChange:', isShapeChange);
+
+	if (isShapeChange) {
+		const center = getCenterOfPolygon(currentFeatureProperties);
+		const poly = createPolygonFromFormData(updatedFeatureProperties, center?.geometry?.coordinates);
+
+		return { feature: poly };
+	} else {
+		return {
+			feature: { ...currentFeatureProperties, properties: { ...updatedFeatureProperties } }
+		};
+	}
+};
+
+export const getCenterOfPolygon = (polygon: GeoJSON.Feature) => {
+	const center = centerOfMass(polygon);
+
+	if (!center || !center.geometry || !center.geometry.coordinates) {
+		console.warn('No valid center', center);
+		return null;
+	}
+
+	return center;
 };

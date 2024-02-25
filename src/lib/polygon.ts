@@ -1,9 +1,7 @@
 import { get } from 'svelte/store';
-import { polygon } from '@turf/helpers';
 import {
 	bearing,
 	center,
-	destination,
 	distance,
 	lineString,
 	point,
@@ -11,70 +9,70 @@ import {
 	transformTranslate
 } from '@turf/turf';
 
-import { getCenterOfPolygon, getMapSource } from './map';
-import { CENTER, DEFAULT_UNIT, Layer } from '../constants';
+import { getMapSource } from './map';
+import { Layer } from '../constants';
 
-import type { Boat } from '../types/types';
 import type { GeoJSONSource, MapMouseEvent } from 'maplibre-gl';
 
 import { featureCollection } from '../stores/featureCollection';
 import { currentPolygonIndex, isDragging, map } from '../stores/map';
+import { getCenterOfPolygon } from './create-polygon-from-data';
 
 // 0.15 means that the triangle in front makes up 15% of the total length of the ship
-const PROTRUSION_FACTOR = 0.15;
+// const PROTRUSION_FACTOR = 0.15;
 
-export const createPolygon = (center: GeoJSON.Point, props: Boat): GeoJSON.Feature => {
-	const { width, height, hasProtrusion } = props;
+// export const createPolygon = (center: GeoJSON.Point, props: Boat): GeoJSON.Feature => {
+// 	const { width, height, hasProtrusion } = props;
 
-	const boatLength = Number(width);
-	const boatWidth = Number(height);
+// 	const boatLength = Number(width);
+// 	const boatWidth = Number(height);
 
-	const boatHasProtrusion = hasProtrusion === 'on';
+// 	const boatHasProtrusion = hasProtrusion === 'on';
 
-	const lengthWithOutProtrusion = boatHasProtrusion
-		? boatLength * (1 - PROTRUSION_FACTOR)
-		: boatLength;
-	// Convert width and height to kilometers
-	const westPoint = destination(center, lengthWithOutProtrusion / 2, -90, { units: DEFAULT_UNIT });
-	const eastPoint = destination(center, lengthWithOutProtrusion / 2, 90, { units: DEFAULT_UNIT });
-	const northPoint = destination(center, boatWidth / 2, 0, { units: DEFAULT_UNIT });
-	const southPoint = destination(center, boatWidth / 2, 180, { units: DEFAULT_UNIT });
+// 	const lengthWithOutProtrusion = boatHasProtrusion
+// 		? boatLength * (1 - PROTRUSION_FACTOR)
+// 		: boatLength;
+// 	// Convert width and height to kilometers
+// 	const westPoint = destination(center, lengthWithOutProtrusion / 2, -90, { units: DEFAULT_UNIT });
+// 	const eastPoint = destination(center, lengthWithOutProtrusion / 2, 90, { units: DEFAULT_UNIT });
+// 	const northPoint = destination(center, boatWidth / 2, 0, { units: DEFAULT_UNIT });
+// 	const southPoint = destination(center, boatWidth / 2, 180, { units: DEFAULT_UNIT });
 
-	const minLng = westPoint.geometry.coordinates[0];
-	const maxLng = eastPoint.geometry.coordinates[0];
-	const minLat = southPoint.geometry.coordinates[1];
-	const maxLat = northPoint.geometry.coordinates[1];
+// 	const minLng = westPoint.geometry.coordinates[0];
+// 	const maxLng = eastPoint.geometry.coordinates[0];
+// 	const minLat = southPoint.geometry.coordinates[1];
+// 	const maxLat = northPoint.geometry.coordinates[1];
 
-	// Calculate the point for the triangle
-	const trianglePoint = destination(eastPoint, (boatLength * (PROTRUSION_FACTOR * 2)) / 2, 90, {
-		units: DEFAULT_UNIT
-	});
+// 	// Calculate the point for the triangle
+// 	const trianglePoint = destination(eastPoint, (boatLength * (PROTRUSION_FACTOR * 2)) / 2, 90, {
+// 		units: DEFAULT_UNIT
+// 	});
 
-	const createPolygonPoints = (hasProtrusion: boolean) => {
-		const basePoints = [
-			[minLng, minLat],
-			[minLng, maxLat],
-			[maxLng, maxLat],
-			[maxLng, minLat],
-			[minLng, minLat]
-		];
-		if (hasProtrusion) {
-			basePoints.splice(3, 0, trianglePoint.geometry.coordinates);
-		}
-		return [basePoints];
-	};
+// 	const createPolygonPoints = (hasProtrusion: boolean) => {
+// 		const basePoints = [
+// 			[minLng, minLat],
+// 			[minLng, maxLat],
+// 			[maxLng, maxLat],
+// 			[maxLng, minLat],
+// 			[minLng, minLat]
+// 		];
+// 		if (hasProtrusion) {
+// 			basePoints.splice(3, 0, trianglePoint.geometry.coordinates);
+// 		}
+// 		return [basePoints];
+// 	};
 
-	const polygonPoints = createPolygonPoints(boatHasProtrusion);
+// 	const polygonPoints = createPolygonPoints(boatHasProtrusion);
 
-	// Create the polygon with a triangle on the right side
-	const createdPolygon = polygon(polygonPoints, {
-		...props,
-		width,
-		height
-	});
+// 	// Create the polygon with a triangle on the right side
+// 	const createdPolygon = polygon(polygonPoints, {
+// 		...props,
+// 		width,
+// 		height
+// 	});
 
-	return createdPolygon;
-};
+// 	return createdPolygon;
+// };
 
 export const createPoint = (polygon: GeoJSON.Feature) => {
 	// Calculate the middle of the polygon
@@ -326,56 +324,56 @@ export const generateRotationPointAndLine = (polygon: GeoJSON.Feature) => {
 	lineSource.setData(geoLine);
 };
 
-export const setPolygonFeature = (boatProps: Boat, isFeatureUpdated: boolean) => {
-	if (isFeatureUpdated) {
-		// Update the feature
-		const featureCollectionInstance = get(featureCollection);
-		const featureIndex = featureCollectionInstance.features.findIndex(
-			(feature) => feature.properties?.id === boatProps.id
-		);
+// export const setPolygonFeature = (boatProps: Boat, isFeatureUpdated: boolean) => {
+// 	if (isFeatureUpdated) {
+// 		// Update the feature
+// 		const featureCollectionInstance = get(featureCollection);
+// 		const featureIndex = featureCollectionInstance.features.findIndex(
+// 			(feature) => feature.properties?.id === boatProps.id
+// 		);
 
-		if (featureIndex === -1) {
-			console.warn('No valid featureIndex. This should not be the case', featureIndex);
-			return;
-		}
+// 		if (featureIndex === -1) {
+// 			console.warn('No valid featureIndex. This should not be the case', featureIndex);
+// 			return;
+// 		}
 
-		const currentFeatureProperties = featureCollectionInstance.features[featureIndex].properties;
+// 		const currentFeatureProperties = featureCollectionInstance.features[featureIndex].properties;
 
-		const isShapeChange =
-			boatProps.width !== currentFeatureProperties?.width ||
-			boatProps.height !== currentFeatureProperties?.height ||
-			Boolean(boatProps.hasProtrusion) !== Boolean(currentFeatureProperties.hasProtrusion);
+// 		const isShapeChange =
+// 			boatProps.width !== currentFeatureProperties?.width ||
+// 			boatProps.height !== currentFeatureProperties?.height ||
+// 			Boolean(boatProps.hasProtrusion) !== Boolean(currentFeatureProperties.hasProtrusion);
 
-		featureCollection.update((featureCollection) => {
-			const center = getCenterOfPolygon(featureCollectionInstance.features[featureIndex]);
-			const updatedFeatures = [...featureCollectionInstance.features];
+// 		featureCollection.update((featureCollection) => {
+// 			const center = getCenterOfPolygon(featureCollectionInstance.features[featureIndex]);
+// 			const updatedFeatures = [...featureCollectionInstance.features];
 
-			if (isShapeChange) {
-				const poly = createPolygon(center, boatProps);
+// 			if (isShapeChange) {
+// 				const poly = createPolygon(center, boatProps);
 
-				updatedFeatures[featureIndex] = poly;
+// 				updatedFeatures[featureIndex] = poly;
 
-				return { ...featureCollection, features: updatedFeatures };
-			} else {
-				updatedFeatures[featureIndex].properties = boatProps;
-				return { ...featureCollection, features: updatedFeatures };
-			}
-		});
+// 				return { ...featureCollection, features: updatedFeatures };
+// 			} else {
+// 				updatedFeatures[featureIndex].properties = boatProps;
+// 				return { ...featureCollection, features: updatedFeatures };
+// 			}
+// 		});
 
-		return;
-	}
+// 		return;
+// 	}
 
-	// Create a new polygon
-	// Todo: Better use randomPosition from turf
-	const center = point([CENTER.lng + Math.random() * 0.001, CENTER.lat - Math.random() * 0.001]);
+// 	// Create a new polygon
+// 	// Todo: Better use randomPosition from turf
+// 	const center = point([CENTER.lng + Math.random() * 0.001, CENTER.lat - Math.random() * 0.001]);
 
-	const poly = createPolygon(center, boatProps);
+// 	const poly = createPolygon(center, boatProps);
 
-	featureCollection.update((featureCollection) => {
-		const updatedFeatures = [...featureCollection.features, poly];
-		return { ...featureCollection, features: updatedFeatures };
-	});
-};
+// 	featureCollection.update((featureCollection) => {
+// 		const updatedFeatures = [...featureCollection.features, poly];
+// 		return { ...featureCollection, features: updatedFeatures };
+// 	});
+// };
 
 export const onMouseUp = (event: MapMouseEvent) => {
 	const mapInstance = get(map);

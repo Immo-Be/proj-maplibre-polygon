@@ -1,7 +1,6 @@
 import { CENTER, Layer } from '../constants';
 import maplibregl, { Map } from 'maplibre-gl';
 import { mapStyle } from '../map-styles';
-import centerOfMass from '@turf/center-of-mass';
 
 /**
  * Returns an instance of the map.
@@ -117,15 +116,4 @@ export const getMapSource = (map: maplibregl.Map | null, sourceId: Layer) => {
 	}
 
 	return source as maplibregl.GeoJSONSource;
-};
-
-export const getCenterOfPolygon = (polygon: GeoJSON.Feature) => {
-	const center = centerOfMass(polygon);
-
-	if (!center || !center.geometry || !center.geometry.coordinates) {
-		console.warn('No valid center', center);
-		return null;
-	}
-
-	return center;
 };

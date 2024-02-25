@@ -8,9 +8,9 @@ services:
   #     - ./proxy/default.conf:/etc/nginx/conf.d/default.conf
 
   app:
-    build: .
+    build: ./client
     volumes:
-      - ./:/app/
+      - ./client:/client/
       - /app/node_modules
     ports:
       - '3000:3000'
@@ -21,8 +21,8 @@ services:
 
   pocketbase_db:
     build:
-      context: .
-      dockerfile: Dockerfile.db
+      context: ./database
+      dockerfile: Dockerfile
       args:
         TARGETOS: linux
         TARGETARCH: amd64
@@ -33,7 +33,7 @@ services:
     stdin_open: true
     tty: true
     volumes:
-      - ./pb_data:/pb/pb_data
+      - ./database:/pb/pb_data
 
   # db:
   #       image: postgres:13

@@ -2,6 +2,7 @@ import type { PageServerLoad } from '../$types';
 import PocketBase from 'pocketbase';
 
 const url = import.meta.env.VITE_PB_URL;
+console.log('🚀 ~ url:', url);
 const db = new PocketBase(url);
 
 export const load: PageServerLoad = async ({ params }) => {

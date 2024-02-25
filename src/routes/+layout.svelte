@@ -3,6 +3,7 @@
 	import { onNavigate } from '$app/navigation';
 	import MapContainer from '../components/MapContainer.svelte';
 	import { versions } from '../stores/featureCollection';
+	import DatabaseSyncInfo from '../components/DatabaseSyncInfo.svelte';
 
 	export let data;
 
@@ -33,6 +34,7 @@
 <main class="drawer min-h-full">
 	<input id="my-drawer" type="checkbox" class="drawer-toggle" />
 	<div class="drawer-content">
+		<DatabaseSyncInfo />
 		<MapContainer />
 	</div>
 	<aside class="drawer-side pointer-events-auto z-20 overflow-visible w-0 min-h-full">

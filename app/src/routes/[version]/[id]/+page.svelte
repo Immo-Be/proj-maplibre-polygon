@@ -6,7 +6,7 @@
 	const { params } = $page;
 	const { id } = params;
 	export let data;
-	// console.log('🚀 ~ data: from id +page', data);
+	console.log('🚀 ~ data: from id +page', data);
 
 	// Todo: Duplicate code - refactor!
 	// This is not pretty. I replace the id given on the client with the id from the server (database)

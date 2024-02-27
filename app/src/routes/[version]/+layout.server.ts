@@ -14,7 +14,7 @@ export const load: PageServerLoad = async ({ params }) => {
 				.getList(1, 100, { filter: `plan = "${selectedVersion}" ` });
 		} catch (error) {
 			console.log('Something went wrong while fetching polygons: ', error);
-			return Promise<[]>;
+			return [];
 		}
 	};
 

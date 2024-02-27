@@ -17,7 +17,7 @@ export const load: PageServerLoad = async () => {
 			return await db.collection('plans').getFullList();
 		} catch (error) {
 			console.log('Something went wrong while fetching polygons: ', error);
-			return Promise<[]>;
+			return [{ name: 'default', id: 'default' }];
 		}
 	};
 

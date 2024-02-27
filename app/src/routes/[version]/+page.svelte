@@ -2,6 +2,7 @@
 	import Sidebar from '../../components/Sidebar.svelte';
 	import { featureCollection } from '../../stores/featureCollection';
 	export let data;
+	console.log('🚀 ~ data here and version:', data);
 	// This is not pretty. I replace the id given on the client with the id from the server (database)
 	// It would be better to use the id from the server in the first place
 	// Todo: Fix this
@@ -13,7 +14,8 @@
 					properties: { ...polygon.feature.properties, id: polygon.id }
 				})) || [];
 		} else {
-			throw new Error('No polygon (items) found or polygons is not an array.');
+			console.warn('No polygon (items) found or polygons is not an array.');
+			return collection;
 		}
 		return collection;
 	});

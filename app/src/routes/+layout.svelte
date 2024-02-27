@@ -6,12 +6,13 @@
 	import DatabaseSyncInfo from '../components/DatabaseSyncInfo.svelte';
 
 	export let data;
+	console.log('🚀 ~ data:', data);
 
 	versions.update(() => {
 		if (Array.isArray(data.versions)) {
 			return data.versions.map((version) => ({
 				id: version.id,
-				name: version.plan
+				name: version.name
 			}));
 		} else {
 			throw new Error('No versions found or versions is not an array.');

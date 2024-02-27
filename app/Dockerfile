@@ -2,9 +2,9 @@
 FROM node:lts
 
 # Set the working directory
-# We set the working directory to /app, s that we don't have to
+# We set the working directory to /client, s that we don't have to
 # specify the full path to the files in the container.
-WORKDIR /app
+WORKDIR /client
 
 # Copy the package.json file to the container
 # In docker, each step is cached. So, if we change the code in the app,

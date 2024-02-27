@@ -1,4 +1,4 @@
-FROM alpine:3 as downloader
+FROM --platform=linux/amd64 alpine:3 as downloader
 
 ARG TARGETOS
 ARG TARGETARCH

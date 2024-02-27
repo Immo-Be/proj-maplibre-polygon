@@ -22,3 +22,6 @@ deploy_production:
 
 deploy_build_and_run:
 	docker-compose -f docker-compose.production.yaml up --build
+
+build_and_upload:
+	docker-compose -f docker-compose.production.yaml build

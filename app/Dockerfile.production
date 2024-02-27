@@ -1,36 +1,13 @@
 # build stage
-FROM node:18.9-alpine
-
-ENV NODE_ENV development
-
-WORKDIR /app
-
-COPY package*.json pnpm-lock.yaml* ./
-
-RUN npm i
-
+FROM node:lts-alpine as build
+WORKDIR /usr/src/app
+COPY package*.json ./
+RUN npm install
 COPY . .
-
-ENV NODE_ENV production
-
+EXPOSE 4173
 RUN npm run build
+# assumes the default SvelteKit host and port
+ENV ORIGIN=http://localhost:82
 
-FROM node:18.9-slim
 
-WORKDIR /app
-
-COPY --from=0 /app .
-
-COPY . .
-
-EXPOSE 3000
-
-CMD ["node", "./build"]
-# FROM node:lts-alpine as build
-# WORKDIR /usr/src/client
-# COPY package*.json ./
-# RUN npm install
-# COPY . .
-# EXPOSE 4173
-# RUN npm run build
-# CMD ["node", "build"]
+CMD ["node", "build"]

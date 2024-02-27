@@ -10,8 +10,8 @@ services:
   app:
     build: ./app
     volumes:
-      - ./:/app/
       - /app/node_modules
+      - ./app/src:/app/src
     ports:
       - '4173:4173'
     depends_on:
@@ -33,7 +33,10 @@ services:
     stdin_open: true
     tty: true
     volumes:
-      - ./pb_data:/pb/pb_data
+      - pb_data:/usr/local/bin/pb_data
+
+volumes:
+  pb_data:
 
   # db:
   #       image: postgres:13

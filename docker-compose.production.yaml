@@ -5,7 +5,8 @@ services:
     build:
         context: ./nginx
     ports:
-      - "80:80"
+      - "82:82"
+      - "81:81"
     depends_on:
       - pocketbase_db
 
@@ -34,7 +35,10 @@ services:
     # stdin_open: true
     # tty: true
     volumes:
-      - ./database:/pb/pb_data
+      - pb_data:/usr/local/bin/pb_data
+
+volumes:
+  pb_data:
 
   # db:
   #       image: postgres:13

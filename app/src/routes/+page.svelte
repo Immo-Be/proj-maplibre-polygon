@@ -5,7 +5,7 @@
 	import Sidebar from '../components/Sidebar.svelte';
 	import { featureCollection, versions } from '../stores/featureCollection';
 	export let data;
-	console.log('🚀 ~ data: in root from layout', data);
+	console.log('🚀 ~ data: in root from layout newwww', data);
 
 	// onMount(() => {
 	// 	console.log('🚀 ~ data:', data.versions);

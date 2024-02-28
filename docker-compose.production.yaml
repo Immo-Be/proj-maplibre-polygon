@@ -6,7 +6,7 @@ services:
         context: ./nginx
     ports:
       - "82:82"
-      - "80:80"
+      - "81:81"
     depends_on:
       - pocketbase_db
     image:  ghcr.io/immo-be/proj-maplibre-polygon-proxy:new

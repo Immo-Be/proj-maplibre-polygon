@@ -7,7 +7,7 @@ COPY . .
 EXPOSE 4173
 RUN npm run build
 # assumes the default SvelteKit host and port
-ENV ORIGIN=http://localhost:82
+ENV ORIGIN=http://194.164.203.81
 
 
 CMD ["node", "build"]

@@ -1,7 +1,8 @@
 import type { PageServerLoad } from '../$types';
 import PocketBase from 'pocketbase';
+import { PB_URL } from '../../constants/env';
 
-const url = import.meta.env.VITE_PB_URL;
+const url = PB_URL;
 console.log('🚀 ~ url:', url);
 const db = new PocketBase(url);
 

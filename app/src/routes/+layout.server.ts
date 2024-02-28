@@ -3,8 +3,9 @@ export const ssr = false;
 
 import PocketBase from 'pocketbase';
 import type { PageServerLoad } from './$types';
+import { PB_URL } from '../constants/env';
 
-const url = import.meta.env.VITE_PB_URL;
+const url = PB_URL;
 const db = new PocketBase(url);
 
 // export { error } from '@sveltejs/kit';

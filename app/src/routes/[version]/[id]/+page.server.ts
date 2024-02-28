@@ -2,8 +2,9 @@ import { redirect, type Actions } from '@sveltejs/kit';
 import PocketBase from 'pocketbase';
 import type { InputBoatForm } from '../../../types/types';
 import { updatePolygon } from '$lib/create-polygon-from-data';
+import { PB_URL } from '../../../constants/env';
 
-const url = import.meta.env.VITE_PB_URL;
+const url = PB_URL;
 const db = new PocketBase(url);
 
 export const actions = {

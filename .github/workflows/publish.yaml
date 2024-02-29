@@ -11,9 +11,8 @@ env:
 
 jobs:
   publish:
-    name: publish image
+    name: build and publish Images
     runs-on: ubuntu-latest
-
 
     steps:
     - uses: actions/checkout@v3
@@ -21,14 +20,18 @@ jobs:
       run: |
         echo ${{ secrets.PAT }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
     
-    - name: Build and Push Containers
+    - name: Build Images
       run: |
         docker-compose -f docker-compose.production.yaml build
+
+    - name: Push Images to Registry
+      run: |
         docker-compose -f docker-compose.production.yaml push
+      
         
   deploy:
     needs: publish
-    name: deploy image
+    name: deploy images
     runs-on: ubuntu-latest
     
     steps:
@@ -36,10 +39,12 @@ jobs:
         # check this thread to understand why its needed:
         # <https://stackoverflow.com/a/70447517>
       run: |
-       install -m 600 -D /dev/null ~/.ssh/id_rsa
+        install -m 600 -D /dev/null ~/.ssh/id_rsa
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
         ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
     - name: connect and pull
       run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }} && docker compose pull && docker compose up -d && exit"
+    - name: copy default.conf for reverse-proxy
+      run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "sudo docker cp default.conf www_nginx_1:/etc/nginx/conf.d/default.conf && exit"
     - name: cleanup
       run: rm -rf ~/.ssh

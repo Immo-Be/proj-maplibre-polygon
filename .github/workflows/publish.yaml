@@ -11,7 +11,7 @@ env:
 
 jobs:
   publish:
-    name: build and publish Images
+    name: build and publish images
     runs-on: ubuntu-latest
 
     steps:
@@ -45,6 +45,6 @@ jobs:
     - name: connect and pull
       run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }} && docker compose pull && docker compose up -d && exit"
     - name: copy default.conf for reverse-proxy
-      run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "sudo docker cp default.conf www_nginx_1:/etc/nginx/conf.d/default.conf && exit"
+      run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }} && sudo docker cp default.conf www-nginx-1:/etc/nginx/conf.d/default.conf && exit"
     - name: cleanup
       run: rm -rf ~/.ssh

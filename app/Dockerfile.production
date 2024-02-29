@@ -7,7 +7,7 @@ COPY . .
 EXPOSE 4173
 RUN npm run build
 # assumes the default SvelteKit host and port
-ENV ORIGIN=http://194.164.203.81
+ENV ORIGIN=http://hafen-planungstool.seefalke.info
 
 
 CMD ["node", "build"]

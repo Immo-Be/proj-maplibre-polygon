@@ -5,9 +5,7 @@ on:
     branches: [ "main" ]
 
 env:
-  # Use docker.io for Docker Hub if empty
-  REGISTRY: ghcr.io
-#   IMAGE_NAME: ${{ github.actor }}/<image-name>:latest s
+  BUILD_TARGET: production
 
 jobs:
   publish:
@@ -22,12 +20,11 @@ jobs:
     
     - name: Build Images
       run: |
-        docker-compose -f docker-compose.production.yaml build
+        BUILD_TARGET=${{ env.BUILD_TARGET }} docker-compose build
 
     - name: Push Images to Registry
       run: |
-        docker-compose -f docker-compose.production.yaml push
-      
+        docker-compose push
         
   deploy:
     needs: publish

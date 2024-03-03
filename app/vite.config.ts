@@ -4,7 +4,12 @@ import { defineConfig } from 'vite';
 export default defineConfig({
 	server: {
 		port: 4173,
-		host: true
+		host: true,
+		hmr: {
+			protocol: 'ws',
+			port: 4173
+		}
 	},
+
 	plugins: [sveltekit()]
 });

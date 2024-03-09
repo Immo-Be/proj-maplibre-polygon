@@ -10,15 +10,7 @@
 	import { goto } from '$app/navigation';
 
 	export let isConfigureMode = false;
-	// console.log('🚀 ~ isConfigureMode:', isConfigureMode);
-
-	// $: console.log('🚀 ~ $page: in boatmanaget', $page);
-
 	$: selectedVersion = $page.data.selectedVersion;
-	// $: console.log('🚀 ~ version check:', selectedVersion);
-
-	// $: versionNames = $versions.map((version) => version.name);
-
 	$: currentShip = $shipsFromFeatures.find((ship) => ship?.id === $page.params.id) as Boat;
 
 	const onSelectChange = (event: Event) => {
@@ -26,10 +18,6 @@
 		const selectedId = element.options[element.selectedIndex].getAttribute('id');
 
 		selectedId && goto(selectedId);
-
-		// console.log('🚀 ~ onSelectChange ~ selectedVersion:', selectedVersion);
-
-		// page.update((page) => ({ ...page, version: selectedVersion }));
 	};
 </script>
 

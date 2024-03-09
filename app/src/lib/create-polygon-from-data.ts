@@ -73,7 +73,6 @@ export const updatePolygon = (
 		updatedFeatureProperties.height !== currentFeatureProperties?.properties?.height ||
 		Boolean(updatedFeatureProperties.hasProtrusion) !==
 			Boolean(currentFeatureProperties.properties.hasProtrusion);
-	console.log('🚀 ~ isShapeChange:', isShapeChange);
 
 	if (isShapeChange) {
 		const center = getCenterOfPolygon(currentFeatureProperties);

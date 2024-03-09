@@ -14,8 +14,6 @@ export const actions = {
 		const formProps = Object.fromEntries(formData) as InputBoatForm;
 
 		const { deleteBoat, editBoat, ...boat } = formProps;
-		console.log('🚀 ~ handleFormSubmit: ~ editBoat:', editBoat);
-		console.log('🚀 ~ handleFormSubmit: ~ deleteBoat:', deleteBoat);
 
 		const { id } = event.params;
 

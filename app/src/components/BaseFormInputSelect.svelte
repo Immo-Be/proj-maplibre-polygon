@@ -2,8 +2,6 @@
 	import type { configuredFieldProps } from '../types/types';
 
 	const { options, value, name } = $$props as configuredFieldProps;
-	console.log('🚀 ~ options value:', value);
-	console.log('🚀 ~ options:', options);
 	export let hidden = false;
 
 	export let onSelectChange: (event) => void = () => {};

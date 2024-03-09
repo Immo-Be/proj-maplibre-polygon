@@ -9,8 +9,6 @@
 
 	// Client API:
 
-	// import {featureCollection} from '../stores/featureCollection';
-
 	/* We wouldn't need this variable here because we could just check if there is a currentBoatId from the url
 	Will leave it here for now though as extra l */
 	export let isConfigureMode = false;
@@ -25,34 +23,6 @@
 				return field;
 			}
 		});
-
-	// const handleFormSubmit = (event: SubmitEvent, isFeatureUpdated: boolean) => {
-	// 	const isDeleteEvent = event.submitter?.getAttribute('data-submit') === 'delete';
-	// 	if (isDeleteEvent) {
-	// 		featureCollection.update((collection) => ({
-	// 			...collection,
-	// 			features: collection.features.filter(
-	// 				(feature) => feature.properties?.id !== currentShip?.id
-	// 			)
-	// 		}));
-	// 		goto('/');
-	// 	} else {
-	// 		const formData = new FormData(event.target as HTMLFormElement);
-	// 		const formProps = Object.fromEntries(formData) as Boat;
-
-	// 		/**
-	// 		 * Updates the form props with the current ship data and additional form props.
-	// 		 * If the feature is first added, generates a new UUID and adds it to the form props.
-	// 		 */
-	// 		const updatedFormProps = {
-	// 			...currentShip,
-	// 			...formProps,
-	// 			...{ ...(!isFeatureUpdated && { id: uuidv4() }) }
-	// 		};
-
-	// 		setPolygonFeature(updatedFormProps, isFeatureUpdated);
-	// 	}
-	// };
 
 	const componentLookUp: Record<
 		FormFieldTypes,
@@ -75,11 +45,7 @@
 	};
 
 	const handleFormSubmit = (submit) => {
-		console.log('🚀 ~ handleFormSubmit ~ submit', submit);
-
 		return async ({ result, ...actionResult }) => {
-			console.log('🚀 ~ return ~ actionResult:', actionResult);
-			console.log('🚀 ~ return ~ result:', result);
 			actionResult.update({ reset: false });
 		};
 	};

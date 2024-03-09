@@ -6,7 +6,6 @@
 	import DatabaseSyncInfo from '../components/DatabaseSyncInfo.svelte';
 
 	export let data;
-	console.log('🚀 ~ data:', data);
 
 	versions.update(() => {
 		if (Array.isArray(data.versions)) {

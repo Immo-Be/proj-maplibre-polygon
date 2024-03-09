@@ -17,26 +17,6 @@
 	} from '$lib/polygon';
 
 	onMount(async () => {
-		// client.Reco}rds.getList('plans', { page: 2 })
-		// 	.then(function (list) {
-		// 		console.log('🚀 ~ list:', list);
-		// 		// success...
-		// 	})
-		// 	.catch(function (error) {
-		// 		console.log('🚀 ~ onMount ~ error:', error);
-		// 		// error...
-		// 	});
-
-		// // alternatively you can also fetch all records at once via getFullList:
-		// client.Records.getFullList('plans', 200 /* batch size */)
-		// 	.then(function (records) {
-		// 		console.log('🚀 ~ records:', records);
-		// 		// success...
-		// 	})
-		// 	.catch(function (error) {
-		// 		console.log('🚀 ~ onMount ~ error:', error);
-		// 		// error...
-		// 	});
 		map.set(await setUpMapInstance());
 
 		if (!$map) {

@@ -5,10 +5,6 @@ export const featureCollection = writable<GeoJSON.FeatureCollection>({
 	features: []
 });
 
-featureCollection.subscribe((value) => {
-	console.log('featureCollection updated: ', value);
-});
-
 interface version {
 	name: string;
 	id: string;

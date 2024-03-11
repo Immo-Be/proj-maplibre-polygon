@@ -12,10 +12,10 @@ import {
 import { getMapSource } from './map';
 import { Layer } from '../constants';
 
-import type { GeoJSONSource, MapMouseEvent } from 'maplibre-gl';
+import type { GeoJSONSource, MapMouseEvent, MapTouchEvent } from 'maplibre-gl';
 
 import { featureCollection } from '../stores/featureCollection';
-import { currentPolygonIndex, isDragging, map } from '../stores/map';
+import { currentPolygonIndex, isDragging, isRotating, map } from '../stores/map';
 import { getCenterOfPolygon } from './create-polygon-from-data';
 
 export const createPoint = (polygon: GeoJSON.Feature) => {
@@ -298,7 +298,7 @@ export const onMouseUp = (event: MapMouseEvent) => {
 			})
 		});
 
-		const total = await response.json();
+		console.log('response', response);
 	}
 
 	add();
@@ -315,10 +315,53 @@ export const onMouseUp = (event: MapMouseEvent) => {
 	// coordinates.style.display = "block";
 	// coordinates.innerHTML = `Longitude: ${coords.lng}<br />Latitude: ${coords.lat}`;
 	// canvas.style.cursor = '';
-	isDragging.set(false);
-	currentPolygonIndex.set(null);
+	isDragging.update(() => false);
+	isRotating.update(() => false);
+
+	mapInstance.off('mousemove', handleRotate);
+	mapInstance.off('touchmove', handleRotate);
+
+	// 	// Reset rotation line
+	adjustLine(null, null, true);
+	mapInstance.setPaintProperty(Layer.POINTS_LAYER, 'circle-opacity', 0);
 
 	// Unbind mouse/touch events
 	mapInstance.off('mousemove', onMousePolyGrab);
 	mapInstance.off('touchmove', onMousePolyGrab);
+};
+
+export const initializePolyRotation = (event: MapMouseEvent | MapTouchEvent) => {
+	const mapInstance = get(map);
+	const featureCollectionInstance = get(featureCollection);
+
+	if (!mapInstance) {
+		console.warn('No valid map instance', mapInstance);
+		return;
+	}
+
+	const { properties } = mapInstance.queryRenderedFeatures(event.point, {
+		layers: [Layer.POLYGONS_LAYER]
+	})[0];
+
+	const id = properties.id;
+	console.log('🚀 ~ mapInstance.on ~ id:', id);
+
+	const updatedPolygonIndex = featureCollectionInstance.features.findIndex(
+		(feature) => feature.properties?.id === id
+	);
+
+	currentPolygonIndex.update(() => updatedPolygonIndex);
+
+	const currentPolygonIndexValue = get(currentPolygonIndex);
+
+	if (currentPolygonIndexValue === null) {
+		console.warn('No valid polygon index found', currentPolygonIndexValue);
+		return;
+	}
+
+	// // Generate rotation point and line for the current polygon
+	const polygonFeature = featureCollectionInstance.features[currentPolygonIndexValue];
+
+	generateRotationPointAndLine(polygonFeature);
+	mapInstance.setPaintProperty(Layer.POINTS_LAYER, 'circle-opacity', 0.8);
 };

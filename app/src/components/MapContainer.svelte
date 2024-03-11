@@ -4,16 +4,19 @@
 	import { map } from '../stores/map';
 	import { getMapSource, initializeMapLayers, setUpMapInstance } from '../lib/map';
 	import { Layer } from '../constants';
-	import { MapMouseEvent } from 'maplibre-gl';
+	import { MapMouseEvent, MapTouchEvent } from 'maplibre-gl';
 	import { featureCollection } from '../stores/featureCollection';
+	import { isTouchDevice } from '../stores/is-mobile';
 
 	import {
-		adjustLine,
 		generateRotationPointAndLine,
 		handleRotate,
+		initializePolyRotation,
 		onMousePolyGrab,
 		onMouseUp
 	} from '$lib/polygon';
+
+	$: isDesktop = !$isTouchDevice;
 
 	onMount(async () => {
 		map.set(await setUpMapInstance());
@@ -30,23 +33,63 @@
 			await initializeMapLayers($featureCollection, $map);
 		});
 
-		function onMouseRotateUp() {
-			if (!$map) {
-				return;
-			}
-			// 	// Unbind mouse/touch events
-			$map.off('mousemove', handleRotate);
-			$map.off('touchmove', handleRotate);
-
-			// 	// Reset rotation line
-			adjustLine(null, null, true);
-			$map.setPaintProperty(Layer.POINTS_LAYER, 'circle-opacity', 0);
-			isRotating.set(false);
-			currentPolygonIndex.update(() => null);
-		}
+		const events = {
+			down: isDesktop ? 'mousedown' : 'touchstart',
+			up: isDesktop ? 'mouseup' : 'touchend',
+			move: isDesktop ? 'mousemove' : 'touchmove'
+		} as const;
 
 		// // When the cursor enters a feature in
 		// // the point layer, prepare for dragging.
+
+		/**
+		 * Handles the event when the user presses down on point layer to rotate a polygon.
+		 * @param {MapMouseEvent | MapTouchEvent} event - The event object containing information about the mouse or touch event.
+		 */
+		$map.on(events.down, Layer.POINTS_LAYER, (event: MapMouseEvent | MapTouchEvent) => {
+			event.preventDefault();
+
+			if (!$map) {
+				return;
+			}
+			isRotating.set(true);
+			$map.getCanvas().style.cursor = 'pointer';
+
+			event.preventDefault();
+
+			if (!$map) {
+				return;
+			}
+			$map.getCanvas().style.cursor = '';
+
+			$map.on(events.move, handleRotate);
+
+			$map.once(events.up, onMouseUp);
+
+			$map.off(events.move, onMousePolyGrab);
+		});
+
+		/**
+		 * Adds an event listener to the map's polygons layer for touch and mouse down events.
+		 * @param {MapTouchEvent | MapMouseEvent} event - The touch or mouse event that triggered the listener.
+		 */
+		$map?.on(events.down, Layer.POLYGONS_LAYER, (event: MapTouchEvent | MapMouseEvent) => {
+			event.preventDefault();
+
+			if (!$map || $isRotating) {
+				return;
+			}
+
+			if (!isDesktop) {
+				initializePolyRotation(event);
+			}
+
+			isDragging.set(true);
+
+			$map.on(events.move, onMousePolyGrab);
+			$map.once(events.up, onMouseUp);
+		});
+
 		$map.on('mousemove', Layer.POLYGONS_LAYER, (event) => {
 			event.preventDefault();
 			if ($isRotating || $isDragging || !$map) {
@@ -54,71 +97,7 @@
 			}
 			$map.getCanvas().style.cursor = 'move';
 
-			const { properties } = $map.queryRenderedFeatures(event.point, {
-				layers: [Layer.POLYGONS_LAYER]
-			})[0];
-
-			const id = properties.id;
-
-			const updatedPolygonIndex = $featureCollection.features.findIndex(
-				(feature) => feature.properties?.id === id
-			);
-
-			currentPolygonIndex.update(() => updatedPolygonIndex);
-
-			if ($currentPolygonIndex === null) {
-				console.warn('No valid polygon index found', $currentPolygonIndex);
-				return;
-			}
-
-			// // Generate rotation point and line for the current polygon
-			const polygonFeature = $featureCollection.features[$currentPolygonIndex];
-
-			generateRotationPointAndLine(polygonFeature);
-			$map.setPaintProperty(Layer.POINTS_LAYER, 'circle-opacity', 0.8);
-
-			$map.on('mouseover', Layer.POINTS_LAYER, (event: MapMouseEvent) => {
-				event.preventDefault();
-				if (!$map) {
-					return;
-				}
-				$map.getCanvas().style.cursor = 'pointer';
-
-				$map.on('mousedown', Layer.POINTS_LAYER, (event: MapMouseEvent) => {
-					event.preventDefault();
-
-					if (!$map) {
-						return;
-					}
-					$map.getCanvas().style.cursor = '';
-
-					isRotating.set(true);
-
-					$map.on('mousemove', handleRotate);
-
-					$map.once('mouseup', onMouseRotateUp);
-
-					// Prevent the polygon feature from being dragged
-					$map.off('mousemove', onMousePolyGrab);
-					// $map.off('touchmove', onMousePolyGrab);
-				});
-			});
-
-			$map.on('mousedown', Layer.POLYGONS_LAYER, (event: MapMouseEvent) => {
-				event.preventDefault();
-
-				if (!$map) {
-					return;
-				}
-
-				isDragging.set(true);
-
-				$map.getCanvas().style.cursor = 'grab';
-
-				$map.on('mousemove', onMousePolyGrab);
-				// $map.on('mousemove', () => ($map.getCanvas().style.cursor = 'grabbing'));
-				$map.once('mouseup', onMouseUp);
-			});
+			initializePolyRotation(event);
 		});
 
 		$map.on('mouseleave', Layer.POLYGONS_LAYER, () => {
@@ -128,8 +107,12 @@
 
 			$map.getCanvas().style.cursor = '';
 
+			// if (!$isDragging) {
+			// }
+
 			if (!$isRotating) {
 				$map.setPaintProperty(Layer.POINTS_LAYER, 'circle-opacity', 0);
+				currentPolygonIndex.set(null);
 			}
 		});
 	});
@@ -155,8 +138,6 @@
 <style global>
 	/* Custom styles for the infobox  */
 	:global(.mapboxgl-info-box-ctrl) {
-		/* display: flex !important;
-		flex-direction: column; */
 		float: left;
 		margin: 0 0 10px 10px;
 		background-color: hsla(0, 0%, 100%, 0.75);

@@ -75,21 +75,22 @@
 			const polygonFeature = $featureCollection.features[$currentPolygonIndex];
 
 			generateRotationPointAndLine(polygonFeature);
+			$map.setPaintProperty(Layer.POINTS_LAYER, 'circle-opacity', 0.8);
 
-			const point = $map.queryRenderedFeatures(event.point, {
-				layers: [Layer.POINTS_LAYER]
-			});
+			$map.on('mouseover', Layer.POINTS_LAYER, (event: MapMouseEvent) => {
+				event.preventDefault();
+				if (!$map) {
+					return;
+				}
+				$map.getCanvas().style.cursor = 'pointer';
 
-			const isPointInPolygon = Boolean(point.length);
-
-			if (isPointInPolygon) {
-				// canvas.style.cursor = '';
 				$map.on('mousedown', Layer.POINTS_LAYER, (event: MapMouseEvent) => {
-					// event.preventDefault();
+					event.preventDefault();
 
 					if (!$map) {
 						return;
 					}
+					$map.getCanvas().style.cursor = '';
 
 					isRotating.set(true);
 
@@ -99,36 +100,25 @@
 
 					// Prevent the polygon feature from being dragged
 					$map.off('mousemove', onMousePolyGrab);
-					$map.off('touchmove', onMousePolyGrab);
+					// $map.off('touchmove', onMousePolyGrab);
 				});
-			} else {
-				if ($isRotating) {
+			});
+
+			$map.on('mousedown', Layer.POLYGONS_LAYER, (event: MapMouseEvent) => {
+				event.preventDefault();
+
+				if (!$map) {
 					return;
 				}
 
-				// console.log(canvas.style.cursor + ' move');
+				isDragging.set(true);
 
-				// Get point layer and set color to red
-				if (!$isDragging) {
-					$map.setPaintProperty(Layer.POINTS_LAYER, 'circle-opacity', 0.8);
-				}
+				$map.getCanvas().style.cursor = 'grab';
 
-				$map.on('mousedown', Layer.POLYGONS_LAYER, (event: MapMouseEvent) => {
-					event.preventDefault();
-
-					if (!$map) {
-						return;
-					}
-
-					isDragging.set(true);
-
-					$map.getCanvas().style.cursor = 'grab';
-
-					$map.on('mousemove', onMousePolyGrab);
-					// $map.on('mousemove', () => ($map.getCanvas().style.cursor = 'grabbing'));
-					$map.once('mouseup', onMouseUp);
-				});
-			}
+				$map.on('mousemove', onMousePolyGrab);
+				// $map.on('mousemove', () => ($map.getCanvas().style.cursor = 'grabbing'));
+				$map.once('mouseup', onMouseUp);
+			});
 		});
 
 		$map.on('mouseleave', Layer.POLYGONS_LAYER, () => {

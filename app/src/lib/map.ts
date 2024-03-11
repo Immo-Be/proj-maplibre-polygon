@@ -1,6 +1,10 @@
 import { CENTER, Layer } from '../constants';
-import maplibregl, { Map } from 'maplibre-gl';
+import maplibregl, { Map, type IControl } from 'maplibre-gl';
 import { mapStyle } from '../map-styles';
+// import 'mapbox-gl-infobox/styles.css';
+import { MapboxGradientBoxControl, MapboxInfoBoxControl } from 'mapbox-gl-infobox';
+import { featureCollection } from '../stores/featureCollection';
+import { get } from 'svelte/store';
 
 /**
  * Returns an instance of the map.
@@ -24,6 +28,22 @@ export const setUpMapInstance = async (): Promise<maplibregl.Map> => {
 	});
 
 	map.addControl(scale);
+
+	const layerId = Layer.POLYGONS_LAYER;
+
+	console.log('get', get(featureCollection));
+
+	const formatter = ({ name, width, height }) =>
+		`<div><b>Name: </b>${name}</div><div><b>Länge: </b>${width}&nbsp;m<b></div><div>Breite: </b>${height}&nbsp;m</div>`;
+
+	const infoboxOptions = {
+		layerId,
+		formatter
+	};
+
+	const infoBox = new MapboxInfoBoxControl(infoboxOptions) as IControl;
+
+	map.addControl(infoBox, 'bottom-left');
 
 	return map;
 };

@@ -47,9 +47,9 @@ services:
     stdin_open: true
     tty: true
     volumes:
-      - pb_data:/usr/local/bin/pb_data
+      - pb_data_:/usr/local/bin/pb_data
     image:  ghcr.io/immo-be/proj-maplibre-polygon-pocketbase_db
 
 
 volumes:
-  pb_data:
+  pb_data_:

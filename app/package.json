@@ -43,6 +43,7 @@
 		"@turf/turf": "^6.5.0",
 		"@types/dom-view-transitions": "^1.0.4",
 		"dotenv": "^16.4.5",
+		"mapbox-gl-infobox": "^1.0.9",
 		"maplibre-gl": "^4.0.0",
 		"pg": "^8.11.3",
 		"pocketbase": "^0.21.1",

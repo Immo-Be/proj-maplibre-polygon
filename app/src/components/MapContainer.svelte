@@ -6,7 +6,6 @@
 	import { Layer } from '../constants';
 	import { MapMouseEvent } from 'maplibre-gl';
 	import { featureCollection } from '../stores/featureCollection';
-	import PocketBase from 'pocketbase';
 
 	import {
 		adjustLine,
@@ -162,3 +161,18 @@
 </script>
 
 <div class="map h-full" id="map"></div>
+
+<style global>
+	/* Custom styles for the infobox  */
+	:global(.mapboxgl-info-box-ctrl) {
+		/* display: flex !important;
+		flex-direction: column; */
+		float: left;
+		margin: 0 0 10px 10px;
+		background-color: hsla(0, 0%, 100%, 0.75);
+		border: 2px solid #333;
+		color: #333;
+		font-size: 10px;
+		padding: 0 5px;
+	}
+</style>

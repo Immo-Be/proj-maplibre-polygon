@@ -1,4 +1,4 @@
-import type { Actions } from '../$types';
+import type { Actions } from '@sveltejs/kit';
 import PocketBase from 'pocketbase';
 import type { InputBoatForm } from '../../types/types';
 import { createPolygonFromFormData } from '$lib/create-polygon-from-data';

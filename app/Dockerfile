@@ -25,6 +25,5 @@ RUN npm run build
 # assumes the default SvelteKit host and port
 ENV ORIGIN=https://hafen-planungstool.seefalke.info
 
-
 CMD ["node", "build"]
 

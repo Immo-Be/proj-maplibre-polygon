@@ -34,7 +34,7 @@
 <main class="drawer min-h-full">
 	<input id="my-drawer" type="checkbox" class="drawer-toggle" />
 	<div class="drawer-content">
-		<DatabaseSyncInfo />
+		<!-- <DatabaseSyncInfo /> -->
 		<MapContainer />
 	</div>
 	<aside class="drawer-side pointer-events-auto z-20 overflow-visible w-0 min-h-full">

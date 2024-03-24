@@ -6,6 +6,7 @@ import { MapboxGradientBoxControl, MapboxInfoBoxControl } from 'mapbox-gl-infobo
 import { featureCollection } from '../stores/featureCollection';
 import { get } from 'svelte/store';
 
+import areas from '../lib/shapefiles/areas.json';
 /**
  * Returns an instance of the map.
  * @returns {maplibregl.Map} The map instance.
@@ -65,6 +66,21 @@ export const initializeMapLayers = async (
 	map.addSource(Layer.POLYGONS_SOURCE, {
 		type: 'geojson',
 		data: featureCollection
+	});
+
+	// Add the source and layer for the polygons
+	map.addSource('waterbodies', {
+		type: 'geojson',
+		data: areas as GeoJSON.GeoJSON
+	});
+	map.addLayer({
+		id: 'waterbodies-fill',
+		type: 'fill',
+		source: 'waterbodies',
+		paint: {
+			'fill-color': '#2c82ea', // This is a placeholder, as MapLibre doesn't support graphic fills
+			'fill-opacity': 0.5
+		}
 	});
 
 	map.addLayer({

@@ -7,14 +7,9 @@
 	import { MapMouseEvent, MapTouchEvent } from 'maplibre-gl';
 	import { featureCollection } from '../stores/featureCollection';
 	import { isTouchDevice } from '../stores/is-mobile';
+	import { hoveredFeaturedId } from '../stores/featureCollection';
 
-	import {
-		generateRotationPointAndLine,
-		handleRotate,
-		initializePolyRotation,
-		onMousePolyGrab,
-		onMouseUp
-	} from '$lib/polygon';
+	import { handleRotate, initializePolyRotation, onMousePolyGrab, onMouseUp } from '$lib/polygon';
 
 	$: isDesktop = !$isTouchDevice;
 
@@ -73,7 +68,7 @@
 		 * Adds an event listener to the map's polygons layer for touch and mouse down events.
 		 * @param {MapTouchEvent | MapMouseEvent} event - The touch or mouse event that triggered the listener.
 		 */
-		$map?.on(events.down, Layer.POLYGONS_LAYER, (event: MapTouchEvent | MapMouseEvent) => {
+		$map?.on(events.down, Layer.POLYGONS_LAYER_FILL, (event: MapTouchEvent | MapMouseEvent) => {
 			event.preventDefault();
 
 			if (!$map || $isRotating) {
@@ -90,7 +85,7 @@
 			$map.once(events.up, onMouseUp);
 		});
 
-		$map.on('mousemove', Layer.POLYGONS_LAYER, (event) => {
+		$map.on('mousemove', Layer.POLYGONS_LAYER_FILL, (event) => {
 			event.preventDefault();
 			if ($isRotating || $isDragging || !$map) {
 				return;
@@ -100,7 +95,7 @@
 			initializePolyRotation(event);
 		});
 
-		$map.on('mouseleave', Layer.POLYGONS_LAYER, () => {
+		$map.on('mouseleave', Layer.POLYGONS_LAYER_FILL, () => {
 			if (!$map) {
 				return;
 			}
@@ -130,6 +125,31 @@
 		}
 
 		return polSource.setData(updatedFeatureCollection);
+	});
+
+	let currentlyHoveredId: string | null = null;
+
+	hoveredFeaturedId.subscribe((id) => {
+		const polSource = getMapSource($map, Layer.POLYGONS_SOURCE);
+
+		if (!polSource || !$map) {
+			console.warn('No valid polygon source', polSource);
+			return;
+		}
+
+		if (!id) {
+			if (currentlyHoveredId) {
+				$map.setFeatureState(
+					{ source: Layer.POLYGONS_SOURCE, id: currentlyHoveredId },
+					{ hover: false }
+				);
+			}
+			currentlyHoveredId = null;
+		} else {
+			$map.setFeatureState({ source: Layer.POLYGONS_SOURCE, id }, { hover: true });
+
+			currentlyHoveredId = id;
+		}
 	});
 </script>
 

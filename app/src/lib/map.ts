@@ -1,8 +1,7 @@
 import { CENTER, Layer } from '../constants';
 import maplibregl, { Map, type IControl } from 'maplibre-gl';
 import { mapStyle } from '../map-styles';
-// import 'mapbox-gl-infobox/styles.css';
-import { MapboxGradientBoxControl, MapboxInfoBoxControl } from 'mapbox-gl-infobox';
+import { MapboxInfoBoxControl } from 'mapbox-gl-infobox';
 import { featureCollection } from '../stores/featureCollection';
 import { get } from 'svelte/store';
 
@@ -30,12 +29,14 @@ export const setUpMapInstance = async (): Promise<maplibregl.Map> => {
 
 	map.addControl(scale);
 
-	const layerId = Layer.POLYGONS_LAYER;
+	const layerId = Layer.POLYGONS_LAYER_FILL;
 
-	console.log('get', get(featureCollection));
-
-	const formatter = ({ name, width, height }) =>
-		`<div><b>Name: </b>${name}</div><div><b>Länge: </b>${width}&nbsp;m<b></div><div>Breite: </b>${height}&nbsp;m</div>`;
+	const formatter = ({ name, width, height, power }) =>
+		`<div>
+		<b>Name: </b>${name}</div>
+		<div><b>Länge: </b>${width}&nbsp;m</div>
+		<div><b>Breite: </b>${height}&nbsp;m</div>
+		<div><b>Strom: </b>${power}</div>`;
 
 	const infoboxOptions = {
 		layerId,
@@ -65,7 +66,8 @@ export const initializeMapLayers = async (
 	// Add the source and layer for the polygons
 	map.addSource(Layer.POLYGONS_SOURCE, {
 		type: 'geojson',
-		data: featureCollection
+		data: featureCollection,
+		promoteId: 'id'
 	});
 
 	// Add the source and layer for the polygons
@@ -84,12 +86,23 @@ export const initializeMapLayers = async (
 	});
 
 	map.addLayer({
-		id: Layer.POLYGONS_LAYER,
+		id: Layer.POLYGONS_LAYER_FILL,
 		type: 'fill',
 		source: Layer.POLYGONS_SOURCE,
 		paint: {
 			'fill-color': ['get', 'color'],
-			'fill-opacity': 0.7
+			'fill-opacity': ['case', ['boolean', ['feature-state', 'hover'], false], 1, 0.75]
+		}
+	});
+
+	map.addLayer({
+		id: Layer.POLYGONS_LAYER_LINE,
+		type: 'line',
+		source: Layer.POLYGONS_SOURCE,
+		layout: {},
+		paint: {
+			'line-color': '#000',
+			'line-width': 1
 		}
 	});
 
@@ -126,7 +139,7 @@ export const initializeMapLayers = async (
 	});
 
 	map.addLayer({
-		id: Layer.LINE_Layer,
+		id: Layer.LINE_LAYER,
 		type: 'line',
 		source: Layer.LINE_SOURCE,
 		paint: {
@@ -135,7 +148,7 @@ export const initializeMapLayers = async (
 		}
 	});
 
-	map.moveLayer(Layer.POLYGONS_LAYER, Layer.POINTS_LAYER);
+	map.moveLayer(Layer.POLYGONS_LAYER_FILL, Layer.POINTS_LAYER);
 };
 
 export const getMapSource = (map: maplibregl.Map | null, sourceId: Layer) => {

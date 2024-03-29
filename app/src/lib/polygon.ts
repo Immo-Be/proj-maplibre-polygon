@@ -91,7 +91,6 @@ export const onMousePolyGrab = (event: MapMouseEvent) => {
 
 	const turfCenterPoint = point([coords.lng, coords.lat]) as GeoJSON.Position;
 	const movingPoly = movePolygon(polygon, turfCenterPoint);
-	console.log('🚀 ~ onMousePolyGrab ~ movingPoly:', movingPoly);
 
 	// Merge the moved polygon with the rest of the collection
 	featureCollection.update((collection) => {
@@ -162,7 +161,6 @@ function rotatePolygon(rotation: number) {
 }
 
 export const handleRotate = (event: MapMouseEvent) => {
-	console.log('🚀 ~ handleRotate ~ event:', event);
 	// Get point source
 	const pointSource = get(map)?.getSource(Layer.POINTS_SOURCE) as maplibregl.GeoJSONSource;
 
@@ -340,11 +338,10 @@ export const initializePolyRotation = (event: MapMouseEvent | MapTouchEvent) => 
 	}
 
 	const { properties } = mapInstance.queryRenderedFeatures(event.point, {
-		layers: [Layer.POLYGONS_LAYER]
+		layers: [Layer.POLYGONS_LAYER_FILL]
 	})[0];
 
 	const id = properties.id;
-	console.log('🚀 ~ mapInstance.on ~ id:', id);
 
 	const updatedPolygonIndex = featureCollectionInstance.features.findIndex(
 		(feature) => feature.properties?.id === id

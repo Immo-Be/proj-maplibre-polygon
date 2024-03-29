@@ -46,7 +46,7 @@
 
 	const handleFormSubmit = (submit) => {
 		return async ({ result, ...actionResult }) => {
-			actionResult.update({ reset: false });
+			actionResult.update({ reset: true });
 		};
 	};
 </script>

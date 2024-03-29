@@ -48,7 +48,7 @@
 
 		{#each $shipsFromFeatures as ship (ship && ship.id)}
 			{#if ship}
-				<ListItem id={ship.id} name={ship.name} />
+				<ListItem id={ship.id} name={ship.name} color={ship.color} />
 			{/if}
 		{/each}
 	{/if}

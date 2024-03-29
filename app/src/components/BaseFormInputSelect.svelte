@@ -4,7 +4,9 @@
 	const { options, value, name } = $$props as configuredFieldProps;
 	export let hidden = false;
 
-	export let onSelectChange: (event) => void = () => {};
+	export let onSelectChange: (event) => void = () => {
+		console.log('No onSelectChange function provided', event?.target);
+	};
 </script>
 
 <div class={`label flex gap-4 ${hidden ? 'hidden' : ''}`}>
@@ -20,7 +22,7 @@
 		{:else}
 			{#each options as option, i}
 				{@const selected = value ? value === option.id : i === 0}
-				<option {selected} value={option} id={option.id}>{option.name}</option>
+				<option {selected} value={option.name} id={option.id}>{option.name}</option>
 			{/each}
 		{/if}
 	</select>

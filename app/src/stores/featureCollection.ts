@@ -5,6 +5,7 @@ export const featureCollection = writable<GeoJSON.FeatureCollection>({
 	features: []
 });
 
+export const hoveredFeaturedId = writable<string | null>(null);
 interface version {
 	name: string;
 	id: string;

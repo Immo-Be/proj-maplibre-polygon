@@ -32,3 +32,5 @@ export interface configuredFieldProps extends FormFieldProps {
 	value: string;
 	id: string;
 }
+
+export type HexColor = string;

@@ -6,24 +6,21 @@ export const formFields: FormFieldProps[] = [
 		name: 'name',
 		type: 'text',
 		isConfigureMode: false,
-		placeholder: 'Name des Bootes',
-		value: 'Seefalke'
+		placeholder: 'Name des Bootes'
 	},
 	{
 		label: 'Länge (m)',
 		name: 'width',
 		type: 'number',
 		isConfigureMode: false,
-		placeholder: 'Länge des Bootes in Metern',
-		value: 3
+		placeholder: 'Länge des Bootes in Metern'
 	},
 	{
 		label: 'Breite (m)',
 		name: 'height',
 		type: 'number',
 		isConfigureMode: false,
-		placeholder: 'Breite des Bootes in Metern',
-		value: 1
+		placeholder: 'Breite des Bootes in Metern'
 	},
 	{ label: 'Farbe', name: 'color', type: 'color', isConfigureMode: false, placeholder: '#1264AF' },
 	{
@@ -36,7 +33,7 @@ export const formFields: FormFieldProps[] = [
 		label: 'Power',
 		name: 'power',
 		type: 'select',
-		isConfigureMode: true,
+		isConfigureMode: false,
 		options: [
 			{ name: 'Kein Strom', id: 'Kein Strom' },
 			{ name: '16A', id: '16A' },

@@ -19,7 +19,6 @@
 	});
 
 	onNavigate((navigation) => {
-		console.log('transitioning');
 		if (!document.startViewTransition) return;
 
 		return new Promise((resolve) => {

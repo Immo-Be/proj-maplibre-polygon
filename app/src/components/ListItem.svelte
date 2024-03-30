@@ -6,7 +6,7 @@
 	export let name: string;
 	export let id: string;
 	export let color: string;
-	import { page } from '$app/stores';
+	import { page, navigating } from '$app/stores';
 
 	const initViewTransition = (event) => {
 		event.target.style.viewTransitionName = 'active-ship';

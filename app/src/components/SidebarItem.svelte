@@ -1,20 +1,24 @@
 <script lang="ts">
-	import { afterNavigate, beforeNavigate } from '$app/navigation';
-	import { tick } from 'svelte';
-	import { v4 as uuidv4 } from 'uuid';
-
+	import { selectedSidebarItemId } from '../stores/selected-sidebar-item';
 	export let title: string;
 
-	let id = uuidv4();
+	export let id: string;
 
-	// We use the mousedown event because the checked attribute is updated after the click event
-	// So we need to prevent the default behavior of the click event
-	// and update the checked attribute manually
+	$: checked = $selectedSidebarItemId === id;
+
+	// // We use the mousedown event because the checked attribute is updated after the click event
+	// // So we need to prevent the default behavior of the click event
+	// // and update the checked attribute manually
 	const handleMouseDown = async (event: MouseEvent) => {
-		const target = event.target as HTMLInputElement;
-		const isChecked = target.checked;
+		// const target = event.target as HTMLInputElement;
+		// const isChecked = target.checked;
+		// console.log('selectedSidebarItemId', $selectedSidebarItemId);
 
-		target.checked = !isChecked;
+		if (checked) {
+			selectedSidebarItemId.update(() => null);
+		} else {
+			selectedSidebarItemId.update(() => id);
+		}
 	};
 </script>
 
@@ -25,7 +29,7 @@
 		name="sidebar-content-area"
 		on:mousedown={handleMouseDown}
 		on:click|preventDefault={() => null}
-		checked={true}
+		{checked}
 	/>
 	<div class="collapse-title text-xl font-medium">
 		{title}

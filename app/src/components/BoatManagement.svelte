@@ -11,6 +11,7 @@
 
 	export let isConfigureMode = false;
 	$: selectedVersion = $page.data.selectedVersion;
+
 	$: currentShip = $shipsFromFeatures.find((ship) => ship?.id === $page.params.id) as Boat;
 
 	const onSelectChange = (event: Event) => {

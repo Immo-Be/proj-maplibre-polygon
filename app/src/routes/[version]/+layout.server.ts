@@ -8,6 +8,7 @@ const db = new PocketBase(url);
 export const load: PageServerLoad = async ({ params }) => {
 	const { version: selectedVersion } = params as unknown as { version: string };
 	const fetchPolygons = async () => {
+		console.log('fetching polygons...');
 		try {
 			return await db
 				.collection('polygons')

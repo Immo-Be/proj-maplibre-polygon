@@ -5,6 +5,8 @@ export const featureCollection = writable<GeoJSON.FeatureCollection>({
 	features: []
 });
 
+featureCollection.subscribe((value) => console.log('featureCollection: value', value));
+
 export const hoveredFeaturedId = writable<string | null>(null);
 interface version {
 	name: string;

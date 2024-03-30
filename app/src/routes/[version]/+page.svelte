@@ -4,7 +4,11 @@
 	import updateFeatureCollection from '$lib/update-feature-collection';
 	export let data;
 
-	$: featureCollection.update((collection) => updateFeatureCollection(collection, data.polygons));
+	$: console.log(data, 'data version');
+
+	$: {
+		featureCollection.update((collection) => updateFeatureCollection(collection, data.polygons));
+	}
 </script>
 
 <svelte:head>

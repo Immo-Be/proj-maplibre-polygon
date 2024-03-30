@@ -46,7 +46,7 @@
 
 	const handleFormSubmit = (submit) => {
 		return async ({ result, ...actionResult }) => {
-			actionResult.update({ reset: true });
+			actionResult.update({ reset: !isConfigureMode });
 		};
 	};
 </script>
@@ -63,7 +63,7 @@
 		{/each}
 
 		{#if isConfigureMode}
-			<label for="deleteBoat" class="btn btn-error" aria-label="submit">
+			<label for="deleteBoat" class="btn btn-ghost" aria-label="submit">
 				<input
 					hidden
 					name="deleteBoat"
@@ -76,7 +76,7 @@
 			</label>
 		{/if}
 		{#if isConfigureMode}
-			<label for="speichern" class="btn" aria-label="submit">
+			<label for="speichern" class="btn btn-outline" aria-label="submit">
 				<input
 					hidden
 					name="editBoat"

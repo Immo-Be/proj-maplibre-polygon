@@ -8,6 +8,7 @@
 	import { featureCollection } from '../stores/featureCollection';
 	import { isTouchDevice } from '../stores/is-mobile';
 	import { hoveredFeaturedId } from '../stores/featureCollection';
+	import { navigating } from '$app/stores';
 
 	import { handleRotate, initializePolyRotation, onMousePolyGrab, onMouseUp } from '$lib/polygon';
 
@@ -20,8 +21,8 @@
 			throw new Error('No map instance found');
 		}
 
-		if (!featureCollection) {
-			throw new Error('No valid feature featureFeatureCollection', featureCollection);
+		if (!$featureCollection) {
+			throw new Error('No valid feature featureFeatureCollection', $featureCollection);
 		}
 
 		$map.once('styledata', async () => {
@@ -149,6 +150,15 @@
 			$map.setFeatureState({ source: Layer.POLYGONS_SOURCE, id }, { hover: true });
 
 			currentlyHoveredId = id;
+		}
+	});
+
+	// Deselect boat when navigation to overview
+	navigating.subscribe((navigation) => {
+		if (hoveredFeaturedId) {
+			if (navigation?.to?.params && !('id' in navigation.to.params)) {
+				hoveredFeaturedId.set(null);
+			}
 		}
 	});
 </script>

@@ -2,8 +2,8 @@ export const prerender = false;
 export const ssr = false;
 
 import PocketBase from 'pocketbase';
-import type { PageServerLoad } from './$types';
 import { PB_URL } from '../constants/env';
+import type { PageServerLoad } from './[version]/$types';
 
 const url = PB_URL;
 const db = new PocketBase(url);

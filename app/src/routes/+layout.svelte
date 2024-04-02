@@ -3,7 +3,6 @@
 	import { onNavigate } from '$app/navigation';
 	import MapContainer from '../components/MapContainer.svelte';
 	import { versions } from '../stores/featureCollection';
-	import DatabaseSyncInfo from '../components/DatabaseSyncInfo.svelte';
 
 	export let data;
 

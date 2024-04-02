@@ -3,6 +3,8 @@
 
 	const { options, value, name } = $$props as configuredFieldProps;
 	export let hidden = false;
+	export let disabled = false;
+	export let label = '';
 
 	export let onSelectChange: (event) => void = () => {
 		console.log('No onSelectChange function provided', event?.target);
@@ -10,10 +12,13 @@
 </script>
 
 <div class={`label flex gap-4 ${hidden ? 'hidden' : ''}`}>
-	<span class="label-text-alt">{name.toLocaleUpperCase()}</span>
+	{#if label}
+		<span class="label-text-alt">{label}</span>
+	{/if}
 
 	<select
 		{name}
+		{disabled}
 		class="select select-bordered select-sm w-full max-w-xs"
 		on:change={(event) => onSelectChange(event)}
 	>

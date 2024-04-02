@@ -1,6 +1,10 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
 	import { selectedSidebarItemId } from '../stores/selected-sidebar-item';
 	export let title: string;
+
+	$: selectedVersion = $page.data.selectedVersion;
 
 	export let id: string;
 
@@ -18,6 +22,12 @@
 			selectedSidebarItemId.update(() => null);
 		} else {
 			selectedSidebarItemId.update(() => id);
+		}
+
+		const inConfigureMode = Boolean($page.params?.id);
+
+		if (inConfigureMode) {
+			goto('/' + selectedVersion);
 		}
 	};
 </script>

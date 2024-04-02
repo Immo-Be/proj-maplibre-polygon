@@ -43,7 +43,7 @@ export const setUpMapInstance = async (): Promise<maplibregl.Map> => {
 		formatter
 	};
 
-	const infoBox = new MapboxInfoBoxControl(infoboxOptions) as IControl;
+	const infoBox = new MapboxInfoBoxControl(infoboxOptions as {}) as IControl;
 
 	map.addControl(infoBox, 'bottom-left');
 

@@ -7,19 +7,12 @@
 	import BaseForm from './BaseForm.svelte';
 	import BackIcon from '$lib/icons/back-icon.svelte';
 	import { versions } from '../stores/featureCollection';
-	import { goto } from '$app/navigation';
 
 	export let isConfigureMode = false;
-	$: selectedVersion = $page.data.selectedVersion;
 
 	$: currentShip = $shipsFromFeatures.find((ship) => ship?.id === $page.params.id) as Boat;
 
-	const onSelectChange = (event: Event) => {
-		const element = event.target as HTMLSelectElement;
-		const selectedId = element.options[element.selectedIndex].getAttribute('id');
-
-		selectedId && goto(selectedId);
-	};
+	$: selectedVersion = $page.data.selectedVersion;
 </script>
 
 <ul class="">
@@ -35,14 +28,6 @@
 		</div>
 		<BaseForm {isConfigureMode} {currentShip} />
 	{:else}
-		<div class="p-4">
-			<BaseFormInputSelect
-				options={$versions}
-				name="version"
-				{onSelectChange}
-				value={selectedVersion}
-			/>
-		</div>
 		{#if $shipsFromFeatures.length === 0}
 			<p class="text-center">Füge neue Boote hinzu</p>
 		{/if}

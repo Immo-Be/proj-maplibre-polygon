@@ -44,7 +44,7 @@
 		target.checked = false;
 	};
 
-	const handleFormSubmit = (submit) => {
+	const handleFormSubmit = (action) => {
 		return async ({ result, ...actionResult }) => {
 			actionResult.update({ reset: !isConfigureMode });
 		};

@@ -4,8 +4,6 @@
 	import updateFeatureCollection from '$lib/update-feature-collection';
 	export let data;
 
-	$: console.log(data, 'data version');
-
 	$: {
 		featureCollection.update((collection) => updateFeatureCollection(collection, data.polygons));
 	}

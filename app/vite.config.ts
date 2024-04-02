@@ -1,5 +1,6 @@
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
+import path from 'path';
 
 export default defineConfig({
 	server: {
@@ -8,6 +9,11 @@ export default defineConfig({
 		hmr: {
 			protocol: 'ws',
 			port: 4173
+		}
+	},
+	resolve: {
+		alias: {
+			$lib: path.resolve('./src/lib')
 		}
 	},
 

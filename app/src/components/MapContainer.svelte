@@ -172,8 +172,26 @@
 </script>
 
 <div class="map h-full" id="map"></div>
+<div id="distance-container" class="distance-container"></div>
 
 <style global>
+	:global(.distance-container) {
+		position: absolute;
+		top: 8px;
+		right: 50px;
+		z-index: 1;
+	}
+
+	:global(.distance-container > *) {
+		background-color: rgba(0, 0, 0, 0.5);
+		color: #fff;
+		font-size: 11px;
+		line-height: 18px;
+		display: block;
+		margin: 0;
+		padding: 5px 10px;
+		border-radius: 3px;
+	}
 	/* Custom styles for the infobox  */
 	:global(.mapboxgl-info-box-ctrl) {
 		float: left;

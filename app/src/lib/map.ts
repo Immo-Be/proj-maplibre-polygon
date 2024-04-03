@@ -2,8 +2,9 @@ import { CENTER, Layer } from '../constants';
 import maplibregl, { Map, type IControl } from 'maplibre-gl';
 import { mapStyle } from '../map-styles';
 import { MapboxInfoBoxControl } from 'mapbox-gl-infobox';
-import { featureCollection } from '../stores/featureCollection';
-import { get } from 'svelte/store';
+import MapboxDraw from '@mapbox/mapbox-gl-draw';
+import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
+import length from '@turf/length';
 
 import areas from '../lib/shapefiles/areas.json';
 /**
@@ -29,6 +30,49 @@ export const setUpMapInstance = async (): Promise<maplibregl.Map> => {
 
 	map.addControl(scale);
 
+	// @ts-ignore
+	MapboxDraw.constants.classes.CONTROL_BASE = 'maplibregl-ctrl';
+	// @ts-ignore
+	MapboxDraw.constants.classes.CONTROL_PREFIX = 'maplibregl-ctrl-';
+	// @ts-ignore
+	MapboxDraw.constants.classes.CONTROL_GROUP = 'maplibregl-ctrl-group';
+
+	const draw = new MapboxDraw({
+		displayControlsDefault: false,
+		controls: {
+			line_string: true,
+			trash: true
+		}
+	});
+
+	map.addControl(draw as unknown as IControl);
+
+	map.on('draw.create', updateArea);
+	map.on('draw.delete', updateArea);
+	map.on('draw.update', updateArea);
+
+	function updateArea(e) {
+		const data = draw.getAll();
+		let answer = document.getElementById('distance-container');
+		var options = { units: 'meters' };
+		if (data.features.length > 0) {
+			const lengthValue = length(data.features.at(-1), options).toFixed(2);
+			console.log('🚀 ~ updateArea ~ data:', lengthValue);
+
+			// const area = turf.area(data);
+			// restrict to area to 2 decimal points
+			// const roundedArea = Math.round(area * 100) / 100;
+
+			if (!answer) {
+				throw new Error('distance info box not found');
+			}
+			answer.innerHTML = `<p><strong>${lengthValue}m</strong></p>`;
+		} else {
+			// answer.innerHTML = '';
+			// if (e.type !== 'draw.delete') alert('Use the draw tools to draw a polygon!');
+		}
+	}
+
 	const layerId = Layer.POLYGONS_LAYER_FILL;
 
 	const formatter = ({ name, width, height, power }) =>
@@ -43,7 +87,7 @@ export const setUpMapInstance = async (): Promise<maplibregl.Map> => {
 		formatter
 	};
 
-	const infoBox = new MapboxInfoBoxControl(infoboxOptions as {}) as IControl;
+	const infoBox = new MapboxInfoBoxControl(infoboxOptions as {}) as unknown as IControl;
 
 	map.addControl(infoBox, 'bottom-left');
 

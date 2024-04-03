@@ -41,9 +41,12 @@
 	"type": "module",
 	"dependencies": {
 		"@internationalized/date": "^3.5.2",
+		"@mapbox/mapbox-gl-draw": "^1.4.3",
 		"@turf/center-of-mass": "^6.5.0",
+		"@turf/length": "^6.5.0",
 		"@turf/turf": "^6.5.0",
 		"@types/dom-view-transitions": "^1.0.4",
+		"@types/mapbox__mapbox-gl-draw": "^1.4.6",
 		"bits-ui": "^0.21.1",
 		"clsx": "^2.1.0",
 		"dotenv": "^16.4.5",

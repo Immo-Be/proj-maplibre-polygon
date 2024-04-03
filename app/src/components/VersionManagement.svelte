@@ -18,6 +18,13 @@
 
 		selectedId && goto(selectedId);
 	};
+
+	const handleFormSubmit = () => {
+		return async ({ result, ...actionResult }) => {
+			actionResult.update({ reset: true });
+			applyAction(result);
+		};
+	};
 </script>
 
 <div class="p-4 pt-0">
@@ -40,7 +47,7 @@
 		<p class="text-muted-foreground">Kein Datum ausgewählt oder keine Versionen verfügbar</p>
 	{/if}
 	<div class="divider"></div>
-	<form use:enhance method="POST" action="?/createVersion">
+	<form use:enhance={handleFormSubmit} method="POST" action="?/createVersion">
 		<BaseFormInput
 			name="versionsName"
 			label="Füge eine neue Version hinzu:"

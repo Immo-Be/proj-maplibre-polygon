@@ -9,5 +9,6 @@ export enum Layer {
 	POINTS_LAYER = 'points',
 	POINTS_SOURCE = 'points-source',
 	LINE_LAYER = 'line',
-	LINE_SOURCE = 'line-source'
+	LINE_SOURCE = 'line-source',
+	POLYGONS_LAYER_GLYPHS = 'polygons-layer-glyphs'
 }

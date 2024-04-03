@@ -1,5 +1,8 @@
 export const mapStyle: maplibregl.StyleSpecification = {
 	version: 8,
+	glyphs: 'https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf',
+
+	// glyphs: '', // URL to a glyphs serve
 	sources: {
 		osm: {
 			type: 'raster',

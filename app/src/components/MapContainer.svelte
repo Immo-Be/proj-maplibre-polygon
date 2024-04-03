@@ -169,20 +169,43 @@
 			}
 		}
 	});
+
+	function toggleLabelNames() {
+		// Get the current visibility of the layer
+		var visibility = $map?.getLayoutProperty(Layer.POLYGONS_LAYER_GLYPHS, 'visibility');
+		console.log('🚀 ~ toggleLabelNames ~ visibility:', visibility);
+
+		// Toggle the visibility
+		if (visibility === 'visible') {
+			$map?.setLayoutProperty(Layer.POLYGONS_LAYER_GLYPHS, 'visibility', 'none');
+		} else {
+			$map?.setLayoutProperty(Layer.POLYGONS_LAYER_GLYPHS, 'visibility', 'visible');
+		}
+	}
 </script>
 
 <div class="map h-full" id="map"></div>
-<div id="distance-container" class="distance-container"></div>
+<div id="toggle-name-container" class="on-map-container">
+	<button on:click={toggleLabelNames}>Label?</button>
+</div>
+<div id="distance-container" class="on-map-container"></div>
 
 <style global>
-	:global(.distance-container) {
+	:global(.on-map-container) {
 		position: absolute;
 		top: 8px;
 		right: 50px;
 		z-index: 1;
 	}
 
-	:global(.distance-container > *) {
+	:global(.on-map-container:last-child) {
+		position: absolute;
+		top: 40px;
+		right: 50px;
+		z-index: 1;
+	}
+
+	:global(.on-map-container > *) {
 		background-color: rgba(0, 0, 0, 0.5);
 		color: #fff;
 		font-size: 11px;
@@ -201,5 +224,9 @@
 		color: #333;
 		font-size: 10px;
 		padding: 0 5px;
+	}
+
+	:global(.maplibregl-export-list) {
+		padding: 0.5rem;
 	}
 </style>

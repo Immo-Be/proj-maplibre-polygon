@@ -6,6 +6,15 @@ import MapboxDraw from '@mapbox/mapbox-gl-draw';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import length from '@turf/length';
 
+import {
+	MaplibreExportControl,
+	Size,
+	PageOrientation,
+	Format,
+	DPI
+} from '@watergis/maplibre-gl-export';
+import '@watergis/maplibre-gl-export/dist/maplibre-gl-export.css';
+
 import areas from '../lib/shapefiles/areas.json';
 /**
  * Returns an instance of the map.
@@ -72,6 +81,21 @@ export const setUpMapInstance = async (): Promise<maplibregl.Map> => {
 			// if (e.type !== 'draw.delete') alert('Use the draw tools to draw a polygon!');
 		}
 	}
+	map.addControl(new MaplibreExportControl(), 'top-right');
+	// console.log('control', new MaplibreExportControl.MaplibreExportControl());
+
+	// map.addControl(
+	// 	new MaplibreExportControl.MaplibreExportControl({
+	// 		PageSize: MaplibreExportControl.Size.A4,
+	// 		PageOrientation: MaplibreExportControl.PageOrientation.Landscape,
+	// 		Format: MaplibreExportControl.Format.PNG,
+	// 		DPI: MaplibreExportControl.DPI[300],
+	// 		Crosshair: true,
+	// 		PrintableArea: true,
+	// 		Local: 'fr'
+	// 	}),
+	// 	'top-right'
+	// );
 
 	const layerId = Layer.POLYGONS_LAYER_FILL;
 
@@ -138,6 +162,28 @@ export const initializeMapLayers = async (
 			'fill-opacity': ['case', ['boolean', ['feature-state', 'hover'], false], 1, 0.75]
 		}
 	});
+
+	// Add the label layer
+	map.addLayer(
+		{
+			id: Layer.POLYGONS_LAYER_GLYPHS,
+			type: 'symbol',
+			source: Layer.POLYGONS_SOURCE,
+			layout: {
+				'text-field': ['get', 'name'], // Assuming each feature has a property named 'name'
+				'text-size': 12,
+				'text-offset': [0, -2],
+				visibility: 'visible'
+			},
+
+			paint: {
+				'text-color': '#000000',
+				'text-halo-color': '#fff',
+				'text-halo-width': 16
+			}
+		},
+		Layer.POLYGONS_LAYER_FILL
+	);
 
 	map.addLayer({
 		id: Layer.POLYGONS_LAYER_LINE,

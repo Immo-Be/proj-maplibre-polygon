@@ -47,6 +47,7 @@
 		"@turf/turf": "^6.5.0",
 		"@types/dom-view-transitions": "^1.0.4",
 		"@types/mapbox__mapbox-gl-draw": "^1.4.6",
+		"@watergis/maplibre-gl-export": "^3.2.2",
 		"bits-ui": "^0.21.1",
 		"clsx": "^2.1.0",
 		"dotenv": "^16.4.5",

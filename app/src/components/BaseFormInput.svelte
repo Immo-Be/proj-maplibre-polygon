@@ -5,9 +5,7 @@
 </script>
 
 <label class="form-control w-full max-w-xs">
-	<div class="label">
-		<span class="label-text">{label}</span>
-	</div>
+	<span class="label-text mb-2 font-bold">{label}</span>
 	<input
 		{...{ type }}
 		id={inputId}

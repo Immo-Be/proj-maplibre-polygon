@@ -1,12 +1,10 @@
 <script lang="ts">
-	import BaseFormInputSelect from './BaseFormInputSelect.svelte';
 	import type { Boat } from '../types/types';
 	import { page } from '$app/stores';
 	import ListItem from './ListItem.svelte';
 	import { shipsFromFeatures } from '../stores/map';
 	import BaseForm from './BaseForm.svelte';
 	import BackIcon from '$lib/icons/back-icon.svelte';
-	import { versions } from '../stores/featureCollection';
 
 	export let isConfigureMode = false;
 

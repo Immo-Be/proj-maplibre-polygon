@@ -29,7 +29,7 @@ export interface FormFieldProps {
 }
 
 export interface configuredFieldProps extends FormFieldProps {
-	value: string;
+	value: string | number;
 	id: string;
 }
 

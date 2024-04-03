@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { formFields } from './../config';
-	import type { Boat, FormFieldTypes } from '../types/types';
+	import type { Boat, FormFieldTypes, configuredFieldProps } from '../types/types';
 	import BaseFormInput from './BaseFormInput.svelte';
 	import BaseFormInputSelect from './BaseFormInputSelect.svelte';
 	import BaseFormInputColorPick from './BaseFormInputColorPick.svelte';
 	import BaseFormInputCheckbox from './BaseFormInputCheckbox.svelte';
-	import { enhance, applyAction } from '$app/forms';
+	import { enhance } from '$app/forms';
 
 	// Client API:
 

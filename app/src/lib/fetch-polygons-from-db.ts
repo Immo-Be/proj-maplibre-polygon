@@ -1,5 +1,4 @@
 const fetchPolygons = async (db, selectedVersion) => {
-	console.log('fetching polygons...');
 	try {
 		return await db
 			.collection('polygons')

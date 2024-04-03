@@ -1,19 +1,26 @@
 <script lang="ts">
 	import type { configuredFieldProps } from '../types/types';
 
-	const { options, value, name } = $$props as configuredFieldProps;
+	const { name } = $$props as configuredFieldProps;
+	import { cn } from '$lib/utils.js';
+
+	// This need to be a reactive statement
+	export let options: configuredFieldProps['options'] = [];
+	export let value: configuredFieldProps['value'] = '';
+
 	export let hidden = false;
 	export let disabled = false;
 	export let label = '';
+	export let isLabelBold = true;
 
 	export let onSelectChange: (event) => void = () => {
 		console.log('No onSelectChange function provided', event?.target);
 	};
 </script>
 
-<div class={`label flex gap-4 ${hidden ? 'hidden' : ''}`}>
+<div class={cn('label flex gap-4', hidden && 'hidden')}>
 	{#if label}
-		<span class="label-text-alt">{label}</span>
+		<span class={cn('label-text-alt', isLabelBold && 'font-bold')}>{label}</span>
 	{/if}
 
 	<select
@@ -27,7 +34,7 @@
 		{:else}
 			{#each options as option, i}
 				{@const selected = value ? value === option.id : i === 0}
-				<option {selected} value={option.name} id={option.id}>{option.name}</option>
+				<option {selected} value={option.id} id={option.id}>{option.name}</option>
 			{/each}
 		{/if}
 	</select>

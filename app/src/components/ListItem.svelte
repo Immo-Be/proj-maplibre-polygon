@@ -1,12 +1,13 @@
 <script lang="ts">
 	import EditIcon from '$lib/icons/edit-icon.svelte';
 	import getColorDot from '$lib/get-color-dot';
+	import { cn } from '$lib/utils.js';
 
 	import { hoveredFeaturedId } from '../stores/featureCollection';
 	export let name: string;
 	export let id: string;
 	export let color: string;
-	import { page, navigating } from '$app/stores';
+	import { page } from '$app/stores';
 
 	const initViewTransition = (event) => {
 		event.target.style.viewTransitionName = 'active-ship';
@@ -16,7 +17,10 @@
 </script>
 
 <li
-	class="group flex justify-between items-center hover:bg-base-300 focus:bg-base-300 p-4"
+	class={cn(
+		'group flex justify-between items-center hover:bg-base-300 focus:bg-base-300 p-4',
+		$hoveredFeaturedId === id && 'bg-base-300'
+	)}
 	on:mouseenter={() => hoveredFeaturedId.update(() => id)}
 	on:mouseleave={() => hoveredFeaturedId.update(() => null)}
 >

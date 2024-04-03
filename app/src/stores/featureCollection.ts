@@ -1,16 +1,18 @@
-import { writable } from 'svelte/store';
+import { derived, writable } from 'svelte/store';
 
 export const featureCollection = writable<GeoJSON.FeatureCollection>({
 	type: 'FeatureCollection',
 	features: []
 });
 
-featureCollection.subscribe((value) => console.log('featureCollection: value', value));
-
 export const hoveredFeaturedId = writable<string | null>(null);
-interface version {
+export interface Version {
 	name: string;
 	id: string;
+	date_start: string;
+	date_end: string;
 }
 
-export const versions = writable<version[]>([]);
+export const versions = writable<Version[]>([]);
+
+export const versionsOnSelectedData = writable<Version[]>([]);

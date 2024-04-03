@@ -1,13 +1,14 @@
 <script lang="ts">
-	import { invalidateAll } from '$app/navigation';
 	import BaseFormInputSelect from './BaseFormInputSelect.svelte';
 	import { versions } from '../stores/featureCollection';
 	import { enhance, applyAction } from '$app/forms';
 	import BaseFormInput from './BaseFormInput.svelte';
 	import { goto } from '$app/navigation';
 	import DateRangePicker from './DateRangePicker.svelte';
+	import { versionsOnSelectedData } from '../stores/featureCollection';
 
 	import { page } from '$app/stores';
+	import DatePicker from './DatePicker.svelte';
 
 	$: selectedVersion = $page.data.selectedVersion;
 
@@ -17,8 +18,6 @@
 
 		selectedId && goto(selectedId);
 	};
-
-	// $: selectedVersion = $page.data.selectedVersion;
 </script>
 
 <div class="p-4 pt-0">
@@ -28,6 +27,18 @@
 		value={selectedVersion}
 		label="Wähle Version:"
 	/>
+	<DatePicker />
+	{#if $versionsOnSelectedData.length > 0}
+		<ul class="flex flex-wrap justify-between gap-1">
+			{#each $versionsOnSelectedData as version}
+				<li class="flex input-bordered w-full hover:bg-accent hover:text-accent-foreground">
+					<a class="w-full label-text" href={`/${version.id}`}>{version.name}</a>
+				</li>
+			{/each}
+		</ul>
+	{:else}
+		<p class="text-muted-foreground">Kein Datum ausgewählt oder keine Versionen verfügbar</p>
+	{/if}
 	<div class="divider"></div>
 	<form use:enhance method="POST" action="?/createVersion">
 		<BaseFormInput
@@ -63,10 +74,20 @@
 					id="versionType_existing"
 					required
 				/>
-				<BaseFormInputSelect options={$versions} label="Daten übernehmen aus" name={'version'} />
+				<BaseFormInputSelect
+					options={$versions}
+					label="Daten übernehmen aus"
+					isLabelBold={false}
+					name="currentVersionId"
+				/>
 			</label>
 		</div>
-		<button class="btn btn-outline w-full mt-4">Hinzufügen</button>
+		<button class="btn w-full mt-4">Hinzufügen</button>
 	</form>
+
 	<div class="divider"></div>
+	<form use:enhance method="POST" action="?/deleteVersion">
+		<BaseFormInputSelect name="versionId" options={$versions} label="Lösche Version:" />
+		<button class="btn w-full mt-4">Löschen</button>
+	</form>
 </div>

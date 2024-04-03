@@ -93,6 +93,16 @@
 			}
 			$map.getCanvas().style.cursor = 'move';
 
+			const {
+				properties: { id }
+			} = $map.queryRenderedFeatures(event.point, {
+				layers: [Layer.POLYGONS_LAYER_FILL]
+			})[0];
+
+			if (id) {
+				hoveredFeaturedId.set(id);
+			}
+
 			initializePolyRotation(event);
 		});
 
@@ -102,9 +112,7 @@
 			}
 
 			$map.getCanvas().style.cursor = '';
-
-			// if (!$isDragging) {
-			// }
+			hoveredFeaturedId.set(null);
 
 			if (!$isRotating) {
 				$map.setPaintProperty(Layer.POINTS_LAYER, 'circle-opacity', 0);

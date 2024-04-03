@@ -319,7 +319,7 @@ export const onMouseUp = (event: MapMouseEvent) => {
 	mapInstance.off('mousemove', handleRotate);
 	mapInstance.off('touchmove', handleRotate);
 
-	// 	// Reset rotation line
+	// Reset rotation line
 	adjustLine(null, null, true);
 	mapInstance.setPaintProperty(Layer.POINTS_LAYER, 'circle-opacity', 0);
 
@@ -337,11 +337,11 @@ export const initializePolyRotation = (event: MapMouseEvent | MapTouchEvent) => 
 		return;
 	}
 
-	const { properties } = mapInstance.queryRenderedFeatures(event.point, {
+	const {
+		properties: { id }
+	} = mapInstance.queryRenderedFeatures(event.point, {
 		layers: [Layer.POLYGONS_LAYER_FILL]
 	})[0];
-
-	const id = properties.id;
 
 	const updatedPolygonIndex = featureCollectionInstance.features.findIndex(
 		(feature) => feature.properties?.id === id

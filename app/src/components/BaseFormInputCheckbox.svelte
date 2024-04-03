@@ -6,7 +6,7 @@
 
 <div class="form-control">
 	<label class="label cursor-pointer">
-		<span class="label-text">{label}</span>
+		<span class="label-text font-bold">{label}</span>
 		<!-- We add an extra input of the name and type hidden here
 		that way, the, the corresponding property is always on the form submit object 
 		see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/checkbox -->

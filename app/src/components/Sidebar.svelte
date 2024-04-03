@@ -4,7 +4,7 @@
 	import BaseForm from './BaseForm.svelte';
 	import BoatManagement from './BoatManagement.svelte';
 	import VersionManagement from './VersionManagement.svelte';
-	import { invalidateAll, invalidate, onNavigate } from '$app/navigation';
+	import { invalidateAll } from '$app/navigation';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 
@@ -14,7 +14,6 @@
 	// Otherwise, the polygons will jump back to their original position
 
 	const isAtRootPath = Boolean($page.data.selectedVersion);
-	console.log('🚀 ~ isAtRootPath:', isAtRootPath);
 
 	if (isAtRootPath) {
 		invalidateAll();
@@ -30,9 +29,8 @@
 	role="button"
 	tabindex="0"
 >
-	<SidebarItem title="Versionen" id="3">
+	<SidebarItem title="Versionen verwalten" id="3">
 		<VersionManagement />
-		<!-- <BoatManagement {isConfigureMode} /> -->
 	</SidebarItem>
 	<SidebarItem title="Schiff hinzufügen" id="1">
 		<BaseForm />

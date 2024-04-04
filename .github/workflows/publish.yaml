@@ -40,6 +40,9 @@ jobs:
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
         ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
     - name: connect and pull
+    # For this to work, the server must be logged in docker hub
+    # echo YOURACCESSTOKEN| docker login ghcr.io -u immobe --password-stdin
+    # Find the Personal Access Token (PTA) in Github -> Settings -> Developer Settings -> Personal Access Token 
       run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }} && docker compose pull && docker compose up -d && exit"
     # - name: copy default.conf for reverse-proxy
     #   run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }} && sudo docker cp default.conf www-nginx-1:/etc/nginx/conf.d/default.conf && exit"

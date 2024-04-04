@@ -17,7 +17,7 @@
 		dateStyle: 'medium'
 	});
 
-	const start = today(getLocalTimeZone());
+	const start = today('Europe/Berlin');
 	const end = start.add({ days: 7 });
 
 	let value = {
@@ -31,8 +31,8 @@
 		event.preventDefault();
 
 		const formData = new FormData(event.target as HTMLFormElement);
-		console.log('🚀 ~ onSubmit ~ event.target:', event.target);
-		console.log('🚀 ~ onSubmit ~ formData:', formData);
+		// console.log('🚀 ~ onSubmit ~ event.target:', event.target);
+		// console.log('🚀 ~ onSubmit ~ formData:', formData);
 		// console.log('value', value);
 	};
 </script>

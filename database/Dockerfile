@@ -2,7 +2,7 @@ FROM --platform=linux/amd64 alpine:3 as downloader
 
 ARG TARGETOS
 ARG TARGETARCH
-ARG VERSION=0.2.8
+ARG VERSION=0.21.1
 
 ENV BUILDX_ARCH="${TARGETOS:-linux}_${TARGETARCH:-amd64}"
 

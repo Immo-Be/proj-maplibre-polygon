@@ -50,6 +50,7 @@
 		"@watergis/maplibre-gl-export": "^3.2.2",
 		"bits-ui": "^0.21.1",
 		"clsx": "^2.1.0",
+		"date-fns": "^3.6.0",
 		"dotenv": "^16.4.5",
 		"lucide-svelte": "^0.364.0",
 		"mapbox-gl-infobox": "^1.0.9",

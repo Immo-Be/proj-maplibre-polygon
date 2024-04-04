@@ -9,7 +9,7 @@ import type { Version } from '../stores/featureCollection';
 const url = PB_URL;
 const db = new PocketBase(url);
 
-export const load: PageServerLoad = async () => {
+export const load: PageServerLoad = async ({ locals }) => {
 	const fetchVersions = async (): Promise<Array<Version>> => {
 		try {
 			console.log('fetching versions... from layout');
@@ -20,7 +20,17 @@ export const load: PageServerLoad = async () => {
 		}
 	};
 
+	// if (locals.user) {
+	// 	return {
+	// 		user: locals.user
+	// 	};
+	// }
+
+	console.log('user.locals', locals.user);
+
 	return {
-		versions: await fetchVersions()
+		versions: await fetchVersions(),
+		// locals: { ...locals, user: locals.user || undefined }
+		user: locals.user || undefined
 	};
 };

@@ -4,9 +4,10 @@
 	import BaseForm from './BaseForm.svelte';
 	import BoatManagement from './BoatManagement.svelte';
 	import VersionManagement from './VersionManagement.svelte';
-	import { invalidateAll } from '$app/navigation';
+	import { invalidateAll, invalidate } from '$app/navigation';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
+	import Login from './Login.svelte';
 
 	export let id: string | null = null;
 
@@ -18,7 +19,7 @@
 	if (isAtRootPath) {
 		invalidateAll();
 	} else {
-		goto($page.data.versions[0].id);
+		goto($page.params.version || $page.data.versions[0].id);
 	}
 
 	$: isConfigureMode = id !== null;
@@ -29,16 +30,20 @@
 	role="button"
 	tabindex="0"
 >
-	<SidebarItem title="Versionen verwalten" id="3">
-		<VersionManagement />
-	</SidebarItem>
-	<SidebarItem title="Schiff hinzufügen" id="1">
-		<BaseForm />
-	</SidebarItem>
+	{#if !$page.data.user}
+		<Login />
+	{:else}
+		<SidebarItem title="Versionen verwalten" id="3">
+			<VersionManagement />
+		</SidebarItem>
+		<SidebarItem title="Schiff hinzufügen" id="1">
+			<BaseForm />
+		</SidebarItem>
 
-	<SidebarItem title="Schiffe" id="2">
-		<BoatManagement {isConfigureMode} />
-	</SidebarItem>
+		<SidebarItem title="Schiffe" id="2">
+			<BoatManagement {isConfigureMode} />
+		</SidebarItem>
+	{/if}
 
 	<SidebarToggle />
 </div>

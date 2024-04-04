@@ -1,13 +1,14 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import CalendarIcon from 'svelte-radix/Calendar.svelte';
-	import { DateFormatter, type DateValue, getLocalTimeZone } from '@internationalized/date';
+	import { DateFormatter, getLocalTimeZone, type DateValue } from '@internationalized/date';
 	import { cn } from '$lib/utils.js';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { Calendar } from '$lib/components/ui/calendar/index.js';
 	import * as Popover from '$lib/components/ui/popover/index.js';
 	import type { Version } from '../stores/featureCollection';
 	import { versionsOnSelectedData, versions } from '../stores/featureCollection';
+	import { isWithinInterval } from 'date-fns';
 
 	const df = new DateFormatter('de-DE', {
 		dateStyle: 'long'
@@ -21,16 +22,15 @@
 			return;
 		}
 		// Convert the date object to a Date instance
-		const date = new Date(dateObj.year, dateObj.month - 1, dateObj.day);
+		// (For some reason, when saving the date object to the store, the hour is set to 2am)
+		// Like here Thu Apr 04 2024 02:00:00 GMT+0200 (Central European Summer Time)
+		// So we need to set the hour to 2am -> It would be better to fix this in the store
+		const date = new Date(dateObj.year, dateObj.month - 1, dateObj.day, 2);
 
 		// Filter the versions array
 		return versions.filter((version) => {
-			// Convert the start and end dates to Date instances
-			const startDate = new Date(version.date_start);
-			const endDate = new Date(version.date_end);
-
 			// Check if the date falls within the start and end dates
-			return date >= startDate && date <= endDate;
+			return isWithinInterval(date, { start: version.date_start, end: version.date_end });
 		});
 	}
 

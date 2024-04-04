@@ -8,9 +8,10 @@
 	import { featureCollection } from '../stores/featureCollection';
 	import { isTouchDevice } from '../stores/is-mobile';
 	import { hoveredFeaturedId } from '../stores/featureCollection';
-	import { navigating } from '$app/stores';
+	import { navigating, page } from '$app/stores';
 
 	import { handleRotate, initializePolyRotation, onMousePolyGrab, onMouseUp } from '$lib/polygon';
+	import { enhance } from '$app/forms';
 
 	$: isDesktop = !$isTouchDevice;
 
@@ -38,6 +39,13 @@
 		// // When the cursor enters a feature in
 		// // the point layer, prepare for dragging.
 
+		// Should probably be moved to a separate file / store
+		// Should propably be isValid
+		const isUserLoggedIn = $page.data.user;
+
+		if (!isUserLoggedIn) {
+			return;
+		}
 		/**
 		 * Handles the event when the user presses down on point layer to rotate a polygon.
 		 * @param {MapMouseEvent | MapTouchEvent} event - The event object containing information about the mouse or touch event.
@@ -173,7 +181,6 @@
 	function toggleLabelNames() {
 		// Get the current visibility of the layer
 		var visibility = $map?.getLayoutProperty(Layer.POLYGONS_LAYER_GLYPHS, 'visibility');
-		console.log('🚀 ~ toggleLabelNames ~ visibility:', visibility);
 
 		// Toggle the visibility
 		if (visibility === 'visible') {
@@ -189,6 +196,12 @@
 	<button on:click={toggleLabelNames}>Label?</button>
 </div>
 <div id="distance-container" class="on-map-container"></div>
+
+{#if $page.data.user}
+	<form class="on-map-container" method="POST" use:enhance action="?/logout">
+		<button type="submit">Logout</button>
+	</form>
+{/if}
 
 <style global>
 	:global(.on-map-container) {

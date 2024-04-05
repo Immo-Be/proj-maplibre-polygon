@@ -17,5 +17,8 @@ export default defineConfig({
 		}
 	},
 
+	optimizeDeps: {
+		exclude: ['fsevents']
+	},
 	plugins: [sveltekit()]
 });

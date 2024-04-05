@@ -52,6 +52,7 @@
 		"clsx": "^2.1.0",
 		"date-fns": "^3.6.0",
 		"dotenv": "^16.4.5",
+		"fsevents": "^2.3.3",
 		"lucide-svelte": "^0.364.0",
 		"mapbox-gl-infobox": "^1.0.9",
 		"maplibre-gl": "^4.0.0",
@@ -61,5 +62,8 @@
 		"tailwind-merge": "^2.2.2",
 		"tailwind-variants": "^0.2.1",
 		"uuid": "^9.0.1"
+	},
+	"optionalDependencies": {
+		"fsevents": "*"
 	}
 }

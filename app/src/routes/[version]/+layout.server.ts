@@ -2,7 +2,6 @@ import type { PageServerLoad } from './$types';
 import PocketBase from 'pocketbase';
 import { PB_URL } from '../../constants/env';
 import fetchPolygons from '$lib/fetch-polygons-from-db';
-import { version } from 'vite';
 
 const url = PB_URL;
 const db = new PocketBase(url);

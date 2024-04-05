@@ -16,7 +16,8 @@ const updateFeatureCollection = (collection, polygons) => {
 				properties: { ...polygon.feature.properties, id: polygon.id }
 			})) || [];
 	} else {
-		throw new Error('No polygon (items) found or polygons is not an array.');
+		console.warn('No polygon (items) found or polygons is not an array.');
+		return { features: [] };
 	}
 	return collection;
 };

@@ -5,6 +5,10 @@ WORKDIR /app
 
 COPY package.json .
 
+ARG APP_PORT
+ENV VITE_PORT=$APP_PORT
+EXPOSE $APP_PORT
+
 # Install any dependencie
 RUN npm install
 
@@ -20,10 +24,29 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm install
 COPY . .
-EXPOSE 4173
+
+ARG APP_PORT
+ARG PROD_ORIGIN
+
+EXPOSE $APP_PORT
 RUN npm run build
 # assumes the default SvelteKit host and port
-ENV ORIGIN=https://hafen-planungstool.seefalke.info
+ENV ORIGIN=$PROD_ORIGIN
 
 CMD ["node", "build"]
 
+
+
+# local staging build
+FROM node:lts-alpine as local_staging
+WORKDIR /usr/src/app
+COPY package*.json ./
+RUN npm install
+COPY . .
+ARG APP_PORT
+ENV VITE_PORT=$APP_PORT
+EXPOSE $APP_PORT
+RUN npm run build
+ENV ORIGIN=http://localhost:$APP_PORT
+
+CMD ["node", "build"]

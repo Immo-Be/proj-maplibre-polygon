@@ -2,6 +2,8 @@ FROM --platform=linux/amd64 alpine:3 as downloader
 
 ARG TARGETOS
 ARG TARGETARCH
+# ATTENTION: It is vital that the version here is the SAME as the one that of
+# the SDK important in the app
 ARG VERSION=0.21.1
 
 ENV BUILDX_ARCH="${TARGETOS:-linux}_${TARGETARCH:-amd64}"

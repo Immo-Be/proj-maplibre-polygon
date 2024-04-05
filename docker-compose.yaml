@@ -21,8 +21,10 @@ services:
       context: ./app
       dockerfile: Dockerfile
       target: ${BUILD_TARGET}
+      args:
+      - APP_PORT
     ports: 
-      - "4173:4173"
+      - "${APP_PORT}:${APP_PORT}"
     volumes:
       - ./app:/app
       - /app/node_modules

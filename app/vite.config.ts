@@ -4,11 +4,11 @@ import path from 'path';
 
 export default defineConfig({
 	server: {
-		port: 4173,
+		port: Number(process.env.VITE_PORT),
 		host: true,
 		hmr: {
 			protocol: 'ws',
-			port: 4173
+			port: Number(process.env.VITE_PORT)
 		}
 	},
 	resolve: {

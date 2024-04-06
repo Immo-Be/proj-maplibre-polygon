@@ -6,6 +6,7 @@ on:
 
 env:
   BUILD_TARGET: production
+  APP_PORT: 3000
 
 jobs:
   publish:
@@ -20,7 +21,7 @@ jobs:
     
     - name: Build Images
       run: |
-        BUILD_TARGET=${{ env.BUILD_TARGET }} docker-compose build
+        BUILD_TARGET=${{ env.BUILD_TARGET }} APP_PORT=${{env.APP_PORT}} docker-compose build
 
     - name: Push Images to Registry
       run: |

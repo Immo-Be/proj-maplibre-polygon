@@ -25,18 +25,11 @@
 		<Card.Content class="grid gap-4">
 			<div class="grid gap-2">
 				<Label for="email">Email</Label>
-				<Input
-					id="email"
-					type="email"
-					placeholder="m@example.com"
-					name="email"
-					value="user@seefalke.info"
-					required
-				/>
+				<Input id="email" type="email" placeholder="user@seefalke.info" name="email" required />
 			</div>
 			<div class="grid gap-2">
 				<Label for="password">Password</Label>
-				<Input id="password" type="password" name="password" value="123456789" required />
+				<Input id="password" type="password" name="password" required />
 			</div>
 		</Card.Content>
 		<Card.Footer>

@@ -149,7 +149,7 @@ export const initializeMapLayers = async (
 		source: 'waterbodies',
 		paint: {
 			'fill-color': '#2c82ea', // This is a placeholder, as MapLibre doesn't support graphic fills
-			'fill-opacity': 0.5
+			'fill-opacity': 0.1
 		}
 	});
 
@@ -173,6 +173,7 @@ export const initializeMapLayers = async (
 				'text-field': ['get', 'name'], // Assuming each feature has a property named 'name'
 				'text-size': 12,
 				'text-offset': [0, -2],
+
 				visibility: 'visible'
 			},
 

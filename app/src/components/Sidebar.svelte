@@ -36,7 +36,6 @@
 		<Login />
 	{:else}
 		<SidebarItem title="Versionen verwalten" id="3">
-			<Button on:click={() => toast.error('helloe word')}>Show toast</Button>
 			<VersionManagement />
 		</SidebarItem>
 		<SidebarItem title="Schiff hinzufügen" id="1">

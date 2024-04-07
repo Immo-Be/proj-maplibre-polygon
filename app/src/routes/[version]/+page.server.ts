@@ -102,34 +102,19 @@ export const actions = {
 		>;
 
 		try {
-			// const auth = await locals.pb.admins.authWithPassword('i.beeck@gmail.com', 'Pea9*demo2MT');
-			// const auth = await locals.pb.admins.getList();
-			// const auth = await db.collection('profiles').getList();
-			// const admins = await locals.pb.admins.getFullList({ sort: '-created' });
-			// console.log('🚀 ~ login: ~ admins:', admins);
-
 			const authData = await locals.pb.collection('users').authWithPassword(email, password);
-
-			console.log('🚀 ~ login: ~ auth:', authData);
-
-			// console.log('🚀 ~ login: ~ auth:', auth);
-
-			// after the above you can also access the auth data from the authStore
-			// console.log('isValid', pb.authStore.isValid);
-			// console.log(db.authStore.token);
-			// console.log(db.authStore.model.id);
+			console.log('🚀 ~ login: ~ authData:', authData);
 			if (!locals.pb?.authStore?.model?.verified) {
-				console.log('user verified');
 				locals.pb.authStore.clear();
 				return {
 					notVerified: true
 				};
+			} else {
+				return;
 			}
 		} catch (err) {
-			// console.log('user not verified');
-
 			console.log('Error: ', err);
-			// throw error(500, 'Something went wrong logging in');
+			throw error(err.status, err.message);
 		}
 
 		throw redirect(303, '/');

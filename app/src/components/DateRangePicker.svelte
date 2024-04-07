@@ -43,7 +43,7 @@
 			<Button
 				variant="input"
 				class={cn(
-					' input justify-start text-left font-normal w-full ',
+					' input justify-start text-left font-normal w-full bg-base-100',
 					!value && 'text-muted-foreground'
 				)}
 				builders={[builder]}

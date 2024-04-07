@@ -8,6 +8,8 @@
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import Login from './Login.svelte';
+	import { toast } from 'svelte-sonner';
+	import { Button } from '$lib/components/ui/button';
 
 	export let id: string | null = null;
 
@@ -34,6 +36,7 @@
 		<Login />
 	{:else}
 		<SidebarItem title="Versionen verwalten" id="3">
+			<Button on:click={() => toast.error('helloe word')}>Show toast</Button>
 			<VersionManagement />
 		</SidebarItem>
 		<SidebarItem title="Schiff hinzufügen" id="1">

@@ -4,6 +4,7 @@
 	import MapContainer from '../components/MapContainer.svelte';
 	import { versions } from '../stores/featureCollection';
 	import updateVersions from '$lib/update-versions';
+	import { Toaster } from '$lib/components/ui/sonner';
 
 	export let data;
 
@@ -22,6 +23,8 @@
 </script>
 
 <main class="drawer min-h-full">
+	<Toaster />
+
 	<input id="my-drawer" type="checkbox" class="drawer-toggle" />
 	<div class="drawer-content">
 		<!-- <DatabaseSyncInfo /> -->

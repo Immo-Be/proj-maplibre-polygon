@@ -49,7 +49,7 @@
 		<Button
 			variant="input"
 			class={cn(
-				' justify-start text-left font-normal w-full my-4',
+				' justify-start text-left font-normal w-full my-4 bg-base-100',
 				!value && 'text-muted-foreground'
 			)}
 			builders={[builder]}

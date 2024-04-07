@@ -25,6 +25,7 @@ export const formFields: FormFieldProps[] = [
 	{ label: 'Farbe', name: 'color', type: 'color', isConfigureMode: false, placeholder: '#1264AF' },
 	{
 		label: 'Mit Spitze?',
+		value: 'on',
 		name: 'hasProtrusion',
 		type: 'checkbox',
 		isConfigureMode: false

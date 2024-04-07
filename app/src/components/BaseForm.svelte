@@ -17,7 +17,7 @@
 	const filteredFormFields = formFields
 		.filter((field) => (isConfigureMode ? field : !field.isConfigureMode))
 		.map((field) => {
-			if (currentShip && currentShip[field.name]) {
+			if (currentShip) {
 				return { ...field, value: currentShip[field.name] };
 			} else {
 				return field;
@@ -100,10 +100,6 @@
 				Hinzufügen
 			</label>
 		{/if}
-
-		<!-- <button class="btn btn-neutral w-full" type="submit"
-			>{isConfigureMode ? 'Speichern' : 'Hinzufügen'}</button
-		> -->
 	</fieldset>
 </form>
 

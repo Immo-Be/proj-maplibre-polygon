@@ -90,11 +90,12 @@ export const onMousePolyGrab = (event: MapMouseEvent) => {
 	const polygon = featureCollectionInstance.features[currentPolygonIndexValue];
 
 	const turfCenterPoint = point([coords.lng, coords.lat]) as GeoJSON.Position;
-	const movingPoly = movePolygon(polygon, turfCenterPoint);
+
+	const movedPoly = movePolygon(polygon, turfCenterPoint);
 
 	// Merge the moved polygon with the rest of the collection
 	featureCollection.update((collection) => {
-		collection.features[currentPolygonIndexValue] = movingPoly;
+		collection.features[currentPolygonIndexValue] = movedPoly;
 		return collection;
 	});
 

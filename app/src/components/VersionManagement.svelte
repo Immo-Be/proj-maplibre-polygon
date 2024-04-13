@@ -3,12 +3,14 @@
 	import { versions } from '../stores/featureCollection';
 	import { enhance, applyAction } from '$app/forms';
 	import BaseFormInput from './BaseFormInput.svelte';
-	import { goto } from '$app/navigation';
+	import { goto, onNavigate } from '$app/navigation';
 	import DateRangePicker from './DateRangePicker.svelte';
 	import { versionsOnSelectedData } from '../stores/featureCollection';
+	import { toast } from 'svelte-sonner';
 
 	import { page } from '$app/stores';
 	import DatePicker from './DatePicker.svelte';
+	let loading = false;
 
 	$: selectedVersion = $page.data.selectedVersion;
 
@@ -20,9 +22,43 @@
 	};
 
 	const handleFormSubmit = () => {
-		return async ({ result, ...actionResult }) => {
-			actionResult.update({ reset: true });
+		return async ({ result, update }) => {
+			switch (result.type) {
+				case 'success':
+					toast.success(result.data.message, { duration: 3000 });
+					await update({ reset: true });
+
+					goto(result.data.location);
+
+					break;
+				// Todo: Implement form validation
+				// see e.g. https://github.com/huntabyte/showcase/blob/episode-6/apps/web/src/routes/login/%2Bpage.server.js
+				// case 'invalid':
+				// 	toast.error('Invalid credentials');
+				// 	await update();
+				// 	break;
+				case 'error':
+					toast.error(result.error.message);
+					break;
+				default:
+					await update();
+			}
+			loading = false;
 			applyAction(result);
+		};
+	};
+
+	const handleDelete = () => {
+		return async ({ result, update }) => {
+			switch (result.type) {
+				case 'success':
+					toast.success(result.data.message, { duration: 3000 });
+					await update({ reset: true });
+
+					goto(result.data.location);
+
+					break;
+			}
 		};
 	};
 </script>
@@ -32,14 +68,16 @@
 		options={$versions}
 		{onSelectChange}
 		value={selectedVersion}
-		label="Wähle Version:"
+		label="Ausgewählte Version:"
 	/>
 	<DatePicker />
 	{#if $versionsOnSelectedData.length > 0}
 		<ul class="flex flex-wrap justify-between gap-1">
 			{#each $versionsOnSelectedData as version}
-				<li class="flex input-bordered w-full hover:bg-accent hover:text-accent-foreground">
-					<a class="w-full label-text" href={`/${version.id}`}>{version.name}</a>
+				<li
+					class="flex input-bordered w-full hover:bg-accent hover:text-accent-foreground p-2 rounded-lg"
+				>
+					<a class="w-full" href={`/${version.id}`}>{version.name}</a>
 				</li>
 			{/each}
 		</ul>
@@ -93,7 +131,7 @@
 	</form>
 
 	<div class="divider"></div>
-	<form use:enhance method="POST" action="?/deleteVersion">
+	<form use:enhance={handleDelete} method="POST" action="?/deleteVersion">
 		<BaseFormInputSelect name="versionId" options={$versions} label="Lösche Version:" />
 		<button class="btn w-full mt-4">Löschen</button>
 	</form>

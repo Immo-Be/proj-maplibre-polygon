@@ -1,11 +1,14 @@
 <script lang="ts">
 	import { formFields } from './../config';
+	import { page } from '$app/stores';
 	import type { Boat, FormFieldTypes, configuredFieldProps } from '../types/types';
 	import BaseFormInput from './BaseFormInput.svelte';
 	import BaseFormInputSelect from './BaseFormInputSelect.svelte';
 	import BaseFormInputColorPick from './BaseFormInputColorPick.svelte';
 	import BaseFormInputCheckbox from './BaseFormInputCheckbox.svelte';
 	import { enhance } from '$app/forms';
+	import { toast } from 'svelte-sonner';
+	import { goto } from '$app/navigation';
 
 	// Client API:
 
@@ -13,6 +16,8 @@
 	Will leave it here for now though as extra l */
 	export let isConfigureMode = false;
 	export let currentShip: Boat | null = null;
+
+	const version = $page?.data?.params?.version;
 
 	const filteredFormFields = formFields
 		.filter((field) => (isConfigureMode ? field : !field.isConfigureMode))
@@ -43,10 +48,40 @@
 		target.form?.requestSubmit();
 		target.checked = false;
 	};
+	let loading = false;
 
 	const handleFormSubmit = (action) => {
-		return async ({ result, ...actionResult }) => {
-			actionResult.update({ reset: !isConfigureMode });
+		console.log('🚀 ~ handleFormSubmit ~ action:', action);
+
+		return async ({ result, update }) => {
+			console.log('🚀 ~ return ~ result:', result);
+			console.log('🚀 ~ version', version);
+			// goto(`/${version}`);
+			switch (result.type) {
+				case 'success':
+					console.log('at success', result);
+
+					toast.success(result.data.message, { duration: 3000 });
+					await update({ reset: !isConfigureMode });
+
+					if (result.data.location) {
+						goto(result.data.location);
+					}
+
+					break;
+				// Todo: Implement form validation
+				// see e.g. https://github.com/huntabyte/showcase/blob/episode-6/apps/web/src/routes/login/%2Bpage.server.js
+				// case 'invalid':
+				// 	toast.error('Invalid credentials');
+				// 	await update();
+				// 	break;
+				case 'error':
+					toast.error(result.error.message);
+					break;
+				default:
+					await update();
+			}
+			loading = false;
 		};
 	};
 </script>

@@ -164,28 +164,25 @@ export const initializeMapLayers = async (
 	});
 
 	// Add the label layer
-	map.addLayer(
-		{
-			id: Layer.POLYGONS_LAYER_GLYPHS,
-			type: 'symbol',
-			source: Layer.POLYGONS_SOURCE,
-			layout: {
-				'text-field': ['get', 'name'], // Assuming each feature has a property named 'name'
-				'text-size': 12,
-				'text-offset': [0, 2],
-				'text-variable-anchor': ['top', 'bottom', 'left', 'right'], // Possible positions
+	map.addLayer({
+		id: Layer.POLYGONS_LAYER_GLYPHS,
+		type: 'symbol',
+		source: Layer.POLYGONS_SOURCE,
+		layout: {
+			'text-field': ['get', 'name'], // Assuming each feature has a property named 'name'
+			'text-size': 12,
+			'text-offset': [0, 2],
+			'text-variable-anchor': ['top', 'bottom', 'left', 'right'], // Possible positions
 
-				visibility: 'visible'
-			},
-
-			paint: {
-				'text-color': '#000000',
-				'text-halo-color': '#fff',
-				'text-halo-width': 16
-			}
+			visibility: 'visible'
 		},
-		Layer.POLYGONS_LAYER_FILL
-	);
+
+		paint: {
+			'text-color': '#000000',
+			'text-halo-color': '#fff',
+			'text-halo-width': 16
+		}
+	});
 
 	map.addLayer({
 		id: Layer.POLYGONS_LAYER_LINE,
@@ -241,6 +238,7 @@ export const initializeMapLayers = async (
 	});
 
 	map.moveLayer(Layer.POLYGONS_LAYER_FILL, Layer.POINTS_LAYER);
+	map.moveLayer(Layer.POLYGONS_LAYER_GLYPHS);
 };
 
 export const getMapSource = (map: maplibregl.Map | null, sourceId: Layer) => {

@@ -8,8 +8,6 @@
 	const { id } = params;
 	export let data;
 
-	$: console.log(data, 'data 2');
-
 	$: featureCollection.update((collection) => updateFeatureCollection(collection, data.polygons));
 </script>
 

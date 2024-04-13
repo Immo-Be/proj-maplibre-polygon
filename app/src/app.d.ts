@@ -9,6 +9,11 @@ declare global {
 			pb: PocketBase;
 			user: any;
 		}
+
+		interface Error {
+			status: string;
+			message: string;
+		}
 		// interface PageData {}
 		// interface PageState {}
 		// interface Platform {}

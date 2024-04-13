@@ -1,25 +1,24 @@
-import { redirect, type Actions, error } from '@sveltejs/kit';
-import PocketBase from 'pocketbase';
+import { redirect, type Actions } from '@sveltejs/kit';
 import type { InputBoatForm } from '../../types/types';
 import { createPolygonFromFormData } from '$lib/create-polygon-from-data';
-import { PB_URL } from '../../constants/env';
 import updateFeatureCollection from '$lib/update-feature-collection';
 import fetchPolygons from '$lib/fetch-polygons-from-db';
-
-// const url = PB_URL;
-// const db = new PocketBase(url);
 
 export const actions = {
 	handleFormSubmit: async ({ params, request, locals }) => {
 		const { version } = params;
-		// const formData = await event.request.formData();
 
 		const { add, ...boat } = Object.fromEntries(await request.formData()) as InputBoatForm;
 
 		const poly = createPolygonFromFormData(boat);
 		if (add) {
 			try {
-				await locals.pb.collection('polygons').create({ feature: poly, plan: version });
+				const addedPoly = await locals.pb
+					.collection('polygons')
+					.create({ feature: poly, plan: version });
+				return {
+					message: `"${addedPoly.feature.properties.name}" wurde erfolgreich hinzugefügt`
+				};
 			} catch (error) {
 				console.log('Something went wrong while creating a polygon: ', error);
 			}
@@ -61,15 +60,18 @@ export const actions = {
 					await locals.pb.collection('polygons').create({ feature: feature, plan: newVersionId });
 				}
 			}
-		} catch (error) {
-			console.log('Something went wrong while creating a polygon: ', error);
+			// redirect(303, `${newVersionId}`);
+			return {
+				type: 'redirect',
+				location: `/${newVersionId}`,
+				message: `Neue Version "${versionsName}" erfolgreich  hinzugefügt`
+			};
+		} catch (err) {
+			return err;
 		}
-
-		redirect(307, `/${newVersionId}`);
 	},
 	deleteVersion: async ({ params, request, locals }) => {
 		const { versionId } = Object.fromEntries(await request.formData());
-		const { version } = params;
 		if (!versionId) {
 			throw new Error('No versionId found when deleting version');
 		}
@@ -86,12 +88,12 @@ export const actions = {
 
 		try {
 			await locals.pb.collection('plans').delete(versionId as string);
+			return {
+				message: 'Version erfolgreich gelöscht',
+				location: '/'
+			};
 		} catch (error) {
 			console.warn('Something went wrong while deleting version', error);
-		}
-
-		if (version === versionId) {
-			redirect(307, `/`);
 		}
 	},
 
@@ -102,8 +104,7 @@ export const actions = {
 		>;
 
 		try {
-			const authData = await locals.pb.collection('users').authWithPassword(email, password);
-			console.log('🚀 ~ login: ~ authData:', authData);
+			await locals.pb.collection('users').authWithPassword(email, password);
 			if (!locals.pb?.authStore?.model?.verified) {
 				locals.pb.authStore.clear();
 				return {
@@ -113,11 +114,8 @@ export const actions = {
 				return;
 			}
 		} catch (err) {
-			console.log('Error: ', err);
-			throw error(err.status, err.message);
+			return err;
 		}
-
-		throw redirect(303, '/');
 	},
 	logout: async ({ locals, params }) => {
 		locals.pb.authStore.clear();

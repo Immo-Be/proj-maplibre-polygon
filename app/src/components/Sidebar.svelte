@@ -4,12 +4,10 @@
 	import BaseForm from './BaseForm.svelte';
 	import BoatManagement from './BoatManagement.svelte';
 	import VersionManagement from './VersionManagement.svelte';
-	import { invalidateAll, invalidate } from '$app/navigation';
+	import { invalidateAll } from '$app/navigation';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import Login from './Login.svelte';
-	import { toast } from 'svelte-sonner';
-	import { Button } from '$lib/components/ui/button';
 
 	export let id: string | null = null;
 

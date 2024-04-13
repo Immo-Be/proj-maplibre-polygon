@@ -17,7 +17,7 @@
 					await applyAction(result);
 
 					await update();
-					toast.success('Login successful', { duration: 3000 });
+					toast.success('Login erfolgreich', { duration: 3000 });
 					break;
 				// Todo: Implement form validation
 				// see e.g. https://github.com/huntabyte/showcase/blob/episode-6/apps/web/src/routes/login/%2Bpage.server.js

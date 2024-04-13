@@ -47,7 +47,6 @@
 
 		// Should probably be moved to a separate file / store
 		const isUserLoggedIn = $page.data.user?.verified;
-		console.log('🚀 ~ onMount ~ isUserLoggedIn:', isUserLoggedIn);
 
 		/**
 		 * Handles the event when the user presses down on point layer to rotate a polygon.

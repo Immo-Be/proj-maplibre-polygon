@@ -6,13 +6,7 @@ import MapboxDraw from '@mapbox/mapbox-gl-draw';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import length from '@turf/length';
 
-import {
-	MaplibreExportControl,
-	Size,
-	PageOrientation,
-	Format,
-	DPI
-} from '@watergis/maplibre-gl-export';
+import { MaplibreExportControl } from '@watergis/maplibre-gl-export';
 import '@watergis/maplibre-gl-export/dist/maplibre-gl-export.css';
 
 import areas from '../lib/shapefiles/areas.json';

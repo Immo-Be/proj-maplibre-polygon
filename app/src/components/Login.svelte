@@ -45,15 +45,22 @@
 		<Card.Content class="grid gap-4">
 			<div class="grid gap-2">
 				<Label for="email">Email</Label>
-				<Input id="email" type="email" placeholder="user@seefalke.info" name="email" required />
+				<Input
+					id="email"
+					type="email"
+					placeholder="user@seefalke.info"
+					name="email"
+					value="user@seefalke.info"
+					required
+				/>
 			</div>
 			<div class="grid gap-2">
 				<Label for="password">Password</Label>
-				<Input id="password" type="password" name="password" required />
+				<Input id="password" type="password" name="password" value="123456789" required />
 			</div>
 		</Card.Content>
 		<Card.Footer>
-			<Button class="w-full bg-base-content" type="submit" disabled={loading}>Einloggen</Button>
+			<Button class="w-full" type="submit" disabled={loading}>Einloggen</Button>
 		</Card.Footer>
 	</Card.Root>
 </form>

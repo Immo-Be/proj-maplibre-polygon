@@ -13,7 +13,13 @@
 	import { handleRotate, initializePolyRotation, onMousePolyGrab, onMouseUp } from '$lib/polygon';
 	import { enhance } from '$app/forms';
 
+	$: console.log('MapContainer.svelte', $page.data);
 	$: isDesktop = !$isTouchDevice;
+
+	// // Prevent interaction with features if the user is not logged in
+	$: $map
+		? ($map.getCanvas().style.pointerEvents = $page.data.user?.verified ? 'all' : 'none')
+		: null;
 
 	onMount(async () => {
 		map.set(await setUpMapInstance());
@@ -40,12 +46,9 @@
 		// // the point layer, prepare for dragging.
 
 		// Should probably be moved to a separate file / store
-		// Should propably be isValid
-		const isUserLoggedIn = $page.data.user;
+		const isUserLoggedIn = $page.data.user?.verified;
+		console.log('🚀 ~ onMount ~ isUserLoggedIn:', isUserLoggedIn);
 
-		if (!isUserLoggedIn) {
-			return;
-		}
 		/**
 		 * Handles the event when the user presses down on point layer to rotate a polygon.
 		 * @param {MapMouseEvent | MapTouchEvent} event - The event object containing information about the mouse or touch event.

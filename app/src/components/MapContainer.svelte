@@ -13,7 +13,6 @@
 	import { handleRotate, initializePolyRotation, onMousePolyGrab, onMouseUp } from '$lib/polygon';
 	import { enhance } from '$app/forms';
 
-	$: console.log('MapContainer.svelte', $page.data);
 	$: isDesktop = !$isTouchDevice;
 
 	// // Prevent interaction with features if the user is not logged in
@@ -44,9 +43,6 @@
 
 		// // When the cursor enters a feature in
 		// // the point layer, prepare for dragging.
-
-		// Should probably be moved to a separate file / store
-		const isUserLoggedIn = $page.data.user?.verified;
 
 		/**
 		 * Handles the event when the user presses down on point layer to rotate a polygon.
@@ -143,7 +139,7 @@
 			return;
 		}
 
-		return polSource.setData(updatedFeatureCollection);
+		polSource.setData(updatedFeatureCollection);
 	});
 
 	let currentlyHoveredId: string | null = null;

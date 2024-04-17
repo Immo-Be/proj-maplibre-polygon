@@ -93,13 +93,12 @@ export const onMousePolyGrab = (event: MapMouseEvent) => {
 
 	const movedPoly = movePolygon(polygon, turfCenterPoint);
 
-	// Merge the moved polygon with the rest of the collection
-	featureCollection.update((collection) => {
-		collection.features[currentPolygonIndexValue] = movedPoly;
-		return collection;
+	requestAnimationFrame(() => {
+		featureCollection.update((collection) => {
+			collection.features[currentPolygonIndexValue] = movedPoly;
+			return collection;
+		});
 	});
-
-	// polSource.setData(get(featureCollection));
 };
 
 let prevBearing = 0;

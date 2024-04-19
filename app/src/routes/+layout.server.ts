@@ -20,17 +20,8 @@ export const load: PageServerLoad = async ({ locals }) => {
 		}
 	};
 
-	// if (locals.user) {
-	// 	return {
-	// 		user: locals.user
-	// 	};
-	// }
-
-	console.log('user.locals', locals.user);
-
 	return {
 		versions: await fetchVersions(),
-		// locals: { ...locals, user: locals.user || undefined }
 		user: locals.user || undefined
 	};
 };

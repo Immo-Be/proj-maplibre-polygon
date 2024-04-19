@@ -12,13 +12,12 @@
 
 	import { handleRotate, initializePolyRotation, onMousePolyGrab, onMouseUp } from '$lib/polygon';
 	import { enhance } from '$app/forms';
+	import { is } from 'date-fns/locale';
 
 	$: isDesktop = !$isTouchDevice;
 
 	// // Prevent interaction with features if the user is not logged in
-	$: $map
-		? ($map.getCanvas().style.pointerEvents = $page.data.user?.verified ? 'all' : 'none')
-		: null;
+	$: isUserLoggedIn = $page.data.user;
 
 	onMount(async () => {
 		map.set(await setUpMapInstance());
@@ -51,7 +50,7 @@
 		$map.on(events.down, Layer.POINTS_LAYER, (event: MapMouseEvent | MapTouchEvent) => {
 			event.preventDefault();
 
-			if (!$map) {
+			if (!$map || !isUserLoggedIn) {
 				return;
 			}
 			isRotating.set(true);
@@ -78,7 +77,7 @@
 		$map?.on(events.down, Layer.POLYGONS_LAYER_FILL, (event: MapTouchEvent | MapMouseEvent) => {
 			event.preventDefault();
 
-			if (!$map || $isRotating) {
+			if (!$map || $isRotating || !isUserLoggedIn) {
 				return;
 			}
 
@@ -94,7 +93,7 @@
 
 		$map.on('mousemove', Layer.POLYGONS_LAYER_FILL, (event) => {
 			event.preventDefault();
-			if ($isRotating || $isDragging || !$map) {
+			if ($isRotating || $isDragging || !$map || !isUserLoggedIn) {
 				return;
 			}
 			$map.getCanvas().style.cursor = 'move';
@@ -113,7 +112,7 @@
 		});
 
 		$map.on('mouseleave', Layer.POLYGONS_LAYER_FILL, () => {
-			if (!$map || $isRotating || $isDragging) {
+			if (!$map || $isRotating || $isDragging || !isUserLoggedIn) {
 				return;
 			}
 

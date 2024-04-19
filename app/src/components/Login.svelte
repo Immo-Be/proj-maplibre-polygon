@@ -50,13 +50,13 @@
 					type="email"
 					placeholder="user@seefalke.info"
 					name="email"
-					value="user@seefalke.info"
+					value=""
 					required
 				/>
 			</div>
 			<div class="grid gap-2">
 				<Label for="password">Password</Label>
-				<Input id="password" type="password" name="password" value="123456789" required />
+				<Input id="password" type="password" name="password" value="" required />
 			</div>
 		</Card.Content>
 		<Card.Footer>

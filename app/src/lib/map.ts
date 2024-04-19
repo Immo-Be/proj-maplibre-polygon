@@ -165,7 +165,6 @@ export const initializeMapLayers = async (
 		layout: {
 			'text-field': ['get', 'name'], // Assuming each feature has a property named 'name'
 			'text-size': 12,
-			'text-offset': [0, 2],
 			'text-variable-anchor': ['top', 'bottom', 'left', 'right'], // Possible positions
 
 			visibility: 'visible'

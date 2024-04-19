@@ -113,7 +113,7 @@
 		});
 
 		$map.on('mouseleave', Layer.POLYGONS_LAYER_FILL, () => {
-			if (!$map) {
+			if (!$map || $isRotating || $isDragging) {
 				return;
 			}
 

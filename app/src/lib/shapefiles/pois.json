@@ -1,0 +1,97 @@
+{
+	"type": "FeatureCollection",
+	"name": "punkte",
+	"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+	"features": [
+		{
+			"type": "Feature",
+			"properties": { "id": 1, "position": 7.3, "art": "durchgang" },
+			"geometry": { "type": "Point", "coordinates": [9.982294866378846, 53.468408705579705] }
+		},
+		{
+			"type": "Feature",
+			"properties": { "id": 2, "position": 38.8, "art": "strom_mit_wasser" },
+			"geometry": { "type": "Point", "coordinates": [9.982726806317704, 53.468275465072651] }
+		},
+		{
+			"type": "Feature",
+			"properties": { "id": 3, "position": 42.5, "art": "durchgang" },
+			"geometry": { "type": "Point", "coordinates": [9.982762009098421, 53.468263221512267] }
+		},
+		{
+			"type": "Feature",
+			"properties": { "id": 4, "position": 56.7, "art": "durchgang" },
+			"geometry": { "type": "Point", "coordinates": [9.982950743643643, 53.468207499884635] }
+		},
+		{
+			"type": "Feature",
+			"properties": { "id": 5, "position": 69.8, "art": "strom_ohne_wasser" },
+			"geometry": { "type": "Point", "coordinates": [9.98313049082957, 53.468150879521062] }
+		},
+		{
+			"type": "Feature",
+			"properties": { "id": 6, "position": 75.5, "art": "durchgang" },
+			"geometry": { "type": "Point", "coordinates": [9.983204489146956, 53.468123134270257] }
+		},
+		{
+			"type": "Feature",
+			"properties": { "id": 7, "position": 87.1, "art": "strom_ohne_wasser" },
+			"geometry": { "type": "Point", "coordinates": [9.983356488122267, 53.468074622396948] }
+		},
+		{
+			"type": "Feature",
+			"properties": { "id": 8, "position": 94.3, "art": "durchgang" },
+			"geometry": { "type": "Point", "coordinates": [9.98344696104024, 53.468046234807773] }
+		},
+		{
+			"type": "Feature",
+			"properties": { "id": 9, "position": 115.0, "art": "strom_mit_wasser" },
+			"geometry": { "type": "Point", "coordinates": [9.983713739491581, 53.467965521689408] }
+		},
+		{
+			"type": "Feature",
+			"properties": { "id": 10, "position": 116.0, "art": "durchgang" },
+			"geometry": { "type": "Point", "coordinates": [9.983724740110707, 53.467961220647723] }
+		},
+		{
+			"type": "Feature",
+			"properties": { "id": 11, "position": 134.5, "art": "durchgang" },
+			"geometry": { "type": "Point", "coordinates": [9.983964245650448, 53.467889864645997] }
+		},
+		{
+			"type": "Feature",
+			"properties": { "id": 12, "position": 153.1, "art": "durchgang" },
+			"geometry": { "type": "Point", "coordinates": [9.984242812292926, 53.467806483303903] }
+		},
+		{
+			"type": "Feature",
+			"properties": { "id": 13, "position": 164.6, "art": "strom_ohne_wasser" },
+			"geometry": { "type": "Point", "coordinates": [9.984397872817503, 53.467755645976574] }
+		},
+		{
+			"type": "Feature",
+			"properties": { "id": 14, "position": 170.4, "art": "durchgang" },
+			"geometry": { "type": "Point", "coordinates": [9.984470968955756, 53.46773230396893] }
+		},
+		{
+			"type": "Feature",
+			"properties": { "id": 15, "position": 189.3, "art": "durchgang" },
+			"geometry": { "type": "Point", "coordinates": [9.984730714746609, 53.467652035359137] }
+		},
+		{
+			"type": "Feature",
+			"properties": { "id": 16, "position": 205.0, "art": "durchgang" },
+			"geometry": { "type": "Point", "coordinates": [9.984938428768537, 53.467585594677892] }
+		},
+		{
+			"type": "Feature",
+			"properties": { "id": 17, "position": 223.6, "art": "strom_mit_wasser" },
+			"geometry": { "type": "Point", "coordinates": [9.985175342395731, 53.467501016335767] }
+		},
+		{
+			"type": "Feature",
+			"properties": { "id": 18, "position": 83.0, "art": "strom_mit_wasser" },
+			"geometry": { "type": "Point", "coordinates": [9.984240160145918, 53.467132127306421] }
+		}
+	]
+}

@@ -4,7 +4,7 @@ import { writable, derived } from 'svelte/store';
 const windowWidth = writable(window.innerWidth);
 
 // Create a derived store to determine if it's a mobile device
-export const isMobile = derived(windowWidth, ($windowWidth) => $windowWidth < 1024);
+export const isMobile = derived(windowWidth, ($windowWidth) => $windowWidth < 576);
 
 export const isTouchDevice = writable('ontouchstart' in window || navigator.maxTouchPoints > 0);
 

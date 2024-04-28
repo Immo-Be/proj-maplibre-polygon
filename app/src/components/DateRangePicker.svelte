@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { Calendar } from 'svelte-radix';
-	import type { DateRange } from 'bits-ui';
 	import {
 		CalendarDate,
 		DateFormatter,
@@ -30,10 +29,7 @@
 	const onSubmit = (event: Event) => {
 		event.preventDefault();
 
-		const formData = new FormData(event.target as HTMLFormElement);
-		// console.log('🚀 ~ onSubmit ~ event.target:', event.target);
-		// console.log('🚀 ~ onSubmit ~ formData:', formData);
-		// console.log('value', value);
+		new FormData(event.target as HTMLFormElement);
 	};
 </script>
 

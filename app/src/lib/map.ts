@@ -10,6 +10,28 @@ import { MaplibreExportControl } from '@watergis/maplibre-gl-export';
 import '@watergis/maplibre-gl-export/dist/maplibre-gl-export.css';
 
 import areas from '../lib/shapefiles/areas.json';
+import pois from '../lib/shapefiles/pois.json';
+
+import chargerPng from './icons/charger-icon.png';
+import walkerPng from './icons/walk-icon.png';
+import waterEc from './icons/water-ec-icon.png';
+
+// const walkerImg = await map.loadImage('./icons/charger-icon.png');
+const stromIcon = new Image();
+stromIcon.width = 16;
+stromIcon.height = 16;
+stromIcon.src = chargerPng;
+
+const walkerIcon = new Image();
+walkerIcon.width = 16;
+walkerIcon.height = 16;
+walkerIcon.src = walkerPng;
+
+const waterIcon = new Image();
+waterIcon.width = 16;
+waterIcon.height = 16;
+waterIcon.src = waterEc;
+
 /**
  * Returns an instance of the map.
  * @returns {maplibregl.Map} The map instance.
@@ -19,7 +41,8 @@ export const setUpMapInstance = async (): Promise<maplibregl.Map> => {
 		container: 'map',
 		style: mapStyle,
 		center: [CENTER.lng, CENTER.lat],
-		zoom: 17
+		zoom: 17,
+		fadeDuration: 0
 	});
 
 	// Add zoom and scale controls to the map.
@@ -210,6 +233,66 @@ export const initializeMapLayers = async (
 			}
 		}
 	});
+
+	// Add your SVG icons to the map's style
+	// Add your SVG icons to the map's style
+
+	// Add the source and layer for the points
+	map.addSource('pois', {
+		type: 'geojson',
+		data: pois as GeoJSON.GeoJSON
+	});
+
+	map.addImage('strom_mit_wasser', stromIcon);
+	map.addImage('strom_ohne_wasser', waterIcon);
+	map.addImage('durchgang', walkerIcon);
+	// // console.log('🚀 ~ walkerImg:', walkerImg);
+
+	// // const walkerImg = map.addImage('walker', walker);
+	// // console.log('🚀 ~ walkerImg:', walkerImg);
+
+	map.addLayer({
+		id: 'pois',
+		type: 'symbol',
+		source: 'pois',
+		layout: {
+			'icon-image': [
+				'match',
+				['get', 'art'],
+				'strom_mit_wasser',
+				'strom_mit_wasser',
+				'strom_ohne_wasser',
+				'strom_ohne_wasser',
+				'durchgang',
+				'durchgang',
+				// default
+				'durchgang'
+			],
+			'icon-size': 1,
+			'icon-allow-overlap': true
+		},
+		minzoom: 17.5 // Add the minimum zoom level here
+	});
+
+	// // Add the label layer
+	// map.addLayer({
+	// 	id: 'pois',
+	// 	type: 'symbol',
+	// 	source: 'pois',
+	// 	layout: {
+	// 		'text-field': ['get', 'symbol'], // Assuming each feature has a property named 'name'
+	// 		'text-size': 10,
+	// 		'text-variable-anchor': ['top', 'bottom', 'left', 'right'], // Possible positions
+
+	// 		visibility: 'visible'
+	// 	},
+
+	// 	paint: {
+	// 		'text-color': '#000000',
+	// 		'text-halo-color': '#fff',
+	// 		'text-halo-width': 1
+	// 	}
+	// });
 
 	// Add the source and layer for the line
 	map.addSource(Layer.LINE_SOURCE, {

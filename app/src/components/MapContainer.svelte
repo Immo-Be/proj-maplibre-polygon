@@ -175,14 +175,20 @@
 		}
 	});
 
+	let labelText = 'Labels aus';
+
 	function toggleLabelNames() {
 		// Get the current visibility of the layer
 		var visibility = $map?.getLayoutProperty(Layer.POLYGONS_LAYER_GLYPHS, 'visibility');
 
 		// Toggle the visibility
 		if (visibility === 'visible') {
+			labelText = 'Labels ein';
+
 			$map?.setLayoutProperty(Layer.POLYGONS_LAYER_GLYPHS, 'visibility', 'none');
 		} else {
+			labelText = 'Labels aus';
+
 			$map?.setLayoutProperty(Layer.POLYGONS_LAYER_GLYPHS, 'visibility', 'visible');
 		}
 	}
@@ -190,7 +196,7 @@
 
 <div class="map h-full" id="map"></div>
 <div id="toggle-name-container" class="on-map-container">
-	<button on:click={toggleLabelNames}>Label?</button>
+	<button on:click={toggleLabelNames}>{labelText}</button>
 </div>
 <div id="distance-container" class="on-map-container"></div>
 

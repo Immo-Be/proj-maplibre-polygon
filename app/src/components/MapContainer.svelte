@@ -93,8 +93,11 @@
 
 		// When a click event occurs on a feature in the places layer, open a popup at the
 		// location of the feature, with description HTML from its properties.
-		$map.on('click', 'infos', (e) => {
+		$map.on(isDesktop ? 'click' : 'touchstart', 'infos', (e) => {
+			e.preventDefault();
+			//@ts-ignore
 			const coordinates = e.features[0].geometry.coordinates.slice();
+			//@ts-ignore
 			const description = e.features[0].properties.infoText;
 
 			// Ensure that if the map is zoomed out such that multiple
@@ -104,7 +107,7 @@
 				coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
 			}
 
-			const popup = new maplibregl.Popup({ className: 'popup' })
+			new maplibregl.Popup({ className: 'popup' })
 				.setLngLat(coordinates)
 				.setHTML(description)
 				.addTo($map);

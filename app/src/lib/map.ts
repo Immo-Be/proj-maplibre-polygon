@@ -107,20 +107,6 @@ export const setUpMapInstance = async (): Promise<maplibregl.Map> => {
 		}
 	}
 	map.addControl(new MaplibreExportControl(), 'top-right');
-	// console.log('control', new MaplibreExportControl.MaplibreExportControl());
-
-	// map.addControl(
-	// 	new MaplibreExportControl.MaplibreExportControl({
-	// 		PageSize: MaplibreExportControl.Size.A4,
-	// 		PageOrientation: MaplibreExportControl.PageOrientation.Landscape,
-	// 		Format: MaplibreExportControl.Format.PNG,
-	// 		DPI: MaplibreExportControl.DPI[300],
-	// 		Crosshair: true,
-	// 		PrintableArea: true,
-	// 		Local: 'fr'
-	// 	}),
-	// 	'top-right'
-	// );
 
 	const layerId = Layer.POLYGONS_LAYER_FILL;
 

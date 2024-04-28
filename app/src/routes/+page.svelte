@@ -3,7 +3,7 @@
 </script>
 
 <svelte:head>
-	<title>Home</title>
+	<title>Hafenplanungstool Harburg</title>
 	<meta name="description" content="Svelte demo app" />
 </svelte:head>
 

@@ -13,7 +13,7 @@
 </script>
 
 <svelte:head>
-	<title>Home</title>
+	<title>Hafenplanungstool</title>
 	<meta name="description" content="Svelte demo app" />
 </svelte:head>
 

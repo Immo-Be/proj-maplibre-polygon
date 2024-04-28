@@ -1,6 +1,6 @@
 import { CENTER, Layer } from '../constants';
 import maplibregl, { Map, type IControl } from 'maplibre-gl';
-import { mapStyle } from '../map-styles';
+// import { mapStyle } from '../map-styles';
 import { MapboxInfoBoxControl } from 'mapbox-gl-infobox';
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
@@ -11,10 +11,14 @@ import '@watergis/maplibre-gl-export/dist/maplibre-gl-export.css';
 
 import areas from '../lib/shapefiles/areas.json';
 import pois from '../lib/shapefiles/pois.json';
+import infos from '../lib/shapefiles/infos.json';
+
+import mapStyle from '../map-styles';
 
 import chargerPng from './icons/charger-icon.png';
 import walkerPng from './icons/walk-icon.png';
 import waterEc from './icons/water-ec-icon.png';
+import infoPng from './icons/info-icon.png';
 
 // const walkerImg = await map.loadImage('./icons/charger-icon.png');
 const stromIcon = new Image();
@@ -31,6 +35,11 @@ const waterIcon = new Image();
 waterIcon.width = 16;
 waterIcon.height = 16;
 waterIcon.src = waterEc;
+
+const infoIcon = new Image();
+infoIcon.width = 24;
+infoIcon.height = 24;
+infoIcon.src = infoPng;
 
 /**
  * Returns an instance of the map.
@@ -234,6 +243,34 @@ export const initializeMapLayers = async (
 		}
 	});
 
+	map.addSource('infos', {
+		type: 'geojson',
+		data: infos as GeoJSON.GeoJSON
+	});
+
+	map.addLayer({
+		id: 'circle',
+		type: 'circle',
+		source: 'infos',
+		paint: {
+			'circle-radius': 8,
+			'circle-color': '#fdfc60',
+			// @ts-expect-error - circle-opacity-transition is not in the types
+			'circle-opacity-transition': {
+				duration: 0
+			}
+		}
+	});
+	map.addLayer({
+		id: 'infos',
+		type: 'symbol',
+		source: 'infos',
+		layout: {
+			'icon-image': 'infoIcon',
+			'icon-overlap': 'always'
+		}
+	});
+
 	// Add your SVG icons to the map's style
 	// Add your SVG icons to the map's style
 
@@ -246,10 +283,7 @@ export const initializeMapLayers = async (
 	map.addImage('strom_mit_wasser', stromIcon);
 	map.addImage('strom_ohne_wasser', waterIcon);
 	map.addImage('durchgang', walkerIcon);
-	// // console.log('🚀 ~ walkerImg:', walkerImg);
-
-	// // const walkerImg = map.addImage('walker', walker);
-	// // console.log('🚀 ~ walkerImg:', walkerImg);
+	map.addImage('infoIcon', infoIcon);
 
 	map.addLayer({
 		id: 'pois',
@@ -273,26 +307,6 @@ export const initializeMapLayers = async (
 		},
 		minzoom: 17.5 // Add the minimum zoom level here
 	});
-
-	// // Add the label layer
-	// map.addLayer({
-	// 	id: 'pois',
-	// 	type: 'symbol',
-	// 	source: 'pois',
-	// 	layout: {
-	// 		'text-field': ['get', 'symbol'], // Assuming each feature has a property named 'name'
-	// 		'text-size': 10,
-	// 		'text-variable-anchor': ['top', 'bottom', 'left', 'right'], // Possible positions
-
-	// 		visibility: 'visible'
-	// 	},
-
-	// 	paint: {
-	// 		'text-color': '#000000',
-	// 		'text-halo-color': '#fff',
-	// 		'text-halo-width': 1
-	// 	}
-	// });
 
 	// Add the source and layer for the line
 	map.addSource(Layer.LINE_SOURCE, {

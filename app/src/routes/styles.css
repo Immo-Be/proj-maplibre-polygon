@@ -58,6 +58,20 @@ select {
 	font: inherit;
 }
 
+.maplibregl-popup:has(.popup) {
+	max-width: 400px !important;
+}
+
+.popup {
+	display: flex;
+	justify-content: space-between;
+	gap: 1rem;
+
+	> * {
+		flex: 1;
+	}
+}
+
 html,
 body {
 	height: 100dvh;

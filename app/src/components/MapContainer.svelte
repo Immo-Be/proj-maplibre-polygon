@@ -9,10 +9,10 @@
 	import { isTouchDevice } from '../stores/is-mobile';
 	import { hoveredFeaturedId } from '../stores/featureCollection';
 	import { navigating, page } from '$app/stores';
+	import maplibregl from 'maplibre-gl';
 
 	import { handleRotate, initializePolyRotation, onMousePolyGrab, onMouseUp } from '$lib/polygon';
 	import { enhance } from '$app/forms';
-	import { is } from 'date-fns/locale';
 
 	$: isDesktop = !$isTouchDevice;
 
@@ -89,6 +89,25 @@
 
 			$map.on(events.move, onMousePolyGrab);
 			$map.once(events.up, onMouseUp);
+		});
+
+		// When a click event occurs on a feature in the places layer, open a popup at the
+		// location of the feature, with description HTML from its properties.
+		$map.on('click', 'infos', (e) => {
+			const coordinates = e.features[0].geometry.coordinates.slice();
+			const description = e.features[0].properties.infoText;
+
+			// Ensure that if the map is zoomed out such that multiple
+			// copies of the feature are visible, the popup appears
+			// over the copy being pointed to.
+			while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+				coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+			}
+
+			const popup = new maplibregl.Popup({ className: 'popup' })
+				.setLngLat(coordinates)
+				.setHTML(description)
+				.addTo($map);
 		});
 
 		$map.on('mousemove', Layer.POLYGONS_LAYER_FILL, (event) => {

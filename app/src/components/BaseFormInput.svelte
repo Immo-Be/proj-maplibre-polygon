@@ -1,7 +1,8 @@
 <script lang="ts">
 	import type { configuredFieldProps } from '../types/types';
 
-	let { name, label, type, placeholder, inputId, value } = $$props as configuredFieldProps;
+	let { name, label, type, placeholder, inputId, value, required } =
+		$$props as configuredFieldProps;
 </script>
 
 <label class="form-control w-full max-w-xs">
@@ -13,7 +14,7 @@
 		{placeholder}
 		class="input input-bordered w-full input-sm max-w-xs"
 		step=".01"
-		required
+		{required}
 		bind:value
 	/>
 </label>

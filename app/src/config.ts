@@ -41,5 +41,14 @@ export const formFields: FormFieldProps[] = [
 			{ name: '32A', id: '32A' },
 			{ name: '64A', id: '64A' }
 		]
+	},
+	{
+		label: 'Noitz',
+		name: 'notiz',
+		type: 'text',
+		value: '',
+		required: false,
+		isConfigureMode: false,
+		placeholder: 'Füge eine Notiz hinzu'
 	}
 ];

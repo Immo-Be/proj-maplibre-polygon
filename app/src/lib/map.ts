@@ -60,7 +60,6 @@ export const setUpMapInstance = async (): Promise<maplibregl.Map> => {
 		var options = { units: 'meters' };
 		if (data.features.length > 0) {
 			const lengthValue = length(data.features.at(-1), options).toFixed(2);
-			console.log('🚀 ~ updateArea ~ data:', lengthValue);
 
 			// const area = turf.area(data);
 			// restrict to area to 2 decimal points
@@ -93,12 +92,13 @@ export const setUpMapInstance = async (): Promise<maplibregl.Map> => {
 
 	const layerId = Layer.POLYGONS_LAYER_FILL;
 
-	const formatter = ({ name, width, height, power }) =>
+	const formatter = ({ name, width, height, power, notiz }) =>
 		`<div>
 		<b>Name: </b>${name}</div>
 		<div><b>Länge: </b>${width}&nbsp;m</div>
 		<div><b>Breite: </b>${height}&nbsp;m</div>
-		<div><b>Strom: </b>${power}</div>`;
+		<div><b>Strom: </b>${power}</div>
+		<div><b>Notiz: </b>${notiz ? notiz : '--'}</div>`;
 
 	const infoboxOptions = {
 		layerId,

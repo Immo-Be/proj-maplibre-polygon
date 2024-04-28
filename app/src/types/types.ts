@@ -26,6 +26,7 @@ export interface FormFieldProps {
 	placeholder?: string;
 	inputId?: string;
 	value?: string | number;
+	required?: boolean;
 }
 
 export interface configuredFieldProps extends FormFieldProps {

@@ -13,6 +13,7 @@
 
 	import { handleRotate, initializePolyRotation, onMousePolyGrab, onMouseUp } from '$lib/polygon';
 	import { enhance } from '$app/forms';
+	import { is } from 'date-fns/locale/is';
 
 	$: isDesktop = !$isTouchDevice;
 
@@ -93,7 +94,7 @@
 
 		// When a click event occurs on a feature in the places layer, open a popup at the
 		// location of the feature, with description HTML from its properties.
-		$map.on(isDesktop ? 'click' : 'touchstart', 'infos', (e) => {
+		$map.on(isDesktop ? 'mousemove' : 'touchstart', 'infos', (e) => {
 			e.preventDefault();
 			//@ts-ignore
 			const coordinates = e.features[0].geometry.coordinates.slice();
@@ -107,7 +108,7 @@
 				coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
 			}
 
-			new maplibregl.Popup({ className: 'popup' })
+			new maplibregl.Popup({ closeButton: false, closeOnMove: true })
 				.setLngLat(coordinates)
 				.setHTML(description)
 				.addTo($map);

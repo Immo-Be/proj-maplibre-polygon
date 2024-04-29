@@ -239,8 +239,18 @@ export const initializeMapLayers = async (
 		type: 'circle',
 		source: 'infos',
 		paint: {
-			'circle-radius': 8,
-			'circle-color': '#fdfc60',
+			'circle-radius': [
+				'interpolate',
+				['linear'],
+				['zoom'],
+				0,
+				4, // At zoom level 0, circle radius is 4
+				10,
+				8, // At zoom level 10, circle radius is 8
+				20,
+				16 // At zoom level 20, circle radius is 16
+			],
+			'circle-color': '#FFFF00',
 			// @ts-expect-error - circle-opacity-transition is not in the types
 			'circle-opacity-transition': {
 				duration: 0
@@ -253,7 +263,18 @@ export const initializeMapLayers = async (
 		source: 'infos',
 		layout: {
 			'icon-image': 'infoIcon',
-			'icon-overlap': 'always'
+			'icon-overlap': 'always',
+			'icon-size': [
+				'interpolate',
+				['linear'],
+				['zoom'],
+				0,
+				0.5, // At zoom level 0, icon size is 0.5
+				10,
+				1, // At zoom level 10, icon size is 1
+				20,
+				1.5 // At zoom level 20, icon size is 2
+			]
 		}
 	});
 

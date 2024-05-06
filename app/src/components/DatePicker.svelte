@@ -1,12 +1,10 @@
 <script lang="ts">
-	import { page } from '$app/stores';
 	import CalendarIcon from 'svelte-radix/Calendar.svelte';
 	import { DateFormatter, getLocalTimeZone, type DateValue } from '@internationalized/date';
 	import { cn } from '$lib/utils.js';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { Calendar } from '$lib/components/ui/calendar/index.js';
 	import * as Popover from '$lib/components/ui/popover/index.js';
-	import type { Version } from '../stores/featureCollection';
 	import { versionsOnSelectedData, versions } from '../stores/featureCollection';
 	import { isWithinInterval } from 'date-fns';
 

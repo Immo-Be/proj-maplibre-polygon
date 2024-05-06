@@ -10,12 +10,14 @@
 	import { hoveredFeaturedId } from '../stores/featureCollection';
 	import { navigating, page } from '$app/stores';
 	import maplibregl from 'maplibre-gl';
+	import { versions } from '../stores/featureCollection';
 
 	import { handleRotate, initializePolyRotation, onMousePolyGrab, onMouseUp } from '$lib/polygon';
 	import { enhance } from '$app/forms';
-	import { is } from 'date-fns/locale/is';
 
 	$: isDesktop = !$isTouchDevice;
+	$: selectedVersionId = $page.data.selectedVersion;
+	$: selectVersionLabel = $versions.find((version) => version.id === selectedVersionId)?.name ?? '';
 
 	// // Prevent interaction with features if the user is not logged in
 	$: isUserLoggedIn = $page.data.user;
@@ -218,23 +220,47 @@
 </script>
 
 <div class="map h-full" id="map"></div>
-<div id="toggle-name-container" class="on-map-container">
+
+<div class="on-map-container toggle-label-container">
 	<button on:click={toggleLabelNames}>{labelText}</button>
 </div>
+
+<div class="on-map-container name-container">
+	<p>{selectVersionLabel}</p>
+</div>
+
 <div id="distance-container" class="on-map-container"></div>
 
 {#if $page.data.user}
-	<form class="on-map-container" method="POST" use:enhance action="?/logout">
+	<form class="on-map-container logout-container" method="POST" use:enhance action="?/logout">
 		<button type="submit">Logout</button>
 	</form>
 {/if}
 
 <style global>
+	:global(.logout-container) {
+		position: absolute;
+		width: fit-content;
+		margin-right: 80px;
+		z-index: 1;
+	}
+	:global(div.toggle-label-container) {
+		top: 40px;
+	}
+
+	:global(.name-container) {
+		position: relative;
+		width: fit-content;
+		top: 8px;
+		z-index: 1;
+	}
 	:global(.on-map-container) {
 		position: absolute;
 		top: 8px;
 		right: 50px;
 		z-index: 1;
+		border-radius: 3px;
+		background-color: white;
 	}
 
 	:global(.on-map-container:last-child) {

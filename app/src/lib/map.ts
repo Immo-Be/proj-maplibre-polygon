@@ -305,7 +305,6 @@ export const initializeMapLayers = async (
 				'strom_ohne_wasser',
 				'strom_ohne_wasser',
 				'durchgang',
-				'durchgang',
 				// default
 				'durchgang'
 			],

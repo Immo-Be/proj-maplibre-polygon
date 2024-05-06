@@ -3,7 +3,7 @@
 	import { versions } from '../stores/featureCollection';
 	import { enhance, applyAction } from '$app/forms';
 	import BaseFormInput from './BaseFormInput.svelte';
-	import { goto, onNavigate } from '$app/navigation';
+	import { goto } from '$app/navigation';
 	import DateRangePicker from './DateRangePicker.svelte';
 	import { versionsOnSelectedData } from '../stores/featureCollection';
 	import { toast } from 'svelte-sonner';

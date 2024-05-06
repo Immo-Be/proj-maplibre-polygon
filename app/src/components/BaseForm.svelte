@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { formFields } from './../config';
-	import { page } from '$app/stores';
-	import type { Boat, FormFieldTypes, configuredFieldProps } from '../types/types';
+	import type { Boat, FormFieldTypes } from '../types/types';
 	import BaseFormInput from './BaseFormInput.svelte';
 	import BaseFormInputSelect from './BaseFormInputSelect.svelte';
 	import BaseFormInputColorPick from './BaseFormInputColorPick.svelte';

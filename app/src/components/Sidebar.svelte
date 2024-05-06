@@ -11,7 +11,7 @@
 
 	export let id: string | null = null;
 
-	// We need to re-fetch all polygons when the user switches between configure mode and normal mode
+	// We need to re-fetch all polygons when the user navigates back from "configure mode"
 	// Otherwise, the polygons will jump back to their original position
 
 	const isAtRootPath = Boolean($page.data.selectedVersion);
@@ -19,7 +19,7 @@
 	if (isAtRootPath) {
 		invalidateAll();
 	} else {
-		goto($page.params.version || $page.data.versions[0].id);
+		goto($page.params.version || $page.data.versions.at(-1).id);
 	}
 
 	$: isConfigureMode = id !== null;

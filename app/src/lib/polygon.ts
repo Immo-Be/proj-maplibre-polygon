@@ -308,11 +308,6 @@ export const onMouseUp = (event: MapMouseEvent) => {
 	const coords = event.lngLat;
 	console.log(`${coords.lat} - ${coords.lng}`);
 
-	// Print the coordinates of where the point had
-	// finished being dragged to on the map.
-	// coordinates.style.display = "block";
-	// coordinates.innerHTML = `Longitude: ${coords.lng}<br />Latitude: ${coords.lat}`;
-	// canvas.style.cursor = '';
 	isDragging.update(() => false);
 	isRotating.update(() => false);
 

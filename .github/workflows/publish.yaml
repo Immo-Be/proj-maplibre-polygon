@@ -18,20 +18,20 @@ jobs:
     - name: Login
       run: |
         echo ${{ secrets.PAT }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-    
+
     - name: Build Images
       run: |
-        BUILD_TARGET=${{ env.BUILD_TARGET }} APP_PORT=${{env.APP_PORT}} docker-compose build
+        BUILD_TARGET=${{ env.BUILD_TARGET }} APP_PORT=${{env.APP_PORT}} docker compose build
 
     - name: Push Images to Registry
       run: |
-        docker-compose push
-        
+        docker compose push
+
   deploy:
     needs: publish
     name: deploy images
     runs-on: ubuntu-latest
-    
+
     steps:
     - name: install ssh keys
         # check this thread to understand why its needed:
@@ -43,8 +43,8 @@ jobs:
     - name: connect and pull
     # For this to work, the server must be logged in docker hub
     # echo YOURACCESSTOKEN| docker login ghcr.io -u immobe --password-stdin
-    # Find the Personal Access Token (PTA) in Github -> Settings -> Developer Settings -> Personal Access Token 
-    # Should use sudo 
+    # Find the Personal Access Token (PTA) in Github -> Settings -> Developer Settings -> Personal Access Token
+    # Should use sudo
       run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }} && docker compose pull && docker compose up -d && exit"
     # - name: copy default.conf for reverse-proxy
     #   run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }} && sudo docker cp default.conf www-nginx-1:/etc/nginx/conf.d/default.conf && exit"

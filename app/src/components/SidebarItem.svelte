@@ -32,7 +32,7 @@
 	};
 </script>
 
-<div class={`collapse collapse-arrow bg-base-100 min-h-[60px]`}>
+<div class={`collapse collapse-arrow bg-base-100 min-h-[60px] overflow-auto`}>
 	<input
 		{id}
 		type="radio"

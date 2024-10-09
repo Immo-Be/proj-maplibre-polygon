@@ -49,6 +49,6 @@ export const formFields: FormFieldProps[] = [
 		value: '',
 		required: false,
 		isConfigureMode: false,
-		placeholder: 'Füge eine Notiz hinzu'
+		placeholder: 'Füge eine neue Notiz hinzu'
 	}
 ];

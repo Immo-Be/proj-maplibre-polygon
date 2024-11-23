@@ -12,7 +12,7 @@
 	import DatePicker from './DatePicker.svelte';
 	let loading = false;
 
-	$: selectedVersion = $page.data.selectedVersion;
+	let selectedVersion = $derived($page.data.selectedVersion);
 
 	const onSelectChange = (event: Event) => {
 		const element = event.target as HTMLSelectElement;

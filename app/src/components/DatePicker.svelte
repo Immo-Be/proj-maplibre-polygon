@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import CalendarIcon from 'svelte-radix/Calendar.svelte';
 	import { DateFormatter, getLocalTimeZone, type DateValue } from '@internationalized/date';
 	import { cn } from '$lib/utils.js';
@@ -12,7 +14,7 @@
 		dateStyle: 'long'
 	});
 
-	let value: DateValue | undefined = undefined;
+	let value: DateValue | undefined = $state(undefined);
 
 	function getVersionsOnDate(versions, dateObj) {
 		if (!versions || !dateObj) {
@@ -32,30 +34,34 @@
 		});
 	}
 
-	$: versionWithDates = $versions.filter((version) => version.date_end && version.date_start);
+	let versionWithDates = $derived($versions.filter((version) => version.date_end && version.date_start));
 
-	$: versionsOnSelectedData.update(() => {
-		if (value && versionWithDates.length > 0) {
-			return getVersionsOnDate(versionWithDates, value);
-		}
-		return [];
+	run(() => {
+		versionsOnSelectedData.update(() => {
+			if (value && versionWithDates.length > 0) {
+				return getVersionsOnDate(versionWithDates, value);
+			}
+			return [];
+		});
 	});
 </script>
 
 <Popover.Root>
-	<Popover.Trigger asChild let:builder>
-		<Button
-			variant="input"
-			class={cn(
-				' justify-start text-left font-normal w-full my-4 bg-base-100',
-				!value && 'text-muted-foreground'
-			)}
-			builders={[builder]}
-		>
-			<CalendarIcon class="mr-2 h-4 w-4" />
-			{value ? df.format(value.toDate(getLocalTimeZone())) : 'Wähle ein Datum'}
-		</Button>
-	</Popover.Trigger>
+	<Popover.Trigger asChild >
+		{#snippet children({ builder })}
+				<Button
+				variant="input"
+				class={cn(
+					' justify-start text-left font-normal w-full my-4 bg-base-100',
+					!value && 'text-muted-foreground'
+				)}
+				builders={[builder]}
+			>
+				<CalendarIcon class="mr-2 h-4 w-4" />
+				{value ? df.format(value.toDate(getLocalTimeZone())) : 'Wähle ein Datum'}
+			</Button>
+					{/snippet}
+		</Popover.Trigger>
 	<Popover.Content class="w-auto p-0" align="start">
 		<Calendar bind:value />
 	</Popover.Content>

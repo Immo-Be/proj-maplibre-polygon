@@ -9,7 +9,11 @@
 	import { page } from '$app/stores';
 	import Login from './Login.svelte';
 
-	export let id: string | null = null;
+	interface Props {
+		id?: string | null;
+	}
+
+	let { id = null }: Props = $props();
 
 	// We need to re-fetch all polygons when the user navigates back from "configure mode"
 	// Otherwise, the polygons will jump back to their original position
@@ -22,7 +26,7 @@
 		goto($page.params.version || $page.data.versions.at(-1).id);
 	}
 
-	$: isConfigureMode = id !== null;
+	let isConfigureMode = $derived(id !== null);
 </script>
 
 <div

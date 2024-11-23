@@ -6,7 +6,7 @@
 	import updateVersions from '$lib/update-versions';
 	import { Toaster } from '$lib/components/ui/sonner';
 
-	export let data;
+	let { data, children } = $props();
 
 	versions.update(() => updateVersions(data.versions));
 
@@ -30,6 +30,6 @@
 		<MapContainer />
 	</div>
 	<aside class="drawer-side pointer-events-auto z-20 overflow-visible w-0 min-h-full">
-		<slot />
+		{@render children?.()}
 	</aside>
 </main>

@@ -4,10 +4,14 @@
 	import { cn } from '$lib/utils.js';
 
 	import { hoveredFeaturedId } from '../stores/featureCollection';
-	export let name: string;
-	export let id: string;
-	export let color: string;
 	import { page } from '$app/stores';
+	interface Props {
+		name: string;
+		id: string;
+		color: string;
+	}
+
+	let { name, id, color }: Props = $props();
 
 	const initViewTransition = (event) => {
 		event.target.style.viewTransitionName = 'active-ship';
@@ -21,11 +25,11 @@
 		'group flex justify-between items-center hover:bg-base-300 focus:bg-base-300 p-4',
 		$hoveredFeaturedId === id && 'bg-base-300'
 	)}
-	on:mouseenter={() => hoveredFeaturedId.update(() => id)}
-	on:mouseleave={() => hoveredFeaturedId.update(() => null)}
+	onmouseenter={() => hoveredFeaturedId.update(() => id)}
+	onmouseleave={() => hoveredFeaturedId.update(() => null)}
 >
 	<a
-		on:mousedown={initViewTransition}
+		onmousedown={initViewTransition}
 		href={`${$page.url.href}/${id}`}
 		class="block w-full relative"
 	>

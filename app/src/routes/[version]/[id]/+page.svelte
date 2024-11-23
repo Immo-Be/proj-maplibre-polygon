@@ -1,4 +1,6 @@
 <script>
+	import { run } from 'svelte/legacy';
+
 	import { page } from '$app/stores';
 	import Sidebar from '../../../components/Sidebar.svelte';
 	import { featureCollection } from '../../../stores/featureCollection';
@@ -6,9 +8,11 @@
 
 	const { params } = $page;
 	const { id } = params;
-	export let data;
+	let { data } = $props();
 
-	$: featureCollection.update((collection) => updateFeatureCollection(collection, data.polygons));
+	run(() => {
+		featureCollection.update((collection) => updateFeatureCollection(collection, data.polygons));
+	});
 </script>
 
 <svelte:head>

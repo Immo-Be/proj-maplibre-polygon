@@ -3,13 +3,13 @@
 	import { featureCollection, versions } from '../../stores/featureCollection';
 	import updateFeatureCollection from '$lib/update-feature-collection';
 	import updateVersions from '$lib/update-versions';
-	export let data;
+	let { data } = $props();
 
-	$: {
+	$effect.pre(() => {
 		featureCollection.update((collection) => updateFeatureCollection(collection, data.polygons));
 
 		versions.update(() => updateVersions(data.versions));
-	}
+	});
 </script>
 
 <svelte:head>

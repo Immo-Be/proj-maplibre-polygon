@@ -11,10 +11,14 @@
 
 	// Client API:
 
-	/* We wouldn't need this variable here because we could just check if there is a currentBoatId from the url
+	interface Props {
+		/* We wouldn't need this variable here because we could just check if there is a currentBoatId from the url
 	Will leave it here for now though as extra l */
-	export let isConfigureMode = false;
-	export let currentShip: Boat | null = null;
+		isConfigureMode?: boolean;
+		currentShip?: Boat | null;
+	}
+
+	let { isConfigureMode = false, currentShip = null }: Props = $props();
 
 	const filteredFormFields = formFields
 		.filter((field) => (isConfigureMode ? field : !field.isConfigureMode))
@@ -84,7 +88,8 @@
 >
 	<fieldset class="flex flex-col gap-4">
 		{#each filteredFormFields as { type, ...rest }}
-			<svelte:component this={componentLookUp[type]} {type} {...rest} />
+			{@const SvelteComponent = componentLookUp[type]}
+			<SvelteComponent {type} {...rest} />
 		{/each}
 
 		{#if isConfigureMode}
@@ -95,7 +100,7 @@
 					id="deleteBoat"
 					type="checkbox"
 					checked={false}
-					on:click={requestSubmitEvent}
+					onclick={requestSubmitEvent}
 				/>
 				Löschen
 			</label>
@@ -108,11 +113,12 @@
 					id="speichern"
 					type="checkbox"
 					checked={false}
-					on:click={requestSubmitEvent}
+					onclick={requestSubmitEvent}
 				/>
 				Speichern
 			</label>
 		{:else}
+			// Todo: Should be a button or role button
 			<label for="add" class="btn" aria-label="submit">
 				<input
 					hidden
@@ -120,7 +126,7 @@
 					id="add"
 					type="checkbox"
 					checked={false}
-					on:click={requestSubmitEvent}
+					onclick={requestSubmitEvent}
 				/>
 				Hinzufügen
 			</label>

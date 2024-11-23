@@ -1,14 +1,21 @@
 <script lang="ts">
+	import { preventDefault } from 'svelte/legacy';
+
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { selectedSidebarItemId } from '../stores/selected-sidebar-item';
-	export let title: string;
 
-	$: selectedVersion = $page.data.selectedVersion;
+	let selectedVersion = $derived($page.data.selectedVersion);
 
-	export let id: string;
+	interface Props {
+		title: string;
+		id: string;
+		children?: import('svelte').Snippet;
+	}
 
-	$: checked = $selectedSidebarItemId === id;
+	let { title, id, children }: Props = $props();
+
+	let checked = $derived($selectedSidebarItemId === id);
 
 	// // We use the mousedown event because the checked attribute is updated after the click event
 	// // So we need to prevent the default behavior of the click event
@@ -37,14 +44,14 @@
 		{id}
 		type="radio"
 		name="sidebar-content-area"
-		on:mousedown={handleMouseDown}
-		on:click|preventDefault={() => null}
+		onmousedown={handleMouseDown}
+		onclick={preventDefault(() => null)}
 		{checked}
 	/>
 	<div class="collapse-title text-xl font-medium">
 		{title}
 	</div>
 	<div class="collapse-content overflow-y-auto overflow-x-auto">
-		<slot />
+		{@render children?.()}
 	</div>
 </div>

@@ -15,12 +15,12 @@
 	import { handleRotate, initializePolyRotation, onMousePolyGrab, onMouseUp } from '$lib/polygon';
 	import { enhance } from '$app/forms';
 
-	$: isDesktop = !$isTouchDevice;
-	$: selectedVersionId = $page.data.selectedVersion;
-	$: selectVersionLabel = $versions.find((version) => version.id === selectedVersionId)?.name ?? '';
+	let isDesktop = $derived(!$isTouchDevice);
+	let selectedVersionId = $derived($page.data.selectedVersion);
+	let selectVersionLabel = $derived($versions.find((version) => version.id === selectedVersionId)?.name ?? '');
 
 	// // Prevent interaction with features if the user is not logged in
-	$: isUserLoggedIn = $page.data.user;
+	let isUserLoggedIn = $derived($page.data.user);
 
 	onMount(async () => {
 		map.set(await setUpMapInstance());
@@ -200,7 +200,7 @@
 		}
 	});
 
-	let labelText = 'Labels aus';
+	let labelText = $state('Labels aus');
 
 	function toggleLabelNames() {
 		// Get the current visibility of the layer
@@ -222,7 +222,7 @@
 <div class="map h-full" id="map"></div>
 
 <div class="on-map-container toggle-label-container">
-	<button on:click={toggleLabelNames}>{labelText}</button>
+	<button onclick={toggleLabelNames}>{labelText}</button>
 </div>
 
 <div class="on-map-container name-container">

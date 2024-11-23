@@ -19,12 +19,12 @@
 	const start = today('Europe/Berlin');
 	const end = start.add({ days: 7 });
 
-	let value = {
+	let value = $state({
 		start,
 		end
-	};
+	});
 
-	let startValue: DateValue | undefined = new CalendarDate(start.year, start.month, start.day);
+	let startValue: DateValue | undefined = $state(new CalendarDate(start.year, start.month, start.day));
 
 	const onSubmit = (event: Event) => {
 		event.preventDefault();
@@ -33,33 +33,35 @@
 	};
 </script>
 
-<div class="grid gap-2 pt-4" on:submit={onSubmit}>
+<div class="grid gap-2 pt-4" onsubmit={onSubmit}>
 	<Popover.Root openFocus>
-		<Popover.Trigger asChild let:builder>
-			<Button
-				variant="input"
-				class={cn(
-					' input justify-start text-left font-normal w-full bg-base-100',
-					!value && 'text-muted-foreground'
-				)}
-				builders={[builder]}
-			>
-				<Calendar class="mr-2 h-4 w-4" />
-				{#if value && value.start}
-					{#if value.end}
-						{df.format(value.start.toDate(getLocalTimeZone()))} - {df.format(
-							value.end.toDate(getLocalTimeZone())
-						)}
+		<Popover.Trigger asChild >
+			{#snippet children({ builder })}
+						<Button
+					variant="input"
+					class={cn(
+						' input justify-start text-left font-normal w-full bg-base-100',
+						!value && 'text-muted-foreground'
+					)}
+					builders={[builder]}
+				>
+					<Calendar class="mr-2 h-4 w-4" />
+					{#if value && value.start}
+						{#if value.end}
+							{df.format(value.start.toDate(getLocalTimeZone()))} - {df.format(
+								value.end.toDate(getLocalTimeZone())
+							)}
+						{:else}
+							{df.format(value.start.toDate(getLocalTimeZone()))}
+						{/if}
+					{:else if startValue}
+						{df.format(startValue.toDate(getLocalTimeZone()))}
 					{:else}
-						{df.format(value.start.toDate(getLocalTimeZone()))}
+						Pick a date
 					{/if}
-				{:else if startValue}
-					{df.format(startValue.toDate(getLocalTimeZone()))}
-				{:else}
-					Pick a date
-				{/if}
-			</Button>
-		</Popover.Trigger>
+				</Button>
+								{/snippet}
+				</Popover.Trigger>
 		<Popover.Content class="w-auto p-0" align="start">
 			<RangeCalendar
 				bind:value

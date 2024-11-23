@@ -6,7 +6,7 @@
 	import { Label } from '$lib/components/ui/label/index.js';
 	import { pb } from '$lib/pocketbase';
 	import { toast } from 'svelte-sonner';
-	let loading = false;
+	let loading = $state(false);
 
 	const submitLogin = () => {
 		return async ({ result, update }) => {

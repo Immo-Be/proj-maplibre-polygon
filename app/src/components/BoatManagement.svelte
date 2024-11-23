@@ -6,11 +6,15 @@
 	import BaseForm from './BaseForm.svelte';
 	import BackIcon from '$lib/icons/back-icon.svelte';
 
-	export let isConfigureMode = false;
+	interface Props {
+		isConfigureMode?: boolean;
+	}
 
-	$: currentShip = $shipsFromFeatures.find((ship) => ship?.id === $page.params.id) as Boat;
+	let { isConfigureMode = false }: Props = $props();
 
-	$: selectedVersion = $page.data.selectedVersion;
+	let currentShip = $derived($shipsFromFeatures.find((ship) => ship?.id === $page.params.id) as Boat);
+
+	let selectedVersion = $derived($page.data.selectedVersion);
 </script>
 
 <ul class="">

@@ -7,7 +7,7 @@
 
 <label class="swap swap-rotate absolute top-2 w-[0.75rem] h-[2rem] right-[-3rem] btn bg-base-100">
 	<!-- this hidden checkbox controls the state -->
-	<input type="checkbox" on:click={handleToggleClick} />
+	<input type="checkbox" onclick={handleToggleClick} />
 
 	<!-- sun icon -->
 	<svg

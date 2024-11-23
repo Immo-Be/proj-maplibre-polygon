@@ -1,7 +1,12 @@
 <script lang="ts">
 	import type { configuredFieldProps } from '../types/types';
+	interface Props {
+		[key: string]: any
+	}
 
-	const { placeholder, inputId, label, name, value } = $$props as configuredFieldProps;
+	let { ...props }: Props = $props();
+
+	const { placeholder, inputId, label, name, value } = props as configuredFieldProps;
 </script>
 
 <label class="form-control w-full max-w-xs">

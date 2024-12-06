@@ -43,7 +43,6 @@ services:
         VERSION: 0.21.1 # Version of the pocketbase_db, make sure it matches the version used in the client SDK
     depends_on:
     - app
-
     ports:
       - '8090:8090'
     stdin_open: true

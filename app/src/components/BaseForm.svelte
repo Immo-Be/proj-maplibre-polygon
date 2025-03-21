@@ -118,7 +118,6 @@
 				Speichern
 			</label>
 		{:else}
-			// Todo: Should be a button or role button
 			<label for="add" class="btn" aria-label="submit">
 				<input
 					hidden

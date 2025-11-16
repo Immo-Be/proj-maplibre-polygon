@@ -11,7 +11,7 @@
 	import { navigating, page } from '$app/stores';
 	import maplibregl from 'maplibre-gl';
 	import { versions } from '../stores/featureCollection';
-
+  import { version } from '$app/environment'
 	import { handleRotate, initializePolyRotation, onMousePolyGrab, onMouseUp } from '$lib/polygon';
 	import { enhance } from '$app/forms';
 
@@ -201,6 +201,7 @@
 	});
 
 	let labelText = $state('Labels aus');
+	let showVersion = $state(false);
 
 	function toggleLabelNames() {
 		// Get the current visibility of the layer
@@ -217,6 +218,10 @@
 			$map?.setLayoutProperty(Layer.POLYGONS_LAYER_GLYPHS, 'visibility', 'visible');
 		}
 	}
+
+	function toggleVersion() {
+		showVersion = !showVersion;
+	}
 </script>
 
 <div class="map h-full" id="map"></div>
@@ -227,6 +232,17 @@
 
 <div class="on-map-container name-container">
 	<p>{selectVersionLabel}</p>
+</div>
+
+
+<div class="on-map-container app-version-container">
+	<button onclick={toggleVersion} class="version-toggle">
+		{#if showVersion}
+			App Version: {version}
+		{:else}
+			i
+		{/if}
+	</button>
 </div>
 
 <div id="distance-container" class="on-map-container"></div>
@@ -246,6 +262,20 @@
 	}
 	:global(div.toggle-label-container) {
 		top: 40px;
+	}
+
+	:global(.app-version-container) {
+		position: absolute;
+    top: auto !important;
+    bottom: 40px  !important;
+    right: 12px !important;
+	}
+
+	:global(.app-version-container .version-toggle) {
+		cursor: pointer;
+		min-width: 20px;
+		text-align: center;
+		font-weight: bold;
 	}
 
 	:global(.name-container) {

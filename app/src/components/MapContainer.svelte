@@ -238,7 +238,7 @@
 <div class="on-map-container app-version-container">
 	<button onclick={toggleVersion} class="version-toggle">
 		{#if showVersion}
-			App Version: {version}
+			App Version: v.{version}
 		{:else}
 			i
 		{/if}

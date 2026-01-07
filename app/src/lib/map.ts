@@ -6,9 +6,6 @@ import MapboxDraw from '@mapbox/mapbox-gl-draw';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import length from '@turf/length';
 
-import { MaplibreExportControl } from '@watergis/maplibre-gl-export';
-import '@watergis/maplibre-gl-export/dist/maplibre-gl-export.css';
-
 import areas from '../lib/shapefiles/areas.json';
 import pois from '../lib/shapefiles/pois.json';
 import infos from '../lib/shapefiles/infos.json';
@@ -106,7 +103,6 @@ export const setUpMapInstance = async (): Promise<maplibregl.Map> => {
 			// if (e.type !== 'draw.delete') alert('Use the draw tools to draw a polygon!');
 		}
 	}
-	map.addControl(new MaplibreExportControl(), 'top-right');
 
 	const layerId = Layer.POLYGONS_LAYER_FILL;
 
